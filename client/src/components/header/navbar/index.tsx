@@ -5,7 +5,7 @@ const Header = () => {
    * TSX
    */
   return (
-    <div className="w-full flex justify-between items-center h-[5rem] px-[50px]">
+    <div className="w-full sticky top-0 bg-dark z-[10] flex justify-between items-center h-[5rem] px-[50px]">
       {/* left  */}
       <div className="flex justify-center items-center gap-6">
         <AiOutlineMenu className="text-white text-2xl" />
