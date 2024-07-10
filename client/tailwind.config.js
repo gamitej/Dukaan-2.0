@@ -8,7 +8,8 @@ export default {
       colors: {
         // black theme
         dark: "#1E1E2F",
-        mediumDark: "#27293D",
+        // mediumDark: "#27293D", ##313346
+        mediumDark: "#313346",
         lightDark: "#4C585F",
         extraLightDark: "#D1D6D8",
         modal: "#222E35",
