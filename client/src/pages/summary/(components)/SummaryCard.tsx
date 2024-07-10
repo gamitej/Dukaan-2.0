@@ -14,7 +14,7 @@ const SummaryCard = () => {
       {data.map(({ label, value }, idx) => (
         <div
           key={idx}
-          className="bg-mediumDark col-span-3 py-4 px-6 rounded-md shadow-md"
+          className="bg-mediumDark col-span-3 py-4 px-6 rounded-md shadow-md border-lightDark border-[2px]"
         >
           <div className="text-white">{label}</div>
           <div className="text-white">Rs {value}</div>
