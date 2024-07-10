@@ -1,7 +1,13 @@
+import Party from "../party";
+import Stocks from "../stocks";
+import Summary from "../summary";
+
 const Home = () => {
   return (
-    <div className="bg-mediumDark shadow-md">
-      <div className="bg-red-300 h-[10rem] w-full">ji</div>
+    <div className="">
+      <Summary />
+      <Party />
+      <Stocks />
     </div>
   );
 };
