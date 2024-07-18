@@ -8,7 +8,7 @@ const Home = () => {
    * TSX
    */
   return (
-    <div className="flex gap-12 text-white mt-8">
+    <div className="w-[97%] mx-auto flex gap-10 text-white mt-10">
       {pageData.map((item) => (
         <div
           key={item.label}

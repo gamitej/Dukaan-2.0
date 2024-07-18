@@ -18,7 +18,7 @@ const ItemCard: FC<ItemCardProps> = ({ data = [], handleClick }) => {
    * TSX
    */
   return (
-    <div className="w-full mt-6 grid grid-cols-12 gap-4">
+    <div className="w-full mt-6 grid grid-cols-12 gap-6">
       {data?.map((item: CardDataType, idx) => (
         <div
           key={idx}
