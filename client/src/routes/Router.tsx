@@ -4,21 +4,36 @@ import { useRoutes } from "react-router-dom";
 // lazy
 const Home = lazy(() => import("@/pages/home"));
 const PartyDetailsPage = lazy(() => import("@/pages/party/PartyDetails"));
+const PartiesPage = lazy(() => import("@/pages/party"));
 const StockDetailsPage = lazy(() => import("@/pages/stocks/StockDetails"));
+const StocksPage = lazy(() => import("@/pages/stocks"));
 
 const Router = () => {
   const route = useRoutes([
     {
       path: "/",
       element: <Home />,
+      // children: [],
     },
     {
-      path: "/party/:name",
-      element: <PartyDetailsPage />,
+      path: "/parties",
+      element: <PartiesPage />,
+      children: [
+        {
+          path: ":name",
+          element: <PartyDetailsPage />,
+        },
+      ],
     },
     {
-      path: "/stock/:name",
-      element: <StockDetailsPage />,
+      path: "/stocks",
+      element: <StocksPage />,
+      children: [
+        {
+          path: ":name",
+          element: <StockDetailsPage />,
+        },
+      ],
     },
   ]);
 
