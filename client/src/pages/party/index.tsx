@@ -5,7 +5,7 @@ const Party = () => {
    * TSX
    */
   return (
-    <div className="w-[90%] mx-auto mt-10">
+    <div className="w-[90%] mx-auto mt-6">
       <div className="flex justify-center items-center gap-4">
         <div className="text-white text-2xl">Party Overview</div>
         <div>

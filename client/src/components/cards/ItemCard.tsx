@@ -1,5 +1,4 @@
 import { FC } from "react";
-import { FiArrowRightCircle } from "react-icons/fi";
 
 type CardDataType = {
   name: string;
