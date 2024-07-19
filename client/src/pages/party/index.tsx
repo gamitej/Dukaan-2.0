@@ -13,7 +13,7 @@ const Party = () => {
   return (
     <div className="w-[90%] mx-auto mt-10">
       <div className="flex justify-between items-center gap-4 bg-lightDark py-4 px-6 rounded-md">
-        <div className="text-white text-3xl">Party Overview</div>
+        <div className="text-white text-2xl">Party Overview</div>
         <div>
           <button
             onClick={setIsModelOpen}
