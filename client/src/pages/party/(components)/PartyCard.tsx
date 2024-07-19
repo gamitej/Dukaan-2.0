@@ -3,19 +3,13 @@ import { getAllPartiesDataApi } from "@/services/Party";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
-const data = [
-  { name: "Party Name 1", value: "Rs 2300", label: "Pending Payment -" },
-  { name: "Party Name 2", value: "Rs 2300", label: "Pending Payment -" },
-  { name: "Party Name 3", value: "Rs 2300", label: "Pending Payment -" },
-];
-
 const PartyCard = () => {
   const navigate = useNavigate();
 
   // =================== API CALL'S START ======================
 
   // Query to fetch all party data
-  const { data: partiesData = [] } = useQuery({
+  const { data: partiesData = [], isLoading } = useQuery({
     queryKey: ["party", "name"],
     queryFn: () => getAllPartiesDataApi(),
   });
@@ -29,6 +23,7 @@ const PartyCard = () => {
     <div>
       <ItemCard
         data={partiesData}
+        isLoading={isLoading}
         handleClick={(item) => navigate(`/party/${item.name}`)}
       />
     </div>

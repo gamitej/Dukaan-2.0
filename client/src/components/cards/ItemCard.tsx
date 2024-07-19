@@ -9,10 +9,31 @@ type CardDataType = {
 
 interface ItemCardProps {
   data: CardDataType[];
+  isLoading?: boolean;
   handleClick: (item: any) => void;
 }
 
-const ItemCard: FC<ItemCardProps> = ({ data = [], handleClick }) => {
+const ItemCard: FC<ItemCardProps> = ({
+  data = [],
+  handleClick,
+  isLoading = false,
+}) => {
+  if (isLoading) {
+    return (
+      <div className="mt-6 flex justify-center items-center h-[10rem] text-xl">
+        loading...
+      </div>
+    );
+  }
+
+  if (data?.length === 0) {
+    return (
+      <div className="mt-6 flex justify-center items-center h-[10rem] text-xl">
+        No data found
+      </div>
+    );
+  }
+
   /**
    * TSX
    */

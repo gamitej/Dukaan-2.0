@@ -11,13 +11,13 @@ const Party = () => {
    * TSX
    */
   return (
-    <div className="w-[90%] mx-auto mt-6">
-      <div className="flex justify-center items-center gap-4">
-        <div className="text-mediumDark text-2xl">Party Overview</div>
+    <div className="w-[90%] mx-auto mt-10">
+      <div className="flex justify-between items-center gap-4 bg-lightDark py-4 px-6 rounded-md">
+        <div className="text-white text-3xl">Party Overview</div>
         <div>
           <button
             onClick={setIsModelOpen}
-            className="bg-blue-400 text-white px-2 py-1 rounded-sm shadow-md"
+            className="bg-blue-400 text-white px-2 py-1 rounded-sm shadow-md text-xl bg-med"
           >
             &#x2b; Add New
           </button>
