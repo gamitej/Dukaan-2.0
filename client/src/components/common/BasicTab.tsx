@@ -25,15 +25,17 @@ export default function BasicTab({ tabData = [] }: BasicTabProps) {
    * TSX
    */
   return (
-    <TabContext value={value}>
-      <TabList onChange={handleChange} aria-label="lab API tabs example">
+    <div className="bg-white rounded-md shadow-md border">
+      <TabContext value={value}>
+        <TabList onChange={handleChange} aria-label="lab API tabs example">
+          {tabData.map((item) => (
+            <Tab label={item?.label} value={item?.value} />
+          ))}
+        </TabList>
         {tabData.map((item) => (
-          <Tab label={item?.label} value={item?.value} />
+          <TabPanel value={item?.label}>{item?.content}</TabPanel>
         ))}
-      </TabList>
-      {tabData.map((item) => (
-        <TabPanel value={item?.label}>{item?.content}</TabPanel>
-      ))}
-    </TabContext>
+      </TabContext>
+    </div>
   );
 }

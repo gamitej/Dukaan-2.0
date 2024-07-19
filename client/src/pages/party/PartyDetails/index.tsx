@@ -1,8 +1,22 @@
+import BasicTab from "@/components/common/BasicTab";
 import CommonTable from "@/components/table/CommonTable";
 import { useParams } from "react-router-dom";
 
 const PartyDetails = () => {
   const { id, name } = useParams();
+
+  const tabsData = [
+    {
+      label: "Purchase Record",
+      value: "Purchase Record",
+      content: <CommonTable />,
+    },
+    {
+      label: "Payment Record",
+      value: "Payment Record",
+      content: <CommonTable />,
+    },
+  ];
 
   /**
    * TSX
@@ -21,7 +35,7 @@ const PartyDetails = () => {
         </div>
       </div>
       <div className="mt-8">
-        <CommonTable />
+        <BasicTab tabData={tabsData} />
       </div>
     </div>
   );
