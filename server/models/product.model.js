@@ -2,21 +2,24 @@ import { DataTypes } from "sequelize";
 import sequelize from "../database/connection.js";
 import generateUUID from "../utils/uuidGenerator.js";
 
-const Party = sequelize.define("Party", {
-  party_id: {
+const Product = sequelize.define("Product", {
+  product_id: {
     type: DataTypes.STRING,
     primaryKey: true,
     defaultValue: () => generateUUID(),
   },
-  party_name: {
+  product: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  pending_payment: {
-    type: DataTypes.FLOAT,
-    defaultValue: 0.0,
+  product_type: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  company: {
+    type: DataTypes.STRING,
     allowNull: false,
   },
 });
 
-export default Party;
+export default Product;
