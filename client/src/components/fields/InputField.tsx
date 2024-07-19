@@ -4,8 +4,12 @@ import { ChangeEvent } from "react";
 interface InputFieldProps {
   label: string;
   id: string;
-  type?: "text" | "number";
+  width?: string;
+  isError?: boolean;
   placeholder: string;
+  onClick?: () => void;
+  type?: "text" | "number";
+  size?: "small" | "medium";
   value: string | number | null;
   variant?: "outlined" | "filled" | "standard";
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -13,12 +17,16 @@ interface InputFieldProps {
 
 export default function InputField({
   id,
+  onClick,
   value = null,
   type = "text",
+  handleChange,
   label = "label",
+  width = "20rem",
+  size = "medium",
   placeholder = "label",
   variant = "outlined",
-  handleChange,
+  isError = false,
 }: InputFieldProps) {
   /**
    * TSX
@@ -26,8 +34,12 @@ export default function InputField({
   return (
     <TextField
       type={type}
+      size={size}
       value={value}
       label={label}
+      sx={{ width }}
+      error={isError}
+      onClick={onClick}
       variant={variant}
       onChange={handleChange}
       id={`input-field-${id}`}

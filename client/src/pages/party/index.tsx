@@ -5,9 +5,7 @@ import AddPartyModel from "./(components)/AddPartyModel";
 import { usePartyStore } from "@/store/partyStore";
 
 const Party = () => {
-  const { isModelOpen, setIsModelOpen } = usePartyStore();
-
-  console.log({ isModelOpen });
+  const { setIsModelOpen } = usePartyStore();
 
   /**
    * TSX
