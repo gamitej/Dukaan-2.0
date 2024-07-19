@@ -9,3 +9,14 @@ export async function insertParty(name) {
     console.error("Error inserting party:", error);
   }
 }
+
+// Function to retrieve all parties
+export async function getAllParties() {
+  try {
+    const parties = await Party.findAll();
+    return parties;
+  } catch (error) {
+    console.error("Error retrieving parties:", error);
+    return [];
+  }
+}

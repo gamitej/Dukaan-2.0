@@ -1,6 +1,9 @@
 import CommonTable from "@/components/table/CommonTable";
 
 const PartyDetails = () => {
+
+  
+
   return (
     <div className="text-white">
       <CommonTable />

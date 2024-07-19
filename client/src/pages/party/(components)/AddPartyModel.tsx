@@ -22,7 +22,7 @@ const AddPartyModel = () => {
       setReset();
       // toast.success("Sales data added successfully", { duration: 1200 });
       queryClient.invalidateQueries({
-        queryKey: ["party", "add-name"],
+        queryKey: ["party", "name"],
       });
       // setIsSalesAddApiLoading(false);
     },

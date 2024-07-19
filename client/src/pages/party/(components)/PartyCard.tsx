@@ -1,4 +1,6 @@
 import ItemCard from "@/components/cards/ItemCard";
+import { getAllPartiesDataApi } from "@/services/Party";
+import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
 const data = [
@@ -9,6 +11,16 @@ const data = [
 
 const PartyCard = () => {
   const navigate = useNavigate();
+
+  // =================== API CALL'S START ======================
+
+  // Query to fetch all party data
+  const { data: partiesData = [] } = useQuery({
+    queryKey: ["party", "name"],
+    queryFn: () => getAllPartiesDataApi(),
+  });
+
+  console.log({ partiesData });
 
   /**
    * TSX
