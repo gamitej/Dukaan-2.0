@@ -1,15 +1,41 @@
 import { ChangeEvent, FormEvent } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 // components
 import BasicModal from "@/components/model/BasicModel";
 import InputField from "@/components/fields/InputField";
 // store
 import { usePartyStore } from "@/store/partyStore";
+import { getAddPartyNameDataApi } from "@/services/Party";
 
 const AddPartyModel = () => {
+  const queryClient = useQueryClient();
+
   const { setReset, isModelOpen, submitBtnEnable, partyName, setPartyName } =
     usePartyStore();
 
-  // ================== EVENT_HANDLER ===================
+  // =================== API CALL'S START ======================
+
+  // Mutation to add party name
+  const { mutate: mutateAddPartNameData } = useMutation({
+    mutationFn: getAddPartyNameDataApi,
+    onSuccess: () => {
+      setReset();
+      // toast.success("Sales data added successfully", { duration: 1200 });
+      queryClient.invalidateQueries({
+        queryKey: ["party", "add-name"],
+      });
+      // setIsSalesAddApiLoading(false);
+    },
+    onError: (err: any) => {
+      const { message } = err.response.data;
+      // setIsSalesAddApiLoading(false);
+      // toast.error(message || "Error while adding sales data", {
+      //   duration: 1200,
+      // });
+    },
+  });
+
+  // ===================== EVENT_HANDLER ======================
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPartyName(e.target.value);
@@ -17,7 +43,8 @@ const AddPartyModel = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setReset();
+    // setReset();
+    mutateAddPartNameData({ name: partyName });
   };
 
   /**
