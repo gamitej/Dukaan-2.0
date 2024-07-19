@@ -6,14 +6,8 @@ import InputField from "@/components/fields/InputField";
 import { usePartyStore } from "@/store/partyStore";
 
 const AddPartyModel = () => {
-  const {
-    setReset,
-    isModelOpen,
-    setIsModelOpen,
-    submitBtnEnable,
-    partyName,
-    setPartyName,
-  } = usePartyStore();
+  const { setReset, isModelOpen, submitBtnEnable, partyName, setPartyName } =
+    usePartyStore();
 
   // ================== EVENT_HANDLER ===================
 
@@ -23,7 +17,6 @@ const AddPartyModel = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     setReset();
   };
 
