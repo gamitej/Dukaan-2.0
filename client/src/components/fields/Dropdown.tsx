@@ -2,31 +2,46 @@ import * as React from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 
-const options = ["Option 1", "Option 2"];
+type Options = { label: string; value: string | number };
 
-export default function Dropdown() {
-  const [value, setValue] = React.useState<string | null>(options[0]);
-  const [inputValue, setInputValue] = React.useState("");
+interface DropdownProps {
+  id: string;
+  label: string;
+  options: Options[];
+  value: Options | null;
+  setInputChange: (e: React.SyntheticEvent<Element, Event>) => void;
+}
 
+export default function Dropdown({
+  id,
+  options = [],
+  value = null,
+  setInputChange,
+  label = "label",
+}: DropdownProps) {
   /**
    * TSX
    */
   return (
     <div>
       <Autocomplete
+        id={id}
         value={value}
-        onChange={(_event: any, newValue: string | null) => {
-          setValue(newValue);
-        }}
-        inputValue={inputValue}
-        onInputChange={(_event, newInputValue) => {
-          setInputValue(newInputValue);
-        }}
-        id="controllable-states-demo"
         options={options}
         sx={{ width: 300 }}
-        renderInput={(params) => <TextField {...params} label="Controllable" />}
+        onInputChange={setInputChange}
+        renderInput={(params) => <TextField {...params} label={label} />}
       />
     </div>
   );
+}
+
+{
+  /* <Dropdown
+options={options}
+id="pary"
+value={null}
+label="party"
+setInputChange={() => {}}
+/> */
 }

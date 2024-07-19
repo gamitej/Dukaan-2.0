@@ -35,3 +35,13 @@ export default function InputField({
     />
   );
 }
+
+{
+  /* <InputField
+handleChange={() => {}}
+id="add-party"
+label="Party"
+value={null}
+placeholder="Enter party name..."
+/> */
+}
