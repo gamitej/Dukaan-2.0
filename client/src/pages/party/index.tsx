@@ -1,7 +1,8 @@
-import { usePartyStore } from "@/store/partyStore";
+// components
 import PartyCard from "./(components)/PartyCard";
-import BasicModal from "@/components/model/BasicModel";
 import AddPartyModel from "./(components)/AddPartyModel";
+// store
+import { usePartyStore } from "@/store/partyStore";
 
 const Party = () => {
   const { isModelOpen, setIsModelOpen } = usePartyStore();
