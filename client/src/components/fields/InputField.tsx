@@ -1,4 +1,5 @@
 import TextField from "@mui/material/TextField";
+import { ChangeEvent } from "react";
 
 interface InputFieldProps {
   label: string;
@@ -7,6 +8,7 @@ interface InputFieldProps {
   placeholder: string;
   value: string | number | null;
   variant?: "outlined" | "filled" | "standard";
+  handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function InputField({
@@ -16,9 +18,8 @@ export default function InputField({
   label = "label",
   placeholder = "label",
   variant = "outlined",
+  handleChange,
 }: InputFieldProps) {
-  const handleChange = () => {};
-
   /**
    * TSX
    */
