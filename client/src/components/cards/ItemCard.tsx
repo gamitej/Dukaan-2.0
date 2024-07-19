@@ -22,7 +22,7 @@ const ItemCard: FC<ItemCardProps> = ({ data = [], handleClick }) => {
         <div
           key={idx}
           onClick={() => handleClick(item)}
-          className="hover:scale-[1.02] ease-in-out duration-150 cursor-pointer col-span-3 bg-mediumDark shadow-md rounded-md py-8 px-6 text-white flex justify-between items-center border-lightDark border-[2px]"
+          className="hover:scale-[1.02] ease-in-out duration-150 cursor-pointer col-span-3 bg-white shadow-md rounded-md py-8 px-6 text-mediumDark flex justify-between items-center"
         >
           <div className="flex flex-col gap-3">
             <div className="text-blue-400 text-2xl">{item?.name}</div>

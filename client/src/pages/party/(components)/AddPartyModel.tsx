@@ -1,3 +1,4 @@
+import InputField from "@/components/fields/InputField";
 import BasicModal from "@/components/model/BasicModel";
 import { usePartyStore } from "@/store/partyStore";
 
@@ -9,7 +10,14 @@ const AddPartyModel = () => {
    */
   return (
     <BasicModal title="Add Party" isOpen={isModelOpen} onClose={setIsModelOpen}>
-      <div>hi</div>
+      <div>
+        <InputField
+          id="add-party"
+          label="Party"
+          value={null}
+          placeholder="Enter party name..."
+        />
+      </div>
     </BasicModal>
   );
 };

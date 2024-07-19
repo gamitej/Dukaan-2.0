@@ -3,10 +3,10 @@ import TextField from "@mui/material/TextField";
 interface InputFieldProps {
   label: string;
   id: string;
-  type: "text" | "number";
+  type?: "text" | "number";
   placeholder: string;
   value: string | number | null;
-  variant: "outlined" | "filled" | "standard";
+  variant?: "outlined" | "filled" | "standard";
 }
 
 export default function InputField({

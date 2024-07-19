@@ -12,11 +12,11 @@ const queryClient = new QueryClient();
 
 const darkTheme = createTheme({
   palette: {
-    mode: "dark",
-    background: {
-      default: "#27293D",
-      paper: "#27293D",
-    },
+    mode: "light",
+    // background: {
+    //   default: "#27293D",
+    //   paper: "#27293D",
+    // },
   },
 });
 
