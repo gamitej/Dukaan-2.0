@@ -28,7 +28,7 @@ const PartyCard = () => {
   return (
     <div>
       <ItemCard
-        data={data}
+        data={partiesData}
         handleClick={(item) => navigate(`/party/${item.name}`)}
       />
     </div>

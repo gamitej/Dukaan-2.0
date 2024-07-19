@@ -14,6 +14,7 @@ export async function insertParty(name) {
 export async function getAllParties() {
   try {
     const parties = await Party.findAll();
+    if (!parties) return [];
     return parties;
   } catch (error) {
     console.error("Error retrieving parties:", error);

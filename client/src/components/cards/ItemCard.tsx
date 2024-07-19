@@ -25,7 +25,9 @@ const ItemCard: FC<ItemCardProps> = ({ data = [], handleClick }) => {
           className="hover:scale-[1.02] ease-in-out duration-150 cursor-pointer col-span-3 bg-white shadow-md rounded-md py-8 px-6 text-mediumDark flex justify-between items-center"
         >
           <div className="flex flex-col gap-3">
-            <div className="text-blue-400 text-2xl">{item?.name}</div>
+            <div className="text-blue-400 text-2xl capitalize">
+              {item?.name}
+            </div>
             <div className="flex items-center gap-2">
               <div className="text-xl">{item?.label} </div>
               <div className="text-lg">{item?.value}</div>

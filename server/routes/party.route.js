@@ -23,11 +23,18 @@ router.post("/add-name", async (req, res) => {
 // All parties name
 router.get("/all", async (req, res) => {
   try {
-    const parties = getAllParties();
+    const parties = await getAllParties();
 
-    if (parties?.length > 0) return res.status(200).json(parties);
+    const formattedPartyName = parties?.map((item) => {
+      return {
+        id: item.party_id,
+        name: item.party_name,
+        label: "Pending Payment -",
+        value: `Rs ${item.pending_payment}`,
+      };
+    });
 
-    return res.status(200).json([]);
+    return res.status(200).json(formattedPartyName);
   } catch (error) {
     return res.status(500).json(error.message || error);
   }
