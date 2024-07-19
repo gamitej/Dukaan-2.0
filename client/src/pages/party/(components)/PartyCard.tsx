@@ -1,7 +1,9 @@
-import ItemCard from "@/components/cards/ItemCard";
-import { getAllPartiesDataApi } from "@/services/Party";
-import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+// components
+import ItemCard from "@/components/cards/ItemCard";
+// services
+import { getAllPartiesDataApi } from "@/services/Party";
 
 const PartyCard = () => {
   const navigate = useNavigate();
@@ -14,8 +16,6 @@ const PartyCard = () => {
     queryFn: () => getAllPartiesDataApi(),
   });
 
-  console.log({ partiesData });
-
   /**
    * TSX
    */
@@ -24,7 +24,7 @@ const PartyCard = () => {
       <ItemCard
         data={partiesData}
         isLoading={isLoading}
-        handleClick={(item) => navigate(`/party/${item.name}`)}
+        handleClick={(item) => navigate(`/parties/${item.id}/${item.name}`)}
       />
     </div>
   );
