@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 // components
-import Filters from "@/components/filters";
+import Options from "@/components/options";
 import Navbar from "@/components/header/navbar";
 // routes
 import Router from "./routes/Router";
@@ -21,7 +21,7 @@ function App() {
         </Suspense>
       </div>
 
-      <Filters />
+      <Options />
     </div>
   );
 }

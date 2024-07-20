@@ -8,15 +8,6 @@ const AddProduct = () => {
    */
   return (
     <form className="flex flex-col gap-4">
-      <InputField
-        id="product"
-        label="Product"
-        value={""}
-        width="100%"
-        handleChange={() => {}}
-        placeholder="Enter product name..."
-      />
-
       <div className="w-full flex gap-2">
         <Dropdown
           id="category"
@@ -36,6 +27,15 @@ const AddProduct = () => {
           setInputChange={() => {}}
         />
       </div>
+
+      <InputField
+        id="product"
+        label="Product"
+        value={""}
+        width="100%"
+        handleChange={() => {}}
+        placeholder="Enter product name..."
+      />
 
       <button className="bg-lightDark text-white py-3 hover:bg-slate-500 rounded-sm shadow-md">
         submit

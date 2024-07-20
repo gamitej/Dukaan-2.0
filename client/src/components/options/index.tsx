@@ -17,7 +17,7 @@ const tabsData = [
   { label: "Add Category", value: "Add Category", content: <AddCategory /> },
 ];
 
-const Filters = () => {
+const Options = () => {
   const { isModelOpen, setIsModelOpen } = useGlobleStore();
 
   /**
@@ -29,11 +29,11 @@ const Filters = () => {
       modalHeight="contentFit"
       isOpen={isModelOpen}
       onClose={setIsModelOpen}
-      title="Add Filter Options"
+      title="Add Options"
     >
       <BasicTab tabData={tabsData} />
     </BasicModal>
   );
 };
 
-export default Filters;
+export default Options;
