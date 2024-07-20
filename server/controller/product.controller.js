@@ -49,17 +49,25 @@ export const addProductDetails = async (req, res) => {
 
 export const getAllProductsDetails = async (req, res) => {
   try {
-    // Fetch all product and group by category
+    // Fetch all product details and group by category
     const products = await Product.findAll({
-      attributes: ["product", "category", "company"],
-      group: ["category", "company"],
-      order: [
-        ["category", "ASC"],
-        ["company", "ASC"],
+      attributes: [
+        "category",
+        [Sequelize.fn("GROUP_CONCAT", Sequelize.col("product")), "products"],
+        [Sequelize.fn("GROUP_CONCAT", Sequelize.col("company")), "companies"],
       ],
+      group: ["category"],
+      order: [["category", "ASC"]],
     });
 
-    return res.status(200).json(products);
+    // Format the results
+    const formattedProducts = products.map((product) => ({
+      category: product.category,
+      products: product.get("products").split(","),
+      companies: product.get("companies").split(","),
+    }));
+
+    return res.status(200).json(formattedProducts);
   } catch (error) {
     return res.status(500).json(error.message || error);
   }

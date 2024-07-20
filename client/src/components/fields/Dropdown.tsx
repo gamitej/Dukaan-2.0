@@ -1,8 +1,7 @@
-import * as React from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 
-type Options = { label: string; value: string | number };
+type Options = { label: string; value: string };
 
 interface DropdownProps {
   id: string;
@@ -30,14 +29,17 @@ export default function Dropdown({
     <div>
       <Autocomplete
         id={id}
-        inputValue={value}
-        disabled={isDisabled}
-        onInputChange={(_event, newInputValue) => {
-          setInputChange(newInputValue);
-        }}
+        value={options.find((option) => option.value === value) || null}
         sx={{ width }}
         options={options}
-        renderInput={(params) => <TextField {...params} label={label} />}
+        getOptionLabel={(option) => option.label}
+        isOptionEqualToValue={(option, value) => option.value === value.value}
+        onChange={(_event, newValue) =>
+          setInputChange(newValue ? newValue.value : "")
+        }
+        renderInput={(params) => (
+          <TextField {...params} label={label} disabled={isDisabled} />
+        )}
       />
     </div>
   );
