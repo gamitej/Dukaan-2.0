@@ -1,17 +1,20 @@
 import { create } from "zustand";
 
+export type FormDataPurchase = {
+  category: string;
+  product: string;
+  company: string;
+  price: string;
+  quantity: string;
+  weight: string;
+};
+
 interface PurchaseState {
   isModelOpen: boolean;
   setIsModelOpen: () => void;
 
-  formData: {
-    category: string;
-    product: string;
-    company: string;
-    price: string;
-    quantity: string;
-    weight: string;
-  };
+  formData: FormDataPurchase;
+  setFormData: (name: string, value: string | number) => void;
 }
 
 export const usePurchaseStore = create<PurchaseState>((set) => ({
@@ -28,4 +31,8 @@ export const usePurchaseStore = create<PurchaseState>((set) => ({
     quantity: "",
     weight: "",
   },
+  setFormData: (key, value) =>
+    set((state) => ({
+      formData: { ...state.formData, [key]: value },
+    })),
 }));

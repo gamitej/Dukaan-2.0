@@ -33,6 +33,8 @@ export default function InputField({
    */
   return (
     <TextField
+      id={id}
+      name={id}
       type={type}
       size={size}
       value={value}
@@ -42,7 +44,6 @@ export default function InputField({
       onClick={onClick}
       variant={variant}
       onChange={handleChange}
-      id={`input-field-${id}`}
       placeholder={placeholder}
     />
   );
