@@ -12,7 +12,7 @@ const Stock = sequelize.define("Stock", {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  productId: {
+  product_id: {
     type: DataTypes.STRING,
     references: {
       model: Product,

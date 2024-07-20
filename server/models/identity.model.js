@@ -2,13 +2,13 @@ import { DataTypes } from "sequelize";
 import sequelize from "../database/connection.js";
 import generateUUID from "../utils/uuidGenerator.js";
 
-const Product = sequelize.define("Product", {
-  product_id: {
+const Identity = sequelize.define("Identity", {
+  id: {
     type: DataTypes.STRING,
     primaryKey: true,
     defaultValue: () => generateUUID(),
   },
-  product: {
+  company: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -16,10 +16,6 @@ const Product = sequelize.define("Product", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  company: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
 });
 
-export default Product;
+export default Identity;

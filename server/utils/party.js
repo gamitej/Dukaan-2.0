@@ -11,7 +11,7 @@ export async function insertParty(name) {
 }
 
 // Function to retrieve all parties
-export async function getAllParties() {
+export async function getPartiesData() {
   try {
     const parties = await Party.findAll();
     if (!parties) return [];
