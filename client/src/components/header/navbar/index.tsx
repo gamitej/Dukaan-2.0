@@ -1,8 +1,11 @@
+import { useGlobleStore } from "@/store/globalStore";
 import { AiOutlineMenu, AiFillProduct } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const navigate = useNavigate();
+
+  const { setIsModelOpen } = useGlobleStore();
 
   /**
    * TSX
@@ -19,7 +22,10 @@ const Header = () => {
       </div>
       {/* right  */}
       <div>
-        <AiFillProduct className="text-white text-4xl" />
+        <AiFillProduct
+          onClick={setIsModelOpen}
+          className="text-white text-4xl cursor-pointer"
+        />
       </div>
     </div>
   );

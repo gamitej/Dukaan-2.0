@@ -32,7 +32,7 @@ const BasicModal: React.FC<BasicModalProps> = ({
         {/*=========== header ==========*/}
 
         <div className="relative w-full py-2 px-6">
-          <h3 className="text-center font-[550] text-blue-500 text-2xl uppercase">
+          <h3 className="text-center font-[550] text-mediumDark text-2xl capitalize">
             {title}
           </h3>
           <div
@@ -43,7 +43,7 @@ const BasicModal: React.FC<BasicModalProps> = ({
           </div>
         </div>
         {/*=========== body =============*/}
-        <div className="children w-full h-[100%] p-2">{children}</div>
+        <div className="children w-full h-[100%] p-3 mt-4">{children}</div>
       </div>
     </div>
   );

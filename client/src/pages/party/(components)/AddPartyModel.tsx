@@ -60,7 +60,7 @@ const AddPartyModel = () => {
     >
       <form
         onSubmit={handleSubmit}
-        className="flex justify-center items-center gap-4 mt-4"
+        className="flex justify-center items-center gap-4"
       >
         <InputField
           width="40vw"
