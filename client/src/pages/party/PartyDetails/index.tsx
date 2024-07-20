@@ -1,22 +1,28 @@
+import { useParams } from "react-router-dom";
 import BasicTab from "@/components/common/BasicTab";
 import CommonTable from "@/components/table/CommonTable";
-import { useParams } from "react-router-dom";
+import PurchaseTable from "./PurchaseTable";
+
+const tabsData = [
+  {
+    label: "Purchase Record",
+    value: "Purchase Record",
+    content: <PurchaseTable />,
+  },
+  {
+    label: "Payment Record",
+    value: "Payment Record",
+    content: <CommonTable rows={[]} columns={[]} />,
+  },
+  {
+    label: "Return Record",
+    value: "Return Record",
+    content: <CommonTable rows={[]} columns={[]} />,
+  },
+];
 
 const PartyDetails = () => {
   const { id, name } = useParams();
-
-  const tabsData = [
-    {
-      label: "Purchase Record",
-      value: "Purchase Record",
-      content: <CommonTable />,
-    },
-    {
-      label: "Payment Record",
-      value: "Payment Record",
-      content: <CommonTable />,
-    },
-  ];
 
   /**
    * TSX
