@@ -9,6 +9,7 @@ interface DropdownProps {
   label: string;
   options: Options[];
   value: Options | null;
+  width?: number | string;
   setInputChange: (e: React.SyntheticEvent<Element, Event>) => void;
 }
 
@@ -16,6 +17,7 @@ export default function Dropdown({
   id,
   options = [],
   value = null,
+  width = 300,
   setInputChange,
   label = "label",
 }: DropdownProps) {
@@ -27,8 +29,8 @@ export default function Dropdown({
       <Autocomplete
         id={id}
         value={value}
+        sx={{ width }}
         options={options}
-        sx={{ width: 300 }}
         onInputChange={setInputChange}
         renderInput={(params) => <TextField {...params} label={label} />}
       />

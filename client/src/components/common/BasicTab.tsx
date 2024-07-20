@@ -5,7 +5,7 @@ import TabPanel from "@mui/lab/TabPanel";
 import TabContext from "@mui/lab/TabContext";
 
 interface BasicTabProps {
-  tabData: { value: string; label: string; content: React.ReactNode }[];
+  tabData: { value: string; label: string; content: any }[];
 }
 
 export default function BasicTab({ tabData = [] }: BasicTabProps) {

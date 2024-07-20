@@ -43,7 +43,7 @@ const BasicModal: React.FC<BasicModalProps> = ({
           </div>
         </div>
         {/*=========== body =============*/}
-        <div className="children w-full h-[100%] p-3 mt-4">{children}</div>
+        <div className="children w-full h-[100%] p-2">{children}</div>
       </div>
     </div>
   );

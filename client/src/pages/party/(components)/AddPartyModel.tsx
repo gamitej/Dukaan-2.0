@@ -53,7 +53,7 @@ const AddPartyModel = () => {
   return (
     <BasicModal
       title="Add Party"
-      modalHeight="20vh"
+      modalHeight="15vh"
       modalWidth="40vw"
       isOpen={isModelOpen}
       onClose={setReset}
