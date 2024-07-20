@@ -1,8 +1,23 @@
+import { useQuery } from "@tanstack/react-query";
+// components
 import Dropdown from "../fields/Dropdown";
 import InputField from "../fields/InputField";
+// services
+import { getAllOptionsDataApi } from "@/services/Options";
+// data
 import { prod } from "./data";
 
 const AddCompany = () => {
+  // =================== API CALL'S START ======================
+
+  // Query to fetch all party data
+  const { data: options = [] } = useQuery({
+    queryKey: ["options", "get-company-category"],
+    queryFn: () => getAllOptionsDataApi(),
+  });
+
+  console.log({ options });
+
   /**
    * TSX
    */

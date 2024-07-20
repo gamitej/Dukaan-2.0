@@ -1,26 +1,27 @@
 import http from "../httpService";
 
+interface CompanyCategoryReq {
+  company: string;
+  category: string;
+}
+
+interface ProductReq extends CompanyCategoryReq {
+  product: string;
+}
+
 /**
  * ========================= ADD =========================
  */
 
-type ProductReq = { product: string; company: string; category: string };
-
-// add company
-export async function addCompanyDataApi(company: string) {
-  const { data } = await http.post(`/options/add-company`, { company });
-  return data;
-}
-
-// add category
-export async function addCategoryDataApi(category: string) {
-  const { data } = await http.post(`/options/add-category`, { category });
+// add company & category
+export async function addCompanyAndCategoryDataApi(req: CompanyCategoryReq) {
+  const { data } = await http.post(`/identity/add-company-category`, req);
   return data;
 }
 
 // add product with category & company data
 export async function addProductDataApi(req: ProductReq) {
-  const { data } = await http.post(`/options/add-product`, req);
+  const { data } = await http.post(`/product/add-product`, req);
   return data;
 }
 
@@ -29,7 +30,7 @@ export async function addProductDataApi(req: ProductReq) {
  */
 
 // add product with category & company data
-// export async function getAllPartiesDataApi() {
-//   const { data } = await http.get(`/party/all`);
-//   return data;
-// }
+export async function getAllOptionsDataApi() {
+  const { data } = await http.get(`/identity/all-categories-options`);
+  return data;
+}

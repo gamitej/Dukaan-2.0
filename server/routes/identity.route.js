@@ -6,9 +6,9 @@ import {
 } from "../controller/identity.controller.js";
 
 // Add party name
-router.post("/add", addIdentityData);
+router.post("/add-company-category", addIdentityData);
 
 // All parties name
-router.get("/all", getAllIdentitiesData);
+router.get("/all-categories-options", getAllIdentitiesData);
 
 export default router;

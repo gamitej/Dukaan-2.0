@@ -17,14 +17,14 @@ export const addIdentityData = async (req, res) => {
           ),
           Sequelize.where(
             Sequelize.fn("LOWER", Sequelize.col("category")),
-            categoryLower.toLowerCase()
+            category.toLowerCase()
           ),
         ],
       },
     });
 
     if (existingIdentity) {
-      return res.status(200).json("Already exists!");
+      return res.status(409).json("Already exists!");
     }
 
     // Create new identity record
