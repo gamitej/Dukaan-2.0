@@ -1,5 +1,5 @@
-import Identity from "../models/identity.model.js";
 import { Op } from "sequelize";
+import Identity from "../models/identity.model.js";
 // database connection
 import Sequelize from "../database/connection.js";
 
