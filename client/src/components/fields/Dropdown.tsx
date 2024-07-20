@@ -7,19 +7,21 @@ type Options = { label: string; value: string | number };
 interface DropdownProps {
   id: string;
   label: string;
+  value: string;
   options: Options[];
-  value: Options | null;
+  isDisabled?: boolean;
   width?: number | string;
-  setInputChange: (e: React.SyntheticEvent<Element, Event>) => void;
+  setInputChange: (newValue: string) => void;
 }
 
 export default function Dropdown({
   id,
   options = [],
-  value = null,
+  value,
   width = 300,
   setInputChange,
   label = "label",
+  isDisabled = false,
 }: DropdownProps) {
   /**
    * TSX
@@ -28,10 +30,13 @@ export default function Dropdown({
     <div>
       <Autocomplete
         id={id}
-        value={value}
+        inputValue={value}
+        disabled={isDisabled}
+        onInputChange={(_event, newInputValue) => {
+          setInputChange(newInputValue);
+        }}
         sx={{ width }}
         options={options}
-        onInputChange={setInputChange}
         renderInput={(params) => <TextField {...params} label={label} />}
       />
     </div>

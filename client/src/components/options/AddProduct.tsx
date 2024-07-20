@@ -1,8 +1,42 @@
+import { ChangeEvent, FormEvent, useMemo, useState } from "react";
+//  components
 import Dropdown from "../fields/Dropdown";
 import InputField from "../fields/InputField";
-import { prod } from "./data";
+// custom hook
+import { useCompanyAndCategory } from "@/hooks/useCompanyAndCategory";
 
 const AddProduct = () => {
+  const [formData, setFormData] = useState({
+    company: "",
+    category: "",
+    product: "",
+  });
+
+  // Query to fetch all options data
+  const { categoryOptions = [], companyOptions = {} } = useCompanyAndCategory();
+
+  const selectedCategoryCompanyOptions = useMemo(() => {
+    if (formData.category.length > 0) {
+      if (formData.category in companyOptions) {
+        return companyOptions[formData.category];
+      }
+      return [];
+    }
+    return [];
+  }, [companyOptions, formData.category]);
+
+  // ===================== EVENT-HANDLER =======================
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    // mutateAddCompanyAndCategoryData(formData);
+  };
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, company: e.target.value });
+  };
+
   /**
    * TSX
    */
@@ -11,33 +45,41 @@ const AddProduct = () => {
       <div className="w-full flex gap-2">
         <Dropdown
           id="category"
-          value={null}
-          label="Category"
-          options={prod}
           width="19rem"
-          setInputChange={() => {}}
+          label="Category"
+          options={categoryOptions}
+          value={formData.category}
+          setInputChange={(value: string) => {
+            setFormData((prev) => ({ ...prev, category: value }));
+          }}
         />
 
         <Dropdown
           id="company"
-          value={null}
           label="Company"
-          options={prod}
           width="20.5rem"
-          setInputChange={() => {}}
+          isDisabled={formData.category.length === 0}
+          value={formData.company}
+          setInputChange={(value: string) => {
+            setFormData((prev) => ({ ...prev, company: value }));
+          }}
+          options={selectedCategoryCompanyOptions}
         />
       </div>
 
       <InputField
         id="product"
-        label="Product"
-        value={""}
         width="100%"
-        handleChange={() => {}}
+        label="Product"
+        value={formData.product}
+        handleChange={handleInputChange}
         placeholder="Enter product name..."
       />
 
-      <button className="bg-lightDark text-white py-3 hover:bg-slate-500 rounded-sm shadow-md">
+      <button
+        disabled={formData.product.length < 4 && formData.category.length < 4}
+        className=" disabled:bg-slate-300 bg-lightDark text-white py-3 hover:bg-slate-500 rounded-sm shadow-md"
+      >
         submit
       </button>
     </form>

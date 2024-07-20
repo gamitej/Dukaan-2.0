@@ -6,6 +6,7 @@ import InputField from "@/components/fields/InputField";
 // store
 import { usePartyStore } from "@/store/partyStore";
 import { getAddPartyNameDataApi } from "@/services/Party";
+import toast from "react-hot-toast";
 
 const AddPartyModel = () => {
   const queryClient = useQueryClient();
@@ -20,18 +21,16 @@ const AddPartyModel = () => {
     mutationFn: getAddPartyNameDataApi,
     onSuccess: () => {
       setReset();
-      // toast.success("Sales data added successfully", { duration: 1200 });
+      toast.success("Added successfully", { duration: 1200 });
       queryClient.invalidateQueries({
         queryKey: ["party", "name"],
       });
-      // setIsSalesAddApiLoading(false);
     },
     onError: (err: any) => {
-      const { message } = err.response.data;
-      // setIsSalesAddApiLoading(false);
-      // toast.error(message || "Error while adding sales data", {
-      //   duration: 1200,
-      // });
+      const message = err.response.data;
+      toast.error(message || "Error while adding sales data", {
+        duration: 1200,
+      });
     },
   });
 
