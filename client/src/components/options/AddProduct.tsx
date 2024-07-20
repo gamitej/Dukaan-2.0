@@ -5,7 +5,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Dropdown from "../fields/Dropdown";
 import InputField from "../fields/InputField";
 // custom hook
-import { useProduct } from "@/hooks/useProducts";
 import { useCompanyAndCategory } from "@/hooks/useCompanyAndCategory";
 // services
 import { addProductDataApi } from "@/services/Options";
@@ -18,10 +17,6 @@ const AddProduct = () => {
     category: "",
     product: "",
   });
-
-  console.log({ formData });
-
-  const { data } = useProduct();
 
   // Query to fetch all options data
   const { categoryOptions = [], companyOptions = {} } = useCompanyAndCategory();

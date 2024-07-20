@@ -1,10 +1,10 @@
 import CommonTable from "@/components/table/CommonTable";
 import PurchaseModal from "../(components)/PurchaseModal";
 // store
-import { usePartyDetailsStore } from "@/store/partyDetailsStore";
+import { usePurchaseStore } from "@/store/purchaseStore";
 
 const PurchaseTable = () => {
-  const { setIsModelOpen } = usePartyDetailsStore();
+  const { setIsModelOpen } = usePurchaseStore();
 
   /**
    * TSX

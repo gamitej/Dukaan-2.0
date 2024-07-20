@@ -26,11 +26,11 @@ export default function Dropdown({
    * TSX
    */
   return (
-    <div>
+    <div style={{ width }}>
       <Autocomplete
         id={id}
+        sx={{ width: "100%" }}
         value={options.find((option) => option.value === value) || null}
-        sx={{ width }}
         options={options}
         getOptionLabel={(option) => option.label}
         isOptionEqualToValue={(option, value) => option.value === value.value}
