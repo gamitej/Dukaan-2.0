@@ -7,7 +7,7 @@ import Product from "./product.model.js";
 import PendingPayment from "./pendingPayment.model.js";
 
 const Purchase = sequelize.define("Purchase", {
-  id: {
+  purchase_id: {
     type: DataTypes.STRING,
     primaryKey: true,
     defaultValue: () => generateUUID(),
@@ -32,12 +32,12 @@ const Purchase = sequelize.define("Purchase", {
       key: "product_id",
     },
   },
-  purchase_id: {
+  order_id: {
     type: DataTypes.STRING,
     allowNull: false,
     references: {
       model: PendingPayment,
-      key: "purchase_id",
+      key: "order_id",
     },
   },
   quantity: {
@@ -71,8 +71,8 @@ Product.hasMany(Purchase, { foreignKey: "product_id" });
 
 Purchase.belongsTo(Product, { foreignKey: "product_id" });
 
-Purchase.hasMany(PendingPayment, { foreignKey: "purchase_id" });
+Purchase.hasMany(PendingPayment, { foreignKey: "order_id" });
 
-PendingPayment.belongsTo(Purchase, { foreignKey: "purchase_id" });
+PendingPayment.belongsTo(Purchase, { foreignKey: "order_id" });
 
 export default Purchase;
