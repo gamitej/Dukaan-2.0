@@ -2,6 +2,7 @@ import { ChangeEvent, FC } from "react";
 // components
 import Dropdown from "../fields/Dropdown";
 import InputField from "../fields/InputField";
+import BasicDatePicker from "../fields/BasicDatePicker";
 // store
 import { FormDataPurchase, usePurchaseStore } from "@/store/purchaseStore";
 
@@ -29,7 +30,6 @@ const AddProductDetailsForm: FC<AddProductDetailsFormProps> = ({
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-
     setFormData(name, value);
   };
 
@@ -38,6 +38,9 @@ const AddProductDetailsForm: FC<AddProductDetailsFormProps> = ({
    */
   return (
     <form className="flex flex-col gap-6 mt-2">
+      <div className="w-[30%]">
+        <BasicDatePicker setDateChange={() => {}} value={null} />
+      </div>
       <div className="flex justify-between gap-2">
         {formDropdownFieldsData?.map((field, idx) => (
           <Dropdown
