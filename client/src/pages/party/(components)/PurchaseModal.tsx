@@ -1,16 +1,13 @@
-import { ChangeEvent } from "react";
 // components
-import Dropdown from "@/components/fields/Dropdown";
-import InputField from "@/components/fields/InputField";
 import BasicModal from "@/components/model/BasicModel";
 // hooks
 import { useProduct } from "@/hooks/useProducts";
 // store
-import { FormDataPurchase, usePurchaseStore } from "@/store/purchaseStore";
+import { usePurchaseStore } from "@/store/purchaseStore";
+import AddProductDetailsForm from "@/components/common/AddProductDetailsForm";
 
 const PurchaseModal = () => {
-  const { isModelOpen, setIsModelOpen, formData, setFormData } =
-    usePurchaseStore();
+  const { isModelOpen, setIsModelOpen, formData } = usePurchaseStore();
 
   const {
     categoryOptions = [],
@@ -66,72 +63,22 @@ const PurchaseModal = () => {
     },
   ];
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-
-    setFormData(name, value);
-  };
-
   /**
    * TSX
    */
   return (
     <div>
       <BasicModal
-        modalHeight="fitContent"
         modalWidth="45rem"
-        title="Add Purchase Record"
         isOpen={isModelOpen}
+        modalHeight="fitContent"
         onClose={setIsModelOpen}
+        title="Add Purchase Record"
       >
-        <form className="flex flex-col gap-6 mt-2">
-          <div className="flex justify-between gap-2">
-            {formDropdownFieldsData.map((field, idx) => (
-              <Dropdown
-                key={idx}
-                id={field.id}
-                width={field.width}
-                label={field.label}
-                value={formData[field.id as keyof FormDataPurchase]}
-                options={field.options}
-                setInputChange={(value: string) => {
-                  setFormData(field.id, value);
-                }}
-              />
-            ))}
-          </div>
-          <div className="flex justify-between gap-2">
-            {formInputFieldsData.map((field, idx) => (
-              <div key={idx} style={{ width: field.width }}>
-                {field.type === "input" ? (
-                  <InputField
-                    id={field.id}
-                    width={"100%"}
-                    label={field.label}
-                    value={formData[field.id as keyof FormDataPurchase]}
-                    handleChange={handleInputChange}
-                    placeholder={field.placeholder ? field.placeholder : ""}
-                  />
-                ) : (
-                  <Dropdown
-                    id={field.id}
-                    width={"100%"}
-                    label={field.label}
-                    options={field.options ? field.options : []}
-                    value={formData[field.id as keyof FormDataPurchase]}
-                    setInputChange={(value: string) => {
-                      setFormData(field.id, value);
-                    }}
-                  />
-                )}
-              </div>
-            ))}
-          </div>
-
-          <button className="bg-mediumDark text-white py-3 rounded-sm shadow-md">
-            submit
-          </button>
-        </form>
+        <AddProductDetailsForm
+          formInputFieldsData={formInputFieldsData}
+          formDropdownFieldsData={formDropdownFieldsData}
+        />
       </BasicModal>
     </div>
   );
