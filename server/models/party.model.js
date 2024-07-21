@@ -12,9 +12,12 @@ const Party = sequelize.define("Party", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  pending_payment: {
-    type: DataTypes.FLOAT,
-    defaultValue: 0.0,
+  shop_name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  contact: {
+    type: DataTypes.STRING,
     allowNull: false,
   },
 });

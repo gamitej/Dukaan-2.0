@@ -4,9 +4,10 @@ import generateUUID from "../utils/uuidGenerator.js";
 // models
 import Party from "./party.model.js";
 import Product from "./product.model.js";
+import PendingPayment from "./pendingPayment.model.js";
 
 const Purchase = sequelize.define("Purchase", {
-  purchase_id: {
+  id: {
     type: DataTypes.STRING,
     primaryKey: true,
     defaultValue: () => generateUUID(),
@@ -29,6 +30,14 @@ const Purchase = sequelize.define("Purchase", {
     references: {
       model: Product,
       key: "product_id",
+    },
+  },
+  purchase_id: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    references: {
+      model: PendingPayment,
+      key: "purchase_id",
     },
   },
   quantity: {
@@ -61,5 +70,9 @@ Purchase.belongsTo(Party, {
 Product.hasMany(Purchase, { foreignKey: "product_id" });
 
 Purchase.belongsTo(Product, { foreignKey: "product_id" });
+
+Purchase.hasMany(PendingPayment, { foreignKey: "purchase_id" });
+
+PendingPayment.belongsTo(Purchase, { foreignKey: "purchase_id" });
 
 export default Purchase;
