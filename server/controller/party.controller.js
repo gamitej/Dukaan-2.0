@@ -9,8 +9,10 @@ export const getAllParties = async (req, res) => {
       return {
         id: item.party_id,
         name: item.party_name,
+        shopName: item.shop_name,
+        contact: item.contact,
         label: "Pending Payment -",
-        value: `Rs ${item.pending_payment}`,
+        value: `Rs 0`,
       };
     });
 
@@ -22,9 +24,9 @@ export const getAllParties = async (req, res) => {
 
 export const addParty = async (req, res) => {
   try {
-    const { name } = req.body;
+    const requestData = req.body;
 
-    const newParty = await Party.create({ party_name: name });
+    const newParty = await Party.create(requestData);
 
     if (newParty) return res.status(200).json("Added new party!");
 

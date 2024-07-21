@@ -2,9 +2,8 @@ import { FC } from "react";
 
 type CardDataType = {
   name: string;
-  label: string;
+  shopName?: string;
   id?: string | number;
-  value: string | number;
 };
 
 interface ItemCardProps {
@@ -47,11 +46,7 @@ const ItemCard: FC<ItemCardProps> = ({
         >
           <div className="flex flex-col gap-3">
             <div className="text-blue-400 text-2xl capitalize">
-              {item?.name}
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="text-xl">{item?.label} </div>
-              <div className="text-lg">{item?.value}</div>
+              {item.shopName ? item.shopName : item?.name}
             </div>
           </div>
         </div>

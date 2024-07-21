@@ -19,7 +19,7 @@ const Router = () => {
       element: <PartiesPage />,
     },
     {
-      path: "/parties/:id/:name",
+      path: "/parties/:id",
       element: <PartyDetailsPage />,
     },
     {
