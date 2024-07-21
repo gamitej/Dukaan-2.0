@@ -11,8 +11,14 @@ import toast from "react-hot-toast";
 const AddPartyModel = () => {
   const queryClient = useQueryClient();
 
-  const { setReset, isModelOpen, submitBtnEnable, partyName, setPartyName } =
-    usePartyStore();
+  const {
+    setReset,
+    isModelOpen,
+    isFormDataValid,
+    validateFormData,
+    formData,
+    setFormData,
+  } = usePartyStore();
 
   // =================== API CALL'S START ======================
 
@@ -37,13 +43,19 @@ const AddPartyModel = () => {
   // ===================== EVENT_HANDLER ======================
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setPartyName(e.target.value);
+    const { name, value } = e.target;
+
+    setFormData(name, value);
+    validateFormData();
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // setReset();
-    mutateAddPartNameData({ name: partyName });
+
+    const { name, shop, contact } = formData;
+
+    mutateAddPartNameData({ party_name: name, shop_name: shop, contact });
   };
 
   /**
@@ -52,27 +64,43 @@ const AddPartyModel = () => {
   return (
     <BasicModal
       title="Add Party"
-      modalHeight="15vh"
-      modalWidth="40vw"
+      modalHeight="heightFit"
+      modalWidth="30rem"
       isOpen={isModelOpen}
       onClose={setReset}
     >
-      <form
-        onSubmit={handleSubmit}
-        className="flex justify-center items-center gap-4"
-      >
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <InputField
-          width="40vw"
-          label="Party"
-          id="add-party"
-          value={partyName}
+          width="100%"
+          label="Party Name"
+          id="name"
+          value={formData.name}
           handleChange={handleInputChange}
           placeholder="Enter party name..."
         />
+
+        <InputField
+          width="100%"
+          label="Shop Name"
+          id="shop"
+          value={formData.shop}
+          handleChange={handleInputChange}
+          placeholder="Enter shop name..."
+        />
+        <InputField
+          type="number"
+          width="100%"
+          label="Contact"
+          id="contact"
+          value={formData.contact}
+          handleChange={handleInputChange}
+          placeholder="Enter contact number..."
+        />
+
         <button
           type="submit"
-          disabled={!submitBtnEnable}
-          className="disabled:bg-slate-300 bg-mediumDark px-4 py-4 shadow-md rounded-sm text-white hover:bg-slate-600"
+          disabled={!isFormDataValid}
+          className="disabled:bg-slate-300 bg-mediumDark px-4 py-2 shadow-md rounded-sm text-white hover:bg-slate-600"
         >
           Submit
         </button>

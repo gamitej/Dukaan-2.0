@@ -1,6 +1,6 @@
 import http from "../httpService";
 
-type Request = { name: string };
+type Request = { shop_name: string; party_name: string; contact: number };
 
 export async function getAddPartyNameDataApi(req: Request) {
   const { data } = await http.post(`/party/add-name`, req);

@@ -4,35 +4,49 @@ interface PartyState {
   isModelOpen: boolean;
   setIsModelOpen: () => void;
 
-  submitBtnEnable: boolean;
+  isFormDataValid: boolean;
+  validateFormData: () => void;
 
-  partyName: string;
-  setPartyName: (name: string) => void;
+  formData: { name: string; contact: number; shop: string };
+  setFormData: (name: string, value: string | number) => void;
 
   setReset: () => void;
 }
 
 export const usePartyStore = create<PartyState>((set) => ({
-  submitBtnEnable: false,
-
   isModelOpen: false,
   setIsModelOpen: () => {
     set((state) => ({ ...state, isModelOpen: !state.isModelOpen }));
   },
 
-  partyName: "",
-  setPartyName: (name) => {
-    const enableBtn = name?.length > 6;
+  isFormDataValid: false,
+  validateFormData: () => {
+    set((state) => {
+      const { name, contact, shop } = state.formData;
+      const isValid =
+        name.trim() !== "" &&
+        shop.trim() !== "" &&
+        contact.toString().length === 10;
+      return { isFormDataValid: isValid };
+    });
+  },
 
-    set((state) => ({ ...state, partyName: name, submitBtnEnable: enableBtn }));
+  formData: { name: "", contact: 0, shop: "" },
+  setFormData: (name, value) => {
+    set((state) => {
+      const updatedFormData = { ...state.formData, [name]: value };
+      return {
+        formData: updatedFormData,
+        isFormDataValid: name === "contact" || state.isFormDataValid,
+      };
+    });
   },
 
   setReset: () => {
-    set((state) => ({
-      ...state,
+    set({
       isModelOpen: false,
-      partyName: "",
-      submitBtnEnable: false,
-    }));
+      formData: { name: "", contact: 0, shop: "" },
+      isFormDataValid: false,
+    });
   },
 }));

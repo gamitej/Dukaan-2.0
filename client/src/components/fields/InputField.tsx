@@ -37,7 +37,6 @@ export default function InputField({
       name={id}
       type={type}
       size={size}
-      value={value}
       label={label}
       sx={{ width }}
       error={isError}
@@ -45,6 +44,7 @@ export default function InputField({
       variant={variant}
       onChange={handleChange}
       placeholder={placeholder}
+      value={type === "number" && value === 0 ? "" : value}
     />
   );
 }
