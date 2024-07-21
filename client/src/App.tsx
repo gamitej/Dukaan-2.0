@@ -5,6 +5,7 @@ import Options from "@/components/options";
 import Navbar from "@/components/header/navbar";
 // routes
 import Router from "./routes/Router";
+import FullScreenLoader from "./components/common/FullScreenLoader";
 
 function App() {
   /**
@@ -19,7 +20,7 @@ function App() {
       {/* main */}
       <div className="px-6 w-full flex gap-6">
         {/* routes */}
-        <Suspense fallback={<div>loading</div>}>
+        <Suspense fallback={<FullScreenLoader />}>
           <Router />
         </Suspense>
       </div>

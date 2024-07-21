@@ -18,8 +18,6 @@ const PurchaseModal = () => {
     productOptions = {},
   } = useProduct();
 
-  console.log({ formData, companyOptions });
-
   const formDropdownFieldsData = [
     {
       id: "category",
