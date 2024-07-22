@@ -56,10 +56,10 @@ const PurchaseModal = () => {
     },
     {
       id: "weight",
-      options: [],
+      type: "input",
       width: "20%",
       label: "Weight",
-      type: "dropdown",
+      placeholder: "enter weight...",
     },
   ];
 
