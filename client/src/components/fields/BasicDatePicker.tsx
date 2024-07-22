@@ -2,6 +2,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import dayjs from "dayjs";
 
 interface BasicDatePickerProps {
   value: any;
@@ -16,6 +17,14 @@ export default function BasicDatePicker({
   label = "Date",
   width = "100%",
 }: BasicDatePickerProps) {
+  const handleDateChange = (newDate: dayjs.Dayjs | null) => {
+    if (newDate) {
+      setDateChange(newDate.format("DD-MM-YYYY"));
+    } else {
+      setDateChange(null);
+    }
+  };
+
   /**
    * TSX
    */
@@ -24,9 +33,10 @@ export default function BasicDatePicker({
       <DemoContainer components={["DatePicker"]}>
         <div style={{ marginTop: "-0.5rem", width: width }}>
           <DatePicker
-            value={value}
+            format="DD-MMM-YY"
+            value={dayjs(value)}
             label={label}
-            onChange={(newValue) => setDateChange(newValue)}
+            onChange={(newValue) => handleDateChange(newValue)}
           />
         </div>
       </DemoContainer>

@@ -1,4 +1,4 @@
-import { ChangeEvent, FC } from "react";
+import { ChangeEvent, FC, FormEvent } from "react";
 // components
 import CheckBox from "../fields/CheckBox";
 import Dropdown from "../fields/Dropdown";
@@ -13,20 +13,31 @@ const AddProductDetailsForm: FC<AddProductDetailsFormProps> = ({
   formDropdownFieldsData = [],
   formInputFieldsData = [],
 }) => {
-  const { formData, setFormData, setIsChecked, isChecked } = usePurchaseStore();
+  const { formData, setFormData, setIsChecked, isChecked, isFormValid } =
+    usePurchaseStore();
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(name, value);
   };
 
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    console.log({ formData });
+  };
+
   /**
    * TSX
    */
   return (
-    <form className="flex flex-col gap-6 mt-2">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-6 mt-2">
       <div className="w-full flex gap-2">
-        <BasicDatePicker width="100%" setDateChange={() => {}} value={null} />
+        <BasicDatePicker
+          width="100%"
+          value={formData.date}
+          setDateChange={(value) => setFormData("date", value)}
+        />
 
         {enableOrder && (
           <div className="flex  gap-2">
@@ -44,7 +55,7 @@ const AddProductDetailsForm: FC<AddProductDetailsFormProps> = ({
               width="30%"
               isChecked={isChecked}
               setChecked={setIsChecked}
-              label="New order"
+              label="add orderId"
             />
           </div>
         )}
@@ -94,7 +105,7 @@ const AddProductDetailsForm: FC<AddProductDetailsFormProps> = ({
 
       <button
         type="submit"
-        className="bg-mediumDark text-white py-3 rounded-sm shadow-md"
+        className="disabled:bg-slate-300 bg-mediumDark text-white py-3 rounded-sm shadow-md"
       >
         submit
       </button>

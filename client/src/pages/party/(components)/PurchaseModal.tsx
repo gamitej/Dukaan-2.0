@@ -76,6 +76,7 @@ const PurchaseModal = () => {
         title="Add Purchase Record"
       >
         <AddProductDetailsForm
+          enableOrder
           formInputFieldsData={formInputFieldsData}
           formDropdownFieldsData={formDropdownFieldsData}
         />

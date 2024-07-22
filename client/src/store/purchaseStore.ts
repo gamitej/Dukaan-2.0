@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { create } from "zustand";
 
 export type FormDataPurchase = {
@@ -8,6 +9,7 @@ export type FormDataPurchase = {
   quantity: string;
   weight: string;
   orderId: string;
+  date: string;
 };
 
 interface PurchaseState {
@@ -19,9 +21,11 @@ interface PurchaseState {
 
   formData: FormDataPurchase;
   setFormData: (name: string, value: string | number) => void;
+
+  isFormValid: () => boolean;
 }
 
-export const usePurchaseStore = create<PurchaseState>((set) => ({
+export const usePurchaseStore = create<PurchaseState>((set, get) => ({
   isChecked: false,
   setIsChecked: () => {
     set((state) => ({ ...state, isChecked: !state.isChecked }));
@@ -40,9 +44,18 @@ export const usePurchaseStore = create<PurchaseState>((set) => ({
     quantity: "",
     weight: "",
     orderId: "",
+    date: dayjs().format("YYYY-MM-DD"),
   },
   setFormData: (key, value) =>
     set((state) => ({
       formData: { ...state.formData, [key]: value },
     })),
+
+  isFormValid: () => {
+    const { formData, isChecked } = get();
+    const fieldsFilled = Object.values(formData).every(
+      (value) => value?.trim() !== ""
+    );
+    return fieldsFilled && (!isChecked || formData.orderId.trim() !== "");
+  },
 }));
