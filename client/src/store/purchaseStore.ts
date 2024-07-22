@@ -7,9 +7,13 @@ export type FormDataPurchase = {
   price: string;
   quantity: string;
   weight: string;
+  orderId: string;
 };
 
 interface PurchaseState {
+  isChecked: boolean;
+  setIsChecked: () => void;
+
   isModelOpen: boolean;
   setIsModelOpen: () => void;
 
@@ -18,6 +22,11 @@ interface PurchaseState {
 }
 
 export const usePurchaseStore = create<PurchaseState>((set) => ({
+  isChecked: false,
+  setIsChecked: () => {
+    set((state) => ({ ...state, isChecked: !state.isChecked }));
+  },
+
   isModelOpen: false,
   setIsModelOpen: () => {
     set((state) => ({ ...state, isModelOpen: !state.isModelOpen }));
@@ -30,6 +39,7 @@ export const usePurchaseStore = create<PurchaseState>((set) => ({
     price: "",
     quantity: "",
     weight: "",
+    orderId: "",
   },
   setFormData: (key, value) =>
     set((state) => ({

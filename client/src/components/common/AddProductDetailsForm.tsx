@@ -1,32 +1,19 @@
 import { ChangeEvent, FC } from "react";
 // components
+import CheckBox from "../fields/CheckBox";
 import Dropdown from "../fields/Dropdown";
 import InputField from "../fields/InputField";
 import BasicDatePicker from "../fields/BasicDatePicker";
 // store
+import { AddProductDetailsFormProps } from "./type";
 import { FormDataPurchase, usePurchaseStore } from "@/store/purchaseStore";
 
-type Options = { label: string; value: string };
-
-type Fields = {
-  id: string;
-  label: string;
-  width: string;
-  type?: string;
-  options?: Options[];
-  placeholder?: string;
-};
-
-interface AddProductDetailsFormProps {
-  formInputFieldsData: Fields[];
-  formDropdownFieldsData: Fields[];
-}
-
 const AddProductDetailsForm: FC<AddProductDetailsFormProps> = ({
+  enableOrder = false,
   formDropdownFieldsData = [],
   formInputFieldsData = [],
 }) => {
-  const { formData, setFormData } = usePurchaseStore();
+  const { formData, setFormData, setIsChecked, isChecked } = usePurchaseStore();
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -38,8 +25,29 @@ const AddProductDetailsForm: FC<AddProductDetailsFormProps> = ({
    */
   return (
     <form className="flex flex-col gap-6 mt-2">
-      <div className="w-[30%]">
-        <BasicDatePicker setDateChange={() => {}} value={null} />
+      <div className="w-full flex gap-2">
+        <BasicDatePicker width="100%" setDateChange={() => {}} value={null} />
+
+        {enableOrder && (
+          <div className="flex  gap-2">
+            {isChecked && (
+              <InputField
+                id={"orderId"}
+                width={"100%"}
+                label={"Order ID"}
+                value={formData.orderId}
+                handleChange={handleInputChange}
+                placeholder={"enter order ID"}
+              />
+            )}
+            <CheckBox
+              width="30%"
+              isChecked={isChecked}
+              setChecked={setIsChecked}
+              label="New order"
+            />
+          </div>
+        )}
       </div>
       <div className="flex justify-between gap-2">
         {formDropdownFieldsData?.map((field, idx) => (
