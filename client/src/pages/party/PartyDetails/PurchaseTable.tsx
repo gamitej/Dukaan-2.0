@@ -2,16 +2,30 @@ import CommonTable from "@/components/table/CommonTable";
 import PurchaseModal from "../(components)/PurchaseModal";
 // store
 import { usePurchaseStore } from "@/store/purchaseStore";
+import { useQuery } from "@tanstack/react-query";
+import { getPartyWisePuchaseDataApi } from "@/services/Purchase";
 
-const PurchaseTable = () => {
+const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
   const { setIsModelOpen } = usePurchaseStore();
+
+  /**
+   * ========================= API CALL ===========================
+   */
+
+  // Query to fetch party purchase data
+  const { data: partyPurchaseData = {} } = useQuery({
+    queryKey: ["purchase-add-data", partyId],
+    queryFn: () => getPartyWisePuchaseDataApi(partyId),
+  });
+
+  console.log({ partyPurchaseData });
 
   /**
    * TSX
    */
   return (
     <div>
-      <PurchaseModal />
+      <PurchaseModal partyId={partyId} />
       <CommonTable
         topToolbarComp={
           <div>

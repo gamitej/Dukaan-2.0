@@ -18,7 +18,7 @@ export const ProductExistsByCategory = async ({
 }) => {
   try {
     const existingProduct = await Product.findOne({
-      attributes: ["id"],
+      attributes: ["product_id"],
       where: {
         [Op.and]: [
           Sequelize.where(
@@ -38,7 +38,8 @@ export const ProductExistsByCategory = async ({
     });
 
     if (existingProduct) {
-      return { isError: false, prod_id: existingProduct.id };
+      const { product_id } = existingProduct.toJSON();
+      return { isError: false, prod_id: product_id };
     }
 
     return { isError: false, prod_id: null };
@@ -62,23 +63,18 @@ export const addProductDetails = async (req, res) => {
     }
 
     // Create new product record
-    const newProduct = await Product.create(
-      {
-        company: company,
-        category: category,
-        product: product,
-      },
-      { transaction }
-    );
+    const newProduct = await Product.create({
+      company: company,
+      category: category,
+      product: product,
+    });
 
-    await transaction.commit();
     if (newProduct) {
       return res.status(200).json("Added new products!");
     }
 
     return res.status(400).json("Something went wrong!");
   } catch (error) {
-    await transaction.rollback();
     return res.status(500).json(error.message || error);
   }
 };

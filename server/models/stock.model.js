@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
-import sequelize from "../database/connection.js";
 import Product from "./product.model.js";
+import sequelize from "../database/connection.js";
+import generateUUID from "../utils/uuidGenerator.js";
 
 const Stock = sequelize.define("Stock", {
   id: {

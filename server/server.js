@@ -12,10 +12,11 @@ import Sales from "./models/sales.model.js";
 import Identity from "./models/identity.model.js";
 import PendingPayment from "./models/pendingPayment.model.js";
 import Return from "./models/return.model.js";
-
+// routes
 import PartyRoute from "./routes/party.route.js";
 import ProductRoute from "./routes/product.route.js";
 import IdentityRoute from "./routes/identity.route.js";
+import PurchaseRoute from "./routes/purchase.route.js";
 
 const PORT = 3001;
 const app = express();
@@ -36,6 +37,7 @@ syncDatabase();
 app.use("/api/party", PartyRoute);
 app.use("/api/identity", IdentityRoute);
 app.use("/api/product", ProductRoute);
+app.use("/api/purchase", PurchaseRoute);
 
 app.listen(PORT, () => {
   console.log(`listening on port http://localhost:${PORT}`);

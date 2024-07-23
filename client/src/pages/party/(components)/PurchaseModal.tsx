@@ -1,21 +1,48 @@
+import { FormEvent } from "react";
+import toast from "react-hot-toast";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+// service
+import { addPurchaseDataApi } from "@/services/Purchase";
 // components
+import { Fields } from "@/components/common/type";
 import BasicModal from "@/components/model/BasicModel";
+import AddProductDetailsForm from "@/components/common/AddProductDetailsForm";
 // hooks
 import { useProduct } from "@/hooks/useProducts";
 // store
 import { usePurchaseStore } from "@/store/purchaseStore";
-import AddProductDetailsForm from "@/components/common/AddProductDetailsForm";
-import { Fields } from "@/components/common/type";
-import { FormEvent } from "react";
 
-const PurchaseModal = () => {
-  const { isModelOpen, setIsModelOpen, formData } = usePurchaseStore();
+const PurchaseModal = ({ partyId }: { partyId: string }) => {
+  const queryClient = useQueryClient();
+
+  const { isModelOpen, setIsModelOpen, formData, setResetFormData } =
+    usePurchaseStore();
 
   const {
     categoryOptions = [],
     companyOptions = {},
     productOptions = {},
   } = useProduct();
+
+  // =================== API CALL'S START ======================
+
+  // Mutation to add party name
+  const { mutate: mutateAddPurchaseData } = useMutation({
+    mutationFn: addPurchaseDataApi,
+    onSuccess: () => {
+      setResetFormData();
+      toast.success("Added successfully", { duration: 1200 });
+      queryClient.invalidateQueries({
+        queryKey: ["purchase-add-data", partyId],
+      });
+    },
+    onError: (err: any) => {
+      const message = err.response.data;
+      toast.error(message || "Error while adding sales data", {
+        duration: 1200,
+      });
+    },
+  });
 
   const formDropdownFieldsData: Fields[] = [
     {
@@ -68,8 +95,10 @@ const PurchaseModal = () => {
     },
   ];
 
+  // addPurchaseDataApi
   const handleSubmitForm = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    mutateAddPurchaseData({ ...formData, party_id: partyId });
   };
 
   /**

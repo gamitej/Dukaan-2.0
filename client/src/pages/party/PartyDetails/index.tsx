@@ -11,7 +11,7 @@ const tabsData = [
   {
     label: "Purchase Record",
     value: "Purchase Record",
-    content: <PurchaseTable />,
+    content: PurchaseTable,
   },
   {
     label: "Payment Record",
@@ -26,13 +26,22 @@ const tabsData = [
 ];
 
 const PartyDetails = () => {
-  const { id } = useParams();
+  const { id: partyId } = useParams();
 
-  const { data = [], isLoading } = usePartyDetails();
+  const { data: partiesData = [], isLoading } = usePartyDetails();
 
   const partyDetails = useMemo(() => {
-    return data?.find((item) => item.id === id) || ({} as PartyDetailsReponse);
-  }, [data]);
+    return (
+      partiesData?.find((item) => item.id === partyId) ||
+      ({} as PartyDetailsReponse)
+    );
+  }, [partiesData]);
+
+  const data = { partyId: partyId };
+
+  /**
+   * ======================= LOADING & ERROR =====================
+   */
 
   if (isLoading) {
     return (
@@ -80,7 +89,7 @@ const PartyDetails = () => {
         </div>
       </div>
       <div className="mt-8">
-        <BasicTab tabData={tabsData} />
+        <BasicTab tabData={tabsData} data={data} />
       </div>
     </div>
   );

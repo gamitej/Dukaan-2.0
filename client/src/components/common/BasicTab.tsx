@@ -6,9 +6,10 @@ import TabContext from "@mui/lab/TabContext";
 
 interface BasicTabProps {
   tabData: { value: string; label: string; content: any }[];
+  data: any;
 }
 
-export default function BasicTab({ tabData = [] }: BasicTabProps) {
+export default function BasicTab({ tabData = [], data = {} }: BasicTabProps) {
   const [value, setValue] = React.useState(() => {
     if (tabData.length > 0) return tabData[0].value;
 
@@ -30,9 +31,13 @@ export default function BasicTab({ tabData = [] }: BasicTabProps) {
             <Tab key={idx} label={item?.label} value={item?.value} />
           ))}
         </TabList>
-        {tabData.map((item, idx) => (
-          <TabPanel key={idx} value={item?.label}>
-            {item?.content}
+        {tabData.map(({ label, content: ContentComponent }, idx) => (
+          <TabPanel key={idx} value={label}>
+            {typeof ContentComponent === "function" ? (
+              <ContentComponent {...data} />
+            ) : (
+              ContentComponent
+            )}
           </TabPanel>
         ))}
       </TabContext>

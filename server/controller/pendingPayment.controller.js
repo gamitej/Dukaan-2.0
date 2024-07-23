@@ -4,7 +4,7 @@ import PendingPayment from "../models/pendingPayment.model.js";
 export async function PurchaseToPendingPayment(req, transaction) {
   // const transaction = await sequelize.transaction();
   try {
-    const { order_id, party_id, price } = req;
+    const { order_id = "", party_id, price } = req;
 
     // Check if the order already exists
     const existingPayment = await PendingPayment.findOne({
@@ -16,22 +16,19 @@ export async function PurchaseToPendingPayment(req, transaction) {
       // Update the existing order's total_amount
       existingPayment.total_amount += price;
       await existingPayment.save({ transaction });
+      return { data: order_id, isError: false };
     } else {
       // Create a new PendingPayment entry
-      await PendingPayment.create(
+      const data = await PendingPayment.create(
         {
-          order_id,
           party_id,
           total_amount: price,
         },
         { transaction }
       );
+      return { data: data.order_id, isError: false };
     }
-
-    // await transaction.commit();
-    return { data: order_id, isError: false };
   } catch (error) {
-    // await transaction.rollback();
     return { data: error, isError: true };
   }
 }
