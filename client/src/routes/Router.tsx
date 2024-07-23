@@ -3,10 +3,11 @@ import { useRoutes } from "react-router-dom";
 
 // lazy
 const Home = lazy(() => import("@/pages/home"));
-const PartyDetailsPage = lazy(() => import("@/pages/party/PartyDetails"));
+const SalesPage = lazy(() => import("@/pages/sales"));
 const PartiesPage = lazy(() => import("@/pages/party"));
-const StockDetailsPage = lazy(() => import("@/pages/stocks/StockDetails"));
 const StocksPage = lazy(() => import("@/pages/stocks"));
+const PartyDetailsPage = lazy(() => import("@/pages/party/PartyDetails"));
+const StockDetailsPage = lazy(() => import("@/pages/stocks/StockDetails"));
 
 const Router = () => {
   const route = useRoutes([
@@ -17,6 +18,10 @@ const Router = () => {
     {
       path: "/parties",
       element: <PartiesPage />,
+    },
+    {
+      path: "/sales",
+      element: <SalesPage />,
     },
     {
       path: "/parties/:id",
