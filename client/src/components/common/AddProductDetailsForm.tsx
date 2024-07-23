@@ -13,12 +13,19 @@ const AddProductDetailsForm: FC<AddProductDetailsFormProps> = ({
   formDropdownFieldsData = [],
   formInputFieldsData = [],
 }) => {
-  const { formData, setFormData, setIsChecked, isChecked, isFormValid } =
-    usePurchaseStore();
+  const {
+    formData,
+    setFormData,
+    setIsChecked,
+    isChecked,
+    setIsFormValid,
+    isFormValid,
+  } = usePurchaseStore();
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(name, value);
+    setIsFormValid();
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -67,7 +74,7 @@ const AddProductDetailsForm: FC<AddProductDetailsFormProps> = ({
             id={field.id}
             width={field.width}
             label={field.label}
-            value={formData[field.id as keyof FormDataPurchase]}
+            value={formData[field.id as keyof FormDataPurchase].toString()}
             options={field.options ? field.options : []}
             setInputChange={(value: string) => {
               setFormData(field.id, value);
@@ -83,6 +90,7 @@ const AddProductDetailsForm: FC<AddProductDetailsFormProps> = ({
                 id={field.id}
                 width={"100%"}
                 label={field.label}
+                type={field.inputField}
                 value={formData[field.id as keyof FormDataPurchase]}
                 handleChange={handleInputChange}
                 placeholder={field.placeholder ? field.placeholder : ""}
@@ -93,7 +101,7 @@ const AddProductDetailsForm: FC<AddProductDetailsFormProps> = ({
                 width={"100%"}
                 label={field.label}
                 options={field.options ? field.options : []}
-                value={formData[field.id as keyof FormDataPurchase]}
+                value={formData[field.id as keyof FormDataPurchase].toString()}
                 setInputChange={(value: string) => {
                   setFormData(field.id, value);
                 }}
@@ -105,6 +113,7 @@ const AddProductDetailsForm: FC<AddProductDetailsFormProps> = ({
 
       <button
         type="submit"
+        disabled={!isFormValid}
         className="disabled:bg-slate-300 bg-mediumDark text-white py-3 rounded-sm shadow-md"
       >
         submit

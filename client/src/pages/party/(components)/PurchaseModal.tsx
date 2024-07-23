@@ -5,6 +5,7 @@ import { useProduct } from "@/hooks/useProducts";
 // store
 import { usePurchaseStore } from "@/store/purchaseStore";
 import AddProductDetailsForm from "@/components/common/AddProductDetailsForm";
+import { Fields } from "@/components/common/type";
 
 const PurchaseModal = () => {
   const { isModelOpen, setIsModelOpen, formData } = usePurchaseStore();
@@ -15,7 +16,7 @@ const PurchaseModal = () => {
     productOptions = {},
   } = useProduct();
 
-  const formDropdownFieldsData = [
+  const formDropdownFieldsData: Fields[] = [
     {
       id: "category",
       width: "100%",
@@ -39,11 +40,12 @@ const PurchaseModal = () => {
     },
   ];
 
-  const formInputFieldsData = [
+  const formInputFieldsData: Fields[] = [
     {
       id: "price",
       label: "Price",
       width: "60%",
+      inputField: "number",
       type: "input",
       placeholder: "enter price...",
     },
@@ -51,6 +53,7 @@ const PurchaseModal = () => {
       width: "20%",
       type: "input",
       id: "quantity",
+      inputField: "number",
       label: "Quantity",
       placeholder: "enter quantity...",
     },
@@ -59,6 +62,7 @@ const PurchaseModal = () => {
       type: "input",
       width: "20%",
       label: "Weight",
+      inputField: "text",
       placeholder: "enter weight...",
     },
   ];

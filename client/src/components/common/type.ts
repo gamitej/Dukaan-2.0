@@ -7,6 +7,7 @@ export type Fields = {
   type?: string;
   options?: Options[];
   placeholder?: string;
+  inputField?: "text" | "number" | undefined;
 };
 
 export interface AddProductDetailsFormProps {

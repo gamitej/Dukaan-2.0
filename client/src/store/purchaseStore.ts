@@ -5,8 +5,8 @@ export type FormDataPurchase = {
   category: string;
   product: string;
   company: string;
-  price: string;
-  quantity: string;
+  price: number;
+  quantity: number;
   weight: string;
   orderId: string;
   date: string;
@@ -22,7 +22,8 @@ interface PurchaseState {
   formData: FormDataPurchase;
   setFormData: (name: string, value: string | number) => void;
 
-  isFormValid: () => boolean;
+  isFormValid: boolean;
+  setIsFormValid: () => void;
 }
 
 export const usePurchaseStore = create<PurchaseState>((set, get) => ({
@@ -40,8 +41,8 @@ export const usePurchaseStore = create<PurchaseState>((set, get) => ({
     category: "",
     product: "",
     company: "",
-    price: "",
-    quantity: "",
+    price: 0,
+    quantity: 0,
     weight: "",
     orderId: "",
     date: dayjs().format("YYYY-MM-DD"),
@@ -51,11 +52,33 @@ export const usePurchaseStore = create<PurchaseState>((set, get) => ({
       formData: { ...state.formData, [key]: value },
     })),
 
-  isFormValid: () => {
-    const { formData, isChecked } = get();
-    const fieldsFilled = Object.values(formData).every(
-      (value) => value?.trim() !== ""
-    );
-    return fieldsFilled && (!isChecked || formData.orderId.trim() !== "");
-  },
+  isFormValid: false,
+  setIsFormValid: () =>
+    set((state) => {
+      const { formData, isChecked } = state;
+
+      const validations = Object.entries(formData).reduce<
+        Record<string, boolean>
+      >((acc, [key, value]) => {
+        if (key !== "orderId") {
+          if (key === "price" || key === "quantity") {
+            acc[key] = value.toString().length > 0;
+          } else {
+            acc[key] = value.toString().trim() !== "";
+          }
+        }
+        return acc;
+      }, {});
+
+      if (!isChecked) {
+        const isFormValid = Object.values(validations).every(Boolean);
+        return { isFormValid };
+      }
+
+      const isFormValid =
+        Object.values(validations).every(Boolean) &&
+        (!isChecked || (isChecked && formData.orderId.trim() !== ""));
+
+      return { isFormValid };
+    }),
 }));
