@@ -14,7 +14,7 @@ export async function PurchaseToPendingPayment(req, transaction) {
 
     if (existingPayment) {
       // Update the existing order's total_amount
-      existingPayment.total_amount += price;
+      existingPayment.total_amount += parseInt(price);
       await existingPayment.save({ transaction });
       return { data: order_id, isError: false };
     } else {

@@ -50,19 +50,20 @@ export const addPurchaseData = async (req, res) => {
     });
 
     const { quantity } = req.body;
+    const quantity_in_num = parseInt(quantity);
 
     if (stock) {
       const currentQuantity = parseInt(stock.quantity) || 0;
 
       // Update existing stock
       await stock.update(
-        { quantity: currentQuantity + quantity },
+        { quantity: currentQuantity + quantity_in_num },
         { transaction }
       );
     } else {
       // Insert new stock record
       await Stock.create(
-        { product_id: result.prod_id, quantity },
+        { product_id: result.prod_id, quantity: quantity_in_num },
         { transaction }
       );
     }
