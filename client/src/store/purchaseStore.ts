@@ -24,7 +24,20 @@ interface PurchaseState {
 
   isFormValid: boolean;
   setIsFormValid: () => void;
+
+  setResetFormData: () => void;
 }
+
+const defaultFormData = {
+  category: "",
+  product: "",
+  company: "",
+  price: 0,
+  quantity: 0,
+  weight: "",
+  orderId: "",
+  date: dayjs().format("YYYY-MM-DD"),
+};
 
 export const usePurchaseStore = create<PurchaseState>((set) => ({
   isChecked: false,
@@ -37,20 +50,19 @@ export const usePurchaseStore = create<PurchaseState>((set) => ({
     set((state) => ({ ...state, isModelOpen: !state.isModelOpen }));
   },
 
-  formData: {
-    category: "",
-    product: "",
-    company: "",
-    price: 0,
-    quantity: 0,
-    weight: "",
-    orderId: "",
-    date: dayjs().format("YYYY-MM-DD"),
-  },
+  formData: defaultFormData,
   setFormData: (key, value) =>
     set((state) => ({
       formData: { ...state.formData, [key]: value },
     })),
+
+  setResetFormData: () => {
+    set((state) => ({
+      ...state,
+      isModelOpen: false,
+      formData: defaultFormData,
+    }));
+  },
 
   isFormValid: false,
   setIsFormValid: () =>
@@ -69,8 +81,6 @@ export const usePurchaseStore = create<PurchaseState>((set) => ({
         }
         return acc;
       }, {});
-
-      console.log(isChecked);
 
       if (!isChecked) {
         console.log({ validations });

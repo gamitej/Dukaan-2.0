@@ -18,7 +18,7 @@ const Header = () => {
         onClick={() => navigate("/")}
       >
         <AiOutlineMenu className="text-white text-2xl" />
-        <h2 className="text-white text-2xl">DASHBOARD</h2>
+        <h2 className="text-white text-2xl">DUKAAN</h2>
       </div>
       {/* right  */}
       <div>
