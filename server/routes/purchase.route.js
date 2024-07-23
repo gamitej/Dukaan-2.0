@@ -5,10 +5,10 @@ import {
   getPartyPurchaseData,
 } from "../controller/purchase.controller.js";
 
-// Add party name
+// Add new purchase record data
 router.post("/add-purchase", addPurchaseData);
 
-// All parties name
+// Get party-wise purchase data
 router.get("/party-purchase", getPartyPurchaseData);
 
 export default router;

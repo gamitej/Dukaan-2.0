@@ -8,16 +8,16 @@ const Stock = sequelize.define("Stock", {
     primaryKey: true,
     defaultValue: () => generateUUID(),
   },
-  quantity: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
   product_id: {
     type: DataTypes.STRING,
     references: {
       model: Product,
       key: "product_id",
     },
+  },
+  quantity: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
   },
 });
 

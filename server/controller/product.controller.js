@@ -2,12 +2,23 @@ import { Op } from "sequelize";
 import Product from "../models/product.model.js";
 import Sequelize from "../database/connection.js";
 
-export const addProductDetails = async (req, res) => {
+export const ProductExistsByProdId = async (product_id) => {
   try {
-    const { company, category, product } = req.body;
+    const product = await Product.findByPk(product_id);
+    return product !== null;
+  } catch (error) {
+    throw new Error("Error checking product existence: " + error.message);
+  }
+};
 
-    // Check if a record with the same product , company and category exists
+export const ProductExistsByCategory = async ({
+  company,
+  category,
+  product,
+}) => {
+  try {
     const existingProduct = await Product.findOne({
+      attributes: ["id"],
       where: {
         [Op.and]: [
           Sequelize.where(
@@ -27,22 +38,47 @@ export const addProductDetails = async (req, res) => {
     });
 
     if (existingProduct) {
+      return { isError: false, prod_id: existingProduct.id };
+    }
+
+    return { isError: false, prod_id: null };
+  } catch (error) {
+    return { isError: true, error: error.message || error };
+  }
+};
+
+export const addProductDetails = async (req, res) => {
+  try {
+    const { company, category, product } = req.body;
+
+    const result = await ProductExistsByCategory(req.body);
+
+    if (result.isError) {
+      return res.status(500).json(result.error);
+    }
+
+    if (result.prod_id) {
       return res.status(409).json("Already exists!");
     }
 
     // Create new product record
-    const newProduct = await Product.create({
-      company: company,
-      category: category,
-      product: product,
-    });
+    const newProduct = await Product.create(
+      {
+        company: company,
+        category: category,
+        product: product,
+      },
+      { transaction }
+    );
 
+    await transaction.commit();
     if (newProduct) {
       return res.status(200).json("Added new products!");
     }
 
     return res.status(400).json("Something went wrong!");
   } catch (error) {
+    await transaction.rollback();
     return res.status(500).json(error.message || error);
   }
 };
