@@ -28,6 +28,11 @@ const AddProductDetailsForm: FC<AddProductDetailsFormProps> = ({
     setIsFormValid();
   };
 
+  const handleChangeDropDown = (name: string, value: string) => {
+    setFormData(name, value);
+    setIsFormValid();
+  };
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -61,7 +66,10 @@ const AddProductDetailsForm: FC<AddProductDetailsFormProps> = ({
             <CheckBox
               width="30%"
               isChecked={isChecked}
-              setChecked={setIsChecked}
+              setChecked={() => {
+                setIsChecked();
+                setIsFormValid();
+              }}
               label="add orderId"
             />
           </div>
@@ -77,7 +85,7 @@ const AddProductDetailsForm: FC<AddProductDetailsFormProps> = ({
             value={formData[field.id as keyof FormDataPurchase].toString()}
             options={field.options ? field.options : []}
             setInputChange={(value: string) => {
-              setFormData(field.id, value);
+              handleChangeDropDown(field.id, value);
             }}
           />
         ))}
@@ -103,7 +111,7 @@ const AddProductDetailsForm: FC<AddProductDetailsFormProps> = ({
                 options={field.options ? field.options : []}
                 value={formData[field.id as keyof FormDataPurchase].toString()}
                 setInputChange={(value: string) => {
-                  setFormData(field.id, value);
+                  handleChangeDropDown(field.id, value);
                 }}
               />
             )}

@@ -26,7 +26,7 @@ interface PurchaseState {
   setIsFormValid: () => void;
 }
 
-export const usePurchaseStore = create<PurchaseState>((set, get) => ({
+export const usePurchaseStore = create<PurchaseState>((set) => ({
   isChecked: false,
   setIsChecked: () => {
     set((state) => ({ ...state, isChecked: !state.isChecked }));
@@ -64,20 +64,23 @@ export const usePurchaseStore = create<PurchaseState>((set, get) => ({
           if (key === "price" || key === "quantity") {
             acc[key] = value.toString().length > 0;
           } else {
-            acc[key] = value.toString().trim() !== "";
+            acc[key] = value.toString().trim().length > 0;
           }
         }
         return acc;
       }, {});
 
+      console.log(isChecked);
+
       if (!isChecked) {
+        console.log({ validations });
         const isFormValid = Object.values(validations).every(Boolean);
         return { isFormValid };
       }
 
       const isFormValid =
         Object.values(validations).every(Boolean) &&
-        (!isChecked || (isChecked && formData.orderId.trim() !== ""));
+        formData.orderId.trim().length > 10;
 
       return { isFormValid };
     }),
