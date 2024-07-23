@@ -9,7 +9,7 @@ const Sales = () => {
       <div className="flex justify-between items-center gap-4 bg-lightDark py-4 px-6 rounded-md">
         <div className="text-white text-2xl">Sales Overview</div>
       </div>
-      {/*=========== ALL PARTIES CARD ===========*/}
+      {/*=========== ALL SALES CARD ===========*/}
       <div className="mt-8">
         <SalesTable />
       </div>
