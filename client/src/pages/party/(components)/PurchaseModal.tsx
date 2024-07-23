@@ -6,6 +6,7 @@ import { useProduct } from "@/hooks/useProducts";
 import { usePurchaseStore } from "@/store/purchaseStore";
 import AddProductDetailsForm from "@/components/common/AddProductDetailsForm";
 import { Fields } from "@/components/common/type";
+import { FormEvent } from "react";
 
 const PurchaseModal = () => {
   const { isModelOpen, setIsModelOpen, formData } = usePurchaseStore();
@@ -67,6 +68,10 @@ const PurchaseModal = () => {
     },
   ];
 
+  const handleSubmitForm = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
+
   /**
    * TSX
    */
@@ -81,6 +86,7 @@ const PurchaseModal = () => {
       >
         <AddProductDetailsForm
           enableOrder
+          handleSubmit={handleSubmitForm}
           formInputFieldsData={formInputFieldsData}
           formDropdownFieldsData={formDropdownFieldsData}
         />

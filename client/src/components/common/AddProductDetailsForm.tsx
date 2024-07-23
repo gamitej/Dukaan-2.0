@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, FormEvent } from "react";
+import { ChangeEvent, FC } from "react";
 // components
 import CheckBox from "../fields/CheckBox";
 import Dropdown from "../fields/Dropdown";
@@ -12,6 +12,7 @@ const AddProductDetailsForm: FC<AddProductDetailsFormProps> = ({
   enableOrder = false,
   formDropdownFieldsData = [],
   formInputFieldsData = [],
+  handleSubmit,
 }) => {
   const {
     formData,
@@ -31,12 +32,6 @@ const AddProductDetailsForm: FC<AddProductDetailsFormProps> = ({
   const handleChangeDropDown = (name: string, value: string) => {
     setFormData(name, value);
     setIsFormValid();
-  };
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    console.log({ formData });
   };
 
   /**

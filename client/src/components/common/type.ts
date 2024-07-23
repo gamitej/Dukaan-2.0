@@ -1,3 +1,5 @@
+import { FormEvent } from "react";
+
 type Options = { label: string; value: string };
 
 export type Fields = {
@@ -14,4 +16,5 @@ export interface AddProductDetailsFormProps {
   enableOrder?: boolean;
   formInputFieldsData: Fields[];
   formDropdownFieldsData: Fields[];
+  handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
 }
