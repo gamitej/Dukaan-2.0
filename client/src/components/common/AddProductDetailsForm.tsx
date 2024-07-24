@@ -7,6 +7,7 @@ import BasicDatePicker from "../fields/BasicDatePicker";
 // store
 import { AddProductDetailsFormProps } from "./type";
 import { FormDataPurchase, usePurchaseStore } from "@/store/purchaseStore";
+import dayjs from "dayjs";
 
 const AddProductDetailsForm: FC<AddProductDetailsFormProps> = ({
   enableOrder = false,
@@ -43,7 +44,9 @@ const AddProductDetailsForm: FC<AddProductDetailsFormProps> = ({
         <BasicDatePicker
           width="100%"
           value={formData.date}
-          setDateChange={(value) => setFormData("date", value)}
+          setDateChange={(value) =>
+            setFormData("date", dayjs(value).format("YYYY-MM-DD"))
+          }
         />
 
         {enableOrder && (

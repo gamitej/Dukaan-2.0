@@ -17,9 +17,11 @@ export default function BasicDatePicker({
   label = "Date",
   width = "100%",
 }: BasicDatePickerProps) {
+  console.log({ value });
+
   const handleDateChange = (newDate: dayjs.Dayjs | null) => {
     if (newDate) {
-      setDateChange(newDate.format("DD-MM-YYYY"));
+      setDateChange(newDate.format("YYYY-MM-DD"));
     } else {
       setDateChange(null);
     }

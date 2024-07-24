@@ -98,7 +98,11 @@ const PurchaseModal = ({ partyId }: { partyId: string }) => {
   // addPurchaseDataApi
   const handleSubmitForm = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    mutateAddPurchaseData({ ...formData, party_id: partyId });
+    mutateAddPurchaseData({
+      ...formData,
+      party_id: partyId,
+      order_id: formData.orderId,
+    });
   };
 
   /**

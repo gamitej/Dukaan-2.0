@@ -3,6 +3,7 @@ import http from "../httpService";
 
 interface AddPurchasePorps extends FormDataPurchase {
   party_id: string;
+  order_id: string;
 }
 
 export async function addPurchaseDataApi(req: AddPurchasePorps) {
