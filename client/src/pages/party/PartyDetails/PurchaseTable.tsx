@@ -10,6 +10,7 @@ import { getPartyWisePuchaseDataApi } from "@/services/Purchase";
 import { commonCols } from "@/data/CommonTable";
 import { useMemo } from "react";
 import dayjs from "dayjs";
+import CopyCode from "@/components/common/CopyCode";
 
 const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
   const { setIsModelOpen } = usePurchaseStore();
@@ -38,6 +39,8 @@ const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
         accessorFn: (row: any) => row[accessorkey],
         Cell: ({ row }: { row: any }) => {
           const rowValue = row.original[accessorkey];
+
+          if (accessorkey === "order_id") return <CopyCode code={rowValue} />;
 
           if (accessorkey === "price") return `Rs ${rowValue}`;
 
