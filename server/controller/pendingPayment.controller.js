@@ -12,9 +12,11 @@ export async function PurchaseToPendingPayment(req, transaction) {
       transaction,
     });
 
+    const price_num = parseInt(price);
+
     if (existingPayment) {
       // Update the existing order's total_amount
-      existingPayment.total_amount += parseInt(price);
+      existingPayment.total_amount += price_num;
       await existingPayment.save({ transaction });
       return { data: order_id, isError: false };
     } else {
@@ -22,7 +24,7 @@ export async function PurchaseToPendingPayment(req, transaction) {
       const data = await PendingPayment.create(
         {
           party_id,
-          total_amount: price,
+          total_amount: price_num,
         },
         { transaction }
       );
@@ -31,16 +33,4 @@ export async function PurchaseToPendingPayment(req, transaction) {
   } catch (error) {
     return { data: error, isError: true };
   }
-}
-
-export async function addPendingPaymentData(req, res) {
-  return "";
-}
-
-export async function modifyPendingPaymentData(req, res) {
-  return "";
-}
-
-export async function getPendingPaymentData(req, res) {
-  return "";
 }
