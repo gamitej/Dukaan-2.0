@@ -34,6 +34,8 @@ export default function InputField({
   return (
     <TextField
       id={id}
+      autoComplete="off"
+      spellCheck="false"
       name={id}
       type={type}
       size={size}

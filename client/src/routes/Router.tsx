@@ -5,9 +5,7 @@ import { useRoutes } from "react-router-dom";
 const Home = lazy(() => import("@/pages/home"));
 const SalesPage = lazy(() => import("@/pages/sales"));
 const PartiesPage = lazy(() => import("@/pages/party"));
-const StocksPage = lazy(() => import("@/pages/stocks"));
 const PartyDetailsPage = lazy(() => import("@/pages/party/PartyDetails"));
-const StockDetailsPage = lazy(() => import("@/pages/stocks/StockDetails"));
 
 const Router = () => {
   const route = useRoutes([
@@ -26,16 +24,6 @@ const Router = () => {
     {
       path: "/parties/:id",
       element: <PartyDetailsPage />,
-    },
-    {
-      path: "/stocks",
-      element: <StocksPage />,
-      children: [
-        {
-          path: ":name",
-          element: <StockDetailsPage />,
-        },
-      ],
     },
   ]);
 
