@@ -1,4 +1,5 @@
 import Stock from "../models/stock.model.js";
+import Product from "../models/product.model.js";
 
 export const updateStockQuantity = async (
   product_id,
