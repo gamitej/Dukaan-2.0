@@ -13,6 +13,7 @@ import Identity from "./models/identity.model.js";
 import PendingPayment from "./models/pendingPayment.model.js";
 import Return from "./models/return.model.js";
 // routes
+import StockRoute from "./routes/stock.route.js";
 import PartyRoute from "./routes/party.route.js";
 import ProductRoute from "./routes/product.route.js";
 import IdentityRoute from "./routes/identity.route.js";
@@ -35,8 +36,9 @@ async function syncDatabase() {
 syncDatabase();
 
 app.use("/api/party", PartyRoute);
-app.use("/api/identity", IdentityRoute);
+app.use("/api/stocks", StockRoute);
 app.use("/api/product", ProductRoute);
+app.use("/api/identity", IdentityRoute);
 app.use("/api/purchase", PurchaseRoute);
 
 app.listen(PORT, () => {

@@ -34,3 +34,26 @@ export const updateStockQuantity = async (
     throw new Error("Error updating stock quantity: " + error.message);
   }
 };
+
+export const getAllStocksData = async (req, res) => {
+  try {
+    const allStocks = await Stock.findAll({
+      include: [
+        {
+          model: Product,
+          attributes: ["product", "company", "category"],
+        },
+      ],
+    });
+
+    if (allStocks?.length === 0) {
+      return res.status(404).json("No stocks found");
+    }
+
+    return res.status(200).json(allStocks);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: error.message || "Internal Server Error" });
+  }
+};
