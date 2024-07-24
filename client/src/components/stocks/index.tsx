@@ -5,6 +5,10 @@ import { useGlobleStore } from "@/store/globalStore";
 const Stocks = () => {
   const { isStockModelOpen, setIsStockModelOpen } = useGlobleStore();
 
+
+  
+
+
   /**
    * TSX
    */
