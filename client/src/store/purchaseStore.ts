@@ -83,7 +83,6 @@ export const usePurchaseStore = create<PurchaseState>((set) => ({
       }, {});
 
       if (!isChecked) {
-        console.log({ validations });
         const isFormValid = Object.values(validations).every(Boolean);
         return { isFormValid };
       }

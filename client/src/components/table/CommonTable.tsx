@@ -1,13 +1,13 @@
+import { FC } from "react";
 import {
   MaterialReactTable,
   useMaterialReactTable,
-  //   type MRT_ColumnDef,
+  type MRT_ColumnDef,
 } from "material-react-table";
-import { FC } from "react";
 
 interface CommonTableProps {
-  rows: any;
-  columns: any;
+  rows: any[];
+  columns: MRT_ColumnDef<any[]> | any;
   topToolbarComp?: React.ReactNode;
 }
 
@@ -16,6 +16,8 @@ const CommonTable: FC<CommonTableProps> = ({
   rows = [],
   topToolbarComp,
 }) => {
+  // const columns = useMemo<MRT_ColumnDef<Person>[]>(
+
   const table = useMaterialReactTable({
     columns,
     data: rows,
@@ -28,14 +30,7 @@ const CommonTable: FC<CommonTableProps> = ({
     },
   });
 
-  /**
-   * TSX
-   */
-  return (
-    <div>
-      <MaterialReactTable table={table} />
-    </div>
-  );
+  return <MaterialReactTable table={table} />;
 };
 
 export default CommonTable;

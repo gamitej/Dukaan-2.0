@@ -1,7 +1,7 @@
-// import { useMemo } from "react";
+import _ from "lodash";
+import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getAllProductDataApi } from "@/services/Options";
-import { useMemo } from "react";
 
 type Response = { category: string; companies: string[]; products: string[] };
 
@@ -37,11 +37,14 @@ export const useProduct = () => {
     options?.forEach((option) => {
       categoryOptions.push(getOption(option.category));
 
-      companyOptions[option?.category] = option?.companies?.map((item) =>
+      const uniqueCompanies = _.uniq(option?.companies);
+      const uniqueProducts = _.uniq(option?.products);
+
+      companyOptions[option?.category] = uniqueCompanies?.map((item) =>
         getOption(item)
       );
 
-      productOptions[option?.category] = option?.products?.map((item) =>
+      productOptions[option?.category] = uniqueProducts?.map((item) =>
         getOption(item)
       );
     });

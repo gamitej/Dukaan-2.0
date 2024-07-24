@@ -34,6 +34,8 @@ const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
       return {
         header: header,
         id: accessorkey,
+        accessorkey: accessorkey,
+        accessorFn: (row: any) => row[accessorkey],
         Cell: ({ row }: { row: any }) => {
           const rowValue = row.original[accessorkey];
 
