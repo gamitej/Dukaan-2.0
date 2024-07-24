@@ -1,6 +1,7 @@
 import sequelize from "../database/connection.js";
 // models
 import Stock from "../models/stock.model.js";
+import Product from "../models/product.model.js";
 import Purchase from "../models/purchase.model.js";
 // controllers
 import { ProductExistsByCategory } from "./product.controller.js";
@@ -95,13 +96,42 @@ export const getPartyPurchaseData = async (req, res) => {
         ["purchase_date", "DESC"],
         ["order_id", "ASC"],
       ],
+      include: [
+        {
+          model: Product,
+          attributes: ["product", "company", "category"],
+        },
+      ],
     });
 
     if (purchases.length === 0) {
       return res.status(404).json("No purchases found for this party_id");
     }
 
-    return res.status(200).json(purchases);
+    const formattedPurchase = purchases.map((item) => {
+      const {
+        purchase_id,
+        Product: { product, company, category },
+        purchase_date,
+        quantity,
+        weight,
+        order_id,
+        price,
+      } = item;
+      return {
+        id: purchase_id,
+        date: purchase_date,
+        product,
+        company,
+        category,
+        quantity,
+        weight,
+        order_id,
+        price,
+      };
+    });
+
+    return res.status(200).json(formattedPurchase);
   } catch (error) {
     return res
       .status(500)

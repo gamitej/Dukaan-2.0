@@ -1,9 +1,15 @@
+import { useQuery } from "@tanstack/react-query";
+// components
 import CommonTable from "@/components/table/CommonTable";
 import PurchaseModal from "../(components)/PurchaseModal";
 // store
 import { usePurchaseStore } from "@/store/purchaseStore";
-import { useQuery } from "@tanstack/react-query";
+// services
 import { getPartyWisePuchaseDataApi } from "@/services/Purchase";
+// data
+import { commonCols } from "@/data/CommonTable";
+import { useMemo } from "react";
+import dayjs from "dayjs";
 
 const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
   const { setIsModelOpen } = usePurchaseStore();
@@ -13,12 +19,34 @@ const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
    */
 
   // Query to fetch party purchase data
-  const { data: partyPurchaseData = {} } = useQuery({
+  const { data: partyPurchaseRowsData = [] } = useQuery({
     queryKey: ["purchase-add-data", partyId],
     queryFn: () => getPartyWisePuchaseDataApi(partyId),
   });
 
-  console.log({ partyPurchaseData });
+  const formattedCols = useMemo(() => {
+    const columns = [
+      { header: "Order Id", accessorkey: "order_id" },
+      ...commonCols,
+    ];
+
+    return columns?.map(({ header, accessorkey }) => {
+      return {
+        header: header,
+        id: accessorkey,
+        Cell: ({ row }: { row: any }) => {
+          const rowValue = row.original[accessorkey];
+
+          if (accessorkey === "price") return `Rs ${rowValue}`;
+
+          if (accessorkey === "date")
+            return dayjs(rowValue).format("DD-MMM-YYYY");
+
+          return rowValue;
+        },
+      };
+    });
+  }, [commonCols]);
 
   /**
    * TSX
@@ -37,8 +65,8 @@ const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
             </button>
           </div>
         }
-        rows={[]}
-        columns={[]}
+        columns={formattedCols}
+        rows={partyPurchaseRowsData}
       />
     </div>
   );

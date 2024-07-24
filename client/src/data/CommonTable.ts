@@ -7,9 +7,9 @@ export const commonCols = [
   //   { header: "Order Id", accessorkey: "order_id" },
   { header: "Date", accessorkey: "date" },
   { header: "Product", accessorkey: "product" },
-  { header: "Product Category", accessorkey: "category" },
-  { header: "Product Company", accessorkey: "company" },
-  { header: "Quanity", accessorkey: "qunatity" },
+  { header: "Category", accessorkey: "category" },
+  { header: "Company", accessorkey: "company" },
+  { header: "Quanity", accessorkey: "quantity" },
   { header: "Weight", accessorkey: "weight" },
   { header: "Price", accessorkey: "price" },
 ];

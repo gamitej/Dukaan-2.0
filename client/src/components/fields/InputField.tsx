@@ -44,7 +44,7 @@ export default function InputField({
       variant={variant}
       onChange={handleChange}
       placeholder={placeholder}
-      value={type === "number" && value === 0 ? null : value}
+      value={type === "number" && value === 0 ? "" : value}
     />
   );
 }
