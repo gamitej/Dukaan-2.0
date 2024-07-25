@@ -10,7 +10,7 @@ const LoadingSpinner = ({ text = "" }: { text: string }) => {
     <div
       className={`${
         !isText ? "w-[4rem]" : ""
-      } h-fit bg-white rounded-md shadow-md text-mediumDark`}
+      } h-fit bg-white rounded-md shadow-md text-mediumDark border border-extraLightDark`}
     >
       {!isText ? <img src={logo} alt="" /> : text}
     </div>

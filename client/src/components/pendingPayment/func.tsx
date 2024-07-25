@@ -25,9 +25,33 @@ export const formattedPendingPaymentTableColumns = (commonCols: any) => {
 
           if (accessorkey === "createdAt") {
             const date = dayjs(rowValue).format("DD-MMM-YYYY");
+            return date;
+          }
 
-            console.log({ date, rowValue });
+          return rowValue;
+        },
+      };
+    }
+  );
+};
 
+export const formattedPartyPurchaseTableColumns = (commonCols: any) => {
+  if (commonCols.length === 0) return [];
+
+  return commonCols?.map(
+    ({ header, accessorkey }: { header: string; accessorkey: string }) => {
+      return {
+        header: header,
+        id: accessorkey,
+        accessorkey: accessorkey,
+        accessorFn: (row: any) => row[accessorkey],
+        Cell: ({ row }: { row: any }) => {
+          const rowValue = row.original[accessorkey];
+
+          if (accessorkey === "price") return `Rs ${rowValue}`;
+
+          if (accessorkey === "date") {
+            const date = dayjs(rowValue).format("DD-MMM-YYYY");
             return date;
           }
 

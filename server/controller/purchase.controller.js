@@ -222,7 +222,32 @@ export const getPartyOrderPurchaseData = async (req, res) => {
 
     if (purchases.length === 0) return res.status(200).json([]);
 
-    return res.status(200).json(purchases);
+    const formattedPurchase = purchases.map((item) => {
+      const {
+        purchase_id,
+        Product: { product, company, category },
+        purchase_date,
+        quantity,
+        weight,
+        order_id,
+        price,
+        product_id,
+      } = item;
+      return {
+        id: purchase_id,
+        date: purchase_date,
+        product,
+        company,
+        category,
+        quantity,
+        weight,
+        order_id,
+        price,
+        product_id,
+      };
+    });
+
+    return res.status(200).json(formattedPurchase);
   } catch (error) {
     return res.status(500).json(error.message || error);
   }

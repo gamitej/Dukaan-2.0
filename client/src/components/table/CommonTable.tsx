@@ -10,6 +10,7 @@ import { MdDelete } from "react-icons/md";
 interface CommonTableProps {
   rows: any[];
   isLoading?: boolean;
+  tableHeight?: string;
   enableDelete?: boolean;
   enableEditing?: boolean;
   enableViewDetails?: boolean;
@@ -23,15 +24,14 @@ const CommonTable: FC<CommonTableProps> = ({
   rows = [],
   columns = [],
   topToolbarComp,
-  isLoading = false,
-  enableEditing = false,
-  enableDelete = false,
   openDetailsModal,
+  isLoading = false,
+  tableHeight = "100%",
+  enableDelete = false,
+  enableEditing = false,
   openDeleteConfirmModal,
   enableViewDetails = false,
 }) => {
-  // const columns = useMemo<MRT_ColumnDef<Person>[]>(
-
   const table = useMaterialReactTable({
     columns,
     data: rows,
@@ -66,6 +66,7 @@ const CommonTable: FC<CommonTableProps> = ({
         )}
       </div>
     ),
+    muiTableContainerProps: { sx: { height: tableHeight } },
     muiTablePaperProps: {
       elevation: 0,
       sx: { border: "0.15px solid gray" },
