@@ -19,11 +19,12 @@ const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
    */
 
   // Query to fetch party purchase data
-  const { data: partyPurchaseRowsData = [] } = useQuery({
+  const { data: partyPurchaseRowsData = [], isLoading } = useQuery({
     queryKey: ["purchase-add-data", partyId],
     queryFn: () => getPartyWisePuchaseDataApi(partyId),
   });
 
+  // formatted columns data
   const formattedCols = useMemo(() => {
     const columns = [
       { header: "Order Id", accessorkey: "order_id" },
@@ -59,6 +60,7 @@ const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
     <div>
       <PurchaseModal partyId={partyId} />
       <CommonTable
+        isLoading={isLoading}
         topToolbarComp={
           <div>
             <button

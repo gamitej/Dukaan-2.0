@@ -7,20 +7,23 @@ import {
 
 interface CommonTableProps {
   rows: any[];
-  columns: MRT_ColumnDef<any[]> | any;
+  isLoading?: boolean;
   topToolbarComp?: React.ReactNode;
+  columns: MRT_ColumnDef<any[]> | any;
 }
 
 const CommonTable: FC<CommonTableProps> = ({
   columns = [],
   rows = [],
   topToolbarComp,
+  isLoading = false,
 }) => {
   // const columns = useMemo<MRT_ColumnDef<Person>[]>(
 
   const table = useMaterialReactTable({
     columns,
     data: rows,
+    state: { isLoading },
     renderTopToolbarCustomActions: () => {
       return topToolbarComp;
     },
