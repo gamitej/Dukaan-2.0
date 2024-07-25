@@ -26,14 +26,14 @@ const PurchaseModal = ({ partyId }: { partyId: string }) => {
 
   // =================== API CALL'S START ======================
 
-  // Mutation to add party name
+  // Mutation to add party purchase data
   const { mutate: mutateAddPurchaseData } = useMutation({
     mutationFn: addPurchaseDataApi,
     onSuccess: () => {
       setResetFormData();
       toast.success("Added successfully", { duration: 1200 });
       queryClient.invalidateQueries({
-        queryKey: ["add-party-purchase-data"],
+        queryKey: ["purchase-data", partyId],
       });
     },
     onError: (err: any) => {

@@ -18,7 +18,7 @@ export const usePartyDetails = () => {
 
   // Query to fetch all options data
   const { data = [], isLoading } = useQuery<PartyDetailsReponse[]>({
-    queryKey: ["all-party-detail"],
+    queryKey: ["all-party-details"],
     queryFn: () => getAllPartiesDataApi(),
   });
 

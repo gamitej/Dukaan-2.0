@@ -108,7 +108,7 @@ export const getPartyPurchaseData = async (req, res) => {
     });
 
     if (purchases.length === 0) {
-      return res.status(404).json("No purchases found for this party_id");
+      return res.status(200).json([]);
     }
 
     const formattedPurchase = purchases.map((item) => {

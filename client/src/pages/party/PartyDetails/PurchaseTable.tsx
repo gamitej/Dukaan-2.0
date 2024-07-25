@@ -38,6 +38,7 @@ const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
   const { mutate: mutationDeletePartyPurchaseData } = useMutation({
     mutationFn: deletePartyPuchaseDataApi,
     onSuccess: () => {
+      setIsConfirmationModelOpen();
       toast.success("Deleted successfully", { duration: 1200 });
       queryClient.invalidateQueries({
         queryKey: ["purchase-data", partyId],

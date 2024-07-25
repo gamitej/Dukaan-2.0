@@ -29,7 +29,7 @@ const AddPartyModel = () => {
       setReset();
       toast.success("Added successfully", { duration: 1200 });
       queryClient.invalidateQueries({
-        queryKey: ["party", "name"],
+        queryKey: ["all-party-details"],
       });
     },
     onError: (err: any) => {
