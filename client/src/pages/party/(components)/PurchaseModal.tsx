@@ -33,7 +33,7 @@ const PurchaseModal = ({ partyId }: { partyId: string }) => {
       setResetFormData();
       toast.success("Added successfully", { duration: 1200 });
       queryClient.invalidateQueries({
-        queryKey: ["purchase-add-data", partyId],
+        queryKey: ["add-party-purchase-data"],
       });
     },
     onError: (err: any) => {

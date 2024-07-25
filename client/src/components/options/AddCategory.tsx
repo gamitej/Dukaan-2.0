@@ -19,7 +19,7 @@ const AddCategory = () => {
       setCategory("");
       toast.success("Added successfully", { duration: 1200 });
       queryClient.invalidateQueries({
-        queryKey: ["options", "company", "category"],
+        queryKey: ["company-category"],
       });
     },
     onError: (err: any) => {

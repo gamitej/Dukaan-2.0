@@ -20,7 +20,7 @@ export const useCompanyAndCategory = () => {
 
   // Query to fetch all options data
   const { data: options = {} } = useQuery<OptionsData>({
-    queryKey: ["options", "get-company-category"],
+    queryKey: ["company-category"],
     queryFn: () => getAllOptionsDataApi(),
   });
 

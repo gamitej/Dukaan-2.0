@@ -33,7 +33,7 @@ const AddProduct = () => {
       });
       toast.success("Added successfully", { duration: 1200 });
       queryClient.invalidateQueries({
-        queryKey: ["products", "company-category-products"],
+        queryKey: ["company-category-products"],
       });
     },
     onError: (err: any) => {

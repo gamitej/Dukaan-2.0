@@ -14,7 +14,7 @@ export const useProduct = () => {
 
   // Query to fetch all options data
   const { data: options = [] } = useQuery<Response[]>({
-    queryKey: ["products", "get-company-category-products"],
+    queryKey: ["company-category-products"],
     queryFn: () => getAllProductDataApi(),
   });
 

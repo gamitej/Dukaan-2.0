@@ -15,11 +15,9 @@ const Stocks = () => {
 
   // Query to fetch all options data
   const { data: stocksData = [] } = useQuery({
-    queryKey: ["stocks", "all-stocks"],
+    queryKey: ["all-stocks", isStockModelOpen],
     queryFn: () => getAllStocksData(),
   });
-
-  console.log({ stocksData });
 
   /**
    * TSX
