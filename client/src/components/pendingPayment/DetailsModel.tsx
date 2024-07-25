@@ -40,13 +40,13 @@ const DetailsModel = () => {
   return (
     <BasicModal
       modalWidth="80vw"
-      modalHeight="50rem"
+      modalHeight="40rem"
       title="Order Details"
       isOpen={isDetailModelOpen}
       onClose={setIsDetailModelOpen}
     >
       <CommonTable
-        tableHeight="37rem"
+        tableHeight="27rem"
         isLoading={isLoading}
         columns={formattedCols}
         rows={orderDetailsData || []}
