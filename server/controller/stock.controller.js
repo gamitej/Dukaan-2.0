@@ -47,7 +47,7 @@ export const getAllStocksData = async (req, res) => {
       ],
     });
 
-    if (allStocks?.length === 0) return res.status(404).json("No stocks found");
+    if (allStocks?.length === 0) return res.status(200).json({});
 
     const categoryMapping = allStocks.reduce((acc, item) => {
       const { Product } = item;

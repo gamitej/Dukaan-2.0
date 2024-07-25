@@ -36,7 +36,7 @@ export async function PurchaseToPendingPayment(req, transaction) {
 
 export async function DeletePurchaseFromPendingPayment(req, transaction) {
   try {
-    const { order_id = "", party_id, price } = req;
+    const { order_id = "", price } = req;
 
     // Check if the order already exists
     const existingPayment = await PendingPayment.findOne({
