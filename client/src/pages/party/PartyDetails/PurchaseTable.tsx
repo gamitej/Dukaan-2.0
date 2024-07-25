@@ -1,18 +1,24 @@
 import { useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 // components
-import { commonCols } from "@/data/CommonTable";
 import CommonTable from "@/components/table/CommonTable";
 import PurchaseModal from "../(components)/PurchaseModal";
+import ConfirmationModel from "@/components/model/ConfirmationModel";
 // store
 import { usePurchaseStore } from "@/store/purchaseStore";
-// services
-import { getPartyWisePuchaseDataApi } from "@/services/Purchase";
-import ConfirmationModel from "@/components/model/ConfirmationModel";
 import { useConfirmationStore } from "@/store/confirmationModelStore";
+// services
+import {
+  deletePartyPuchaseDataApi,
+  getPartyWisePuchaseDataApi,
+} from "@/services/Purchase";
+// data
+import { commonCols } from "@/data/CommonTable";
 import { formattedPurchaseTableColumns } from "../data/func";
 
 const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
+  const queryClient = useQueryClient();
   const { setIsModelOpen } = usePurchaseStore();
 
   const { isConfirmationModelOpen, setIsConfirmationModelOpen, selectedData } =
@@ -24,8 +30,25 @@ const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
 
   // Query to fetch party purchase data
   const { data: partyPurchaseRowsData = [], isLoading } = useQuery({
-    queryKey: ["purchase-add-data", partyId],
+    queryKey: ["purchase-data", partyId],
     queryFn: () => getPartyWisePuchaseDataApi(partyId),
+  });
+
+  // delete purchase data
+  const { mutate: mutationDeletePartyPurchaseData } = useMutation({
+    mutationFn: deletePartyPuchaseDataApi,
+    onSuccess: () => {
+      toast.success("Deleted successfully", { duration: 1200 });
+      queryClient.invalidateQueries({
+        queryKey: ["purchase-data", partyId],
+      });
+    },
+    onError: (err: any) => {
+      const message = err?.response?.data;
+      toast.error(message || "Something went wrong", {
+        duration: 1200,
+      });
+    },
   });
 
   /**
@@ -42,6 +65,8 @@ const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
     setIsConfirmationModelOpen(original);
   };
 
+  //
+
   /**
    * TSX
    */
@@ -49,7 +74,9 @@ const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
     <div>
       <ConfirmationModel
         message="Are you sure you want to delete ?"
-        handleConfirm={() => "yes"}
+        handleConfirm={() => {
+          mutationDeletePartyPurchaseData(selectedData);
+        }}
         open={isConfirmationModelOpen}
         handleClose={setIsConfirmationModelOpen}
       />

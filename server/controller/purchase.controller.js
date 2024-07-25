@@ -5,7 +5,10 @@ import Product from "../models/product.model.js";
 import Purchase from "../models/purchase.model.js";
 // controllers
 import { ProductExistsByCategory } from "./product.controller.js";
-import { PurchaseToPendingPayment } from "./pendingPayment.controller.js";
+import {
+  PurchaseToPendingPayment,
+  DeletePurchaseFromPendingPayment,
+} from "./pendingPayment.controller.js";
 
 export const addPurchaseData = async (req, res) => {
   const transaction = await sequelize.transaction();
@@ -33,7 +36,7 @@ export const addPurchaseData = async (req, res) => {
       throw new Error(order_id);
     }
 
-    // Step 3: Add a new purchase record
+    // Step 3: Add a new purchase table
     await Purchase.create(
       {
         ...requestData,
@@ -44,7 +47,7 @@ export const addPurchaseData = async (req, res) => {
       { transaction }
     );
 
-    // Step 4: Update or insert stock record
+    // Step 4: Update or insert stock table
     const stock = await Stock.findOne({
       where: { product_id: result.prod_id },
       transaction,
@@ -62,7 +65,7 @@ export const addPurchaseData = async (req, res) => {
         { transaction }
       );
     } else {
-      // Insert new stock record
+      // Insert new stock table
       await Stock.create(
         { product_id: result.prod_id, quantity: quantity_in_num },
         { transaction }
@@ -136,5 +139,56 @@ export const getPartyPurchaseData = async (req, res) => {
     return res
       .status(500)
       .json({ error: error.message || "Internal Server Error" });
+  }
+};
+
+export const deletePartyPurchaseData = async (req, res) => {
+  const transaction = await sequelize.transaction();
+  try {
+    const requestData = req.body;
+
+    // Step 1: Remove order_id price from PendingPayment table
+    const { data, isError } = await DeletePurchaseFromPendingPayment(
+      requestData,
+      transaction
+    );
+
+    if (isError) throw new Error(data);
+
+    // Step 2: Delete from purchase table
+    const purchaseDelete = await Purchase.destroy(
+      { where: { purchase_id: requestData.purchase_id } },
+      { transaction }
+    );
+
+    if (!purchaseDelete) throw new Error("Purchase not found!");
+
+    // Step 3: Delete purchase product quantity from stock table
+    const stock = await Stock.findOne({
+      where: { product_id: requestData.product_id },
+      transaction,
+    });
+
+    const { quantity } = requestData;
+    const quantity_in_num = parseInt(quantity);
+
+    if (stock) {
+      const currentQuantity = parseInt(stock.quantity) || 0;
+
+      // Update existing stock
+      await stock.update(
+        { quantity: currentQuantity - quantity_in_num },
+        { transaction }
+      );
+    } else {
+      throw new Error("Product not found in stock!");
+    }
+
+    // Step 5: Commit the transaction
+    await transaction.commit();
+    return res.status(200).json("Purchase record deleted successfully!");
+  } catch (error) {
+    await transaction.rollback();
+    return res.status(500).json(error.message || error);
   }
 };
