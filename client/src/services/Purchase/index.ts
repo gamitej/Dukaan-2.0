@@ -18,6 +18,10 @@ export async function getPartyWisePuchaseDataApi(partyId: string) {
 
 export async function deletePartyPuchaseDataApi(req: any) {
   const { purchase_id } = req;
-  const { data } = await http.delete(`/purchase/${purchase_id}`, req);
+
+  const { data } = await http.post(
+    `/purchase/delete-purchase?purchase_id=${purchase_id}`,
+    req
+  );
   return data;
 }

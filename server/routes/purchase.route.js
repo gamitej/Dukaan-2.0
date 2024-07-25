@@ -13,6 +13,6 @@ router.post("/add", addPurchaseData);
 router.get("/party-wise", getPartyPurchaseData);
 
 // Get party-wise purchase data
-router.delete("/:purchase_id", deletePartyPurchaseData);
+router.post("/delete-purchase", deletePartyPurchaseData);
 
 export default router;

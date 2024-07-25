@@ -120,6 +120,7 @@ export const getPartyPurchaseData = async (req, res) => {
         weight,
         order_id,
         price,
+        product_id,
       } = item;
       return {
         id: purchase_id,
@@ -131,6 +132,7 @@ export const getPartyPurchaseData = async (req, res) => {
         weight,
         order_id,
         price,
+        product_id,
       };
     });
 

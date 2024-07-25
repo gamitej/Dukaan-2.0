@@ -61,8 +61,8 @@ const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
   }, [commonCols]);
 
   const handleDelete = ({ original }: { original: any }) => {
-    // console.log({ original });
-    setIsConfirmationModelOpen(original);
+    const selectedData = { ...original, purchase_id: original.id };
+    setIsConfirmationModelOpen(selectedData);
   };
 
   //
