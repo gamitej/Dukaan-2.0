@@ -1,27 +1,18 @@
-import React, { FC } from "react";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Button,
-} from "@mui/material";
+import { FC } from "react";
+import { Dialog } from "@mui/material";
 
 interface ConfirmationModelProps {
   open: boolean;
+  message: string;
   handleClose: () => void;
   handleConfirm: () => void;
-  title: string;
-  message: string;
 }
 
 const ConfirmationModel: FC<ConfirmationModelProps> = ({
   open,
+  message,
   handleClose,
   handleConfirm,
-  title,
-  message,
 }) => {
   /**
    * TSX
@@ -33,20 +24,25 @@ const ConfirmationModel: FC<ConfirmationModelProps> = ({
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
-      <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-          {message}
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} color="primary">
-          No
-        </Button>
-        <Button onClick={handleConfirm} color="primary" autoFocus>
-          Yes
-        </Button>
-      </DialogActions>
+      <div className="w-[22rem] h-[10rem] flex flex-col justify-center items-center gap-8">
+        <div className="px-4">
+          <p className="text-lightDark text-xl">{message}</p>
+        </div>
+        <div className="flex gap-2">
+          <button
+            onClick={handleClose}
+            className="bg-red-400 hover:bg-red-500 rounded-sm shadow-md w-[5rem] py-1"
+          >
+            No
+          </button>
+          <button
+            onClick={handleConfirm}
+            className="bg-emerald-400 rounded-sm shadow-md w-[5rem] py-1 hover:bg-emerald-500"
+          >
+            Yes
+          </button>
+        </div>
+      </div>
     </Dialog>
   );
 };

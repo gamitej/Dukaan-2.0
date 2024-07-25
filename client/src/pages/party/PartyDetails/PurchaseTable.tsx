@@ -50,8 +50,7 @@ const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
   return (
     <div>
       <ConfirmationModel
-        title="Delete"
-        message="done"
+        message="Are you sure you want to delete ?"
         handleConfirm={() => "yes"}
         open={isConfirmationModelOpen}
         handleClose={setIsConfirmationModelOpen}
