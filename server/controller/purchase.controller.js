@@ -194,3 +194,36 @@ export const deletePartyPurchaseData = async (req, res) => {
     return res.status(500).json(error.message || error);
   }
 };
+
+export const getPartyOrderPurchaseData = async (req, res) => {
+  try {
+    const { party_id, order_id } = req.query;
+
+    if (!party_id) return res.status(409).json("Party ID is required");
+    if (!order_id) return res.status(409).json("Order ID is required");
+
+    // Fetch party purchase order data based on order_id & party_id
+    const purchases = await Purchase.findAll({
+      where: {
+        party_id: party_id,
+        order_id: order_id,
+      },
+      order: [
+        ["purchase_date", "DESC"],
+        ["order_id", "ASC"],
+      ],
+      include: [
+        {
+          model: Product,
+          attributes: ["product", "company", "category"],
+        },
+      ],
+    });
+
+    if (purchases.length === 0) return res.status(200).json([]);
+
+    return res.status(200).json(purchases);
+  } catch (error) {
+    return res.status(500).json(error.message || error);
+  }
+};

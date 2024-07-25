@@ -27,10 +27,10 @@ export async function deletePartyPuchaseDataApi(req: any) {
 }
 
 export async function getPartyPurchaseOrderDetailsDataApi(req: any) {
-  const { order_id } = req;
+  const { order_id, party_id } = req.original;
 
   const { data } = await http.get(
-    `/purchase/order-details?order_id=${order_id}`
+    `/purchase/party-order-details?order_id=${order_id}&party_id=${party_id}`
   );
   return data;
 }

@@ -1,6 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
+// components
 import BasicModal from "../model/BasicModel";
+import LoadingSpinner from "../loading/LoadingSpinner";
+// store
 import { usePendingPaymentStore } from "@/store/pendingPaymentStore";
+// services
 import { getPartyPurchaseOrderDetailsDataApi } from "@/services/Purchase";
 
 const DetailsModel = () => {
@@ -28,7 +32,7 @@ const DetailsModel = () => {
       isOpen={isDetailModelOpen}
       onClose={setIsDetailModelOpen}
     >
-      hi
+      {isLoading ? <LoadingSpinner text="" /> : null}
     </BasicModal>
   );
 };
