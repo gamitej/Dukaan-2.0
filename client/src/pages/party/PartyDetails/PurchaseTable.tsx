@@ -84,6 +84,7 @@ const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
       <PurchaseModal partyId={partyId} />
       <CommonTable
         enableEditing
+        enableDelete
         openDeleteConfirmModal={handleDelete}
         isLoading={isLoading}
         topToolbarComp={
