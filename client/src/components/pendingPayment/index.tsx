@@ -3,12 +3,16 @@ import { useQuery } from "@tanstack/react-query";
 // components
 import CommonTable from "../table/CommonTable";
 // services
-import { getPartyWisePendingPaymentDataApi } from "@/services/PendingPayment";
+import { getPartyPendingPaymentDataApi } from "@/services/PendingPayment";
 // data
 import { pendingPaymentCols } from "@/data/CommonTable";
 import { formattedPendingPaymentTableColumns } from "./func";
+import DetailsModel from "./DetailsModel";
+import { usePendingPaymentStore } from "@/store/pendingPaymentStore";
 
 const PendingPaymentTable = ({ partyId = "" }: { partyId: string }) => {
+  const { setIsDetailModelOpen } = usePendingPaymentStore();
+
   /**
    * ========================= API CALL ===========================
    */
@@ -16,7 +20,7 @@ const PendingPaymentTable = ({ partyId = "" }: { partyId: string }) => {
   // Query to fetch party purchase data
   const { data: partyPendingPaymentRowsData = [], isLoading } = useQuery({
     queryKey: ["pending-payment-data", partyId],
-    queryFn: () => getPartyWisePendingPaymentDataApi(partyId),
+    queryFn: () => getPartyPendingPaymentDataApi(partyId),
   });
 
   /**
@@ -33,8 +37,12 @@ const PendingPaymentTable = ({ partyId = "" }: { partyId: string }) => {
    */
   return (
     <div>
+      <DetailsModel />
       <CommonTable
+        enableEditing
+        enableViewDetails
         isLoading={isLoading}
+        openDetailsModal={setIsDetailModelOpen}
         topToolbarComp={
           <div>
             <button

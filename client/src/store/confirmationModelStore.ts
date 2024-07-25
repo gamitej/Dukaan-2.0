@@ -13,11 +13,11 @@ export const useConfirmationStore = create<ConfirmationModelState>((set) => ({
   isConfirmationModelOpen: false,
   setIsConfirmationModelOpen: (selectedData = null) => {
     set((state) => {
-      const id = !state.isConfirmationModelOpen ? selectedData : null;
+      const data = !state.isConfirmationModelOpen ? selectedData : null;
 
       return {
         ...state,
-        selectedData: id,
+        selectedData: data,
         isConfirmationModelOpen: !state.isConfirmationModelOpen,
       };
     });

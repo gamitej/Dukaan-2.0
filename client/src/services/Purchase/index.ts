@@ -25,3 +25,12 @@ export async function deletePartyPuchaseDataApi(req: any) {
   );
   return data;
 }
+
+export async function getPartyPurchaseOrderDetailsDataApi(req: any) {
+  const { order_id } = req;
+
+  const { data } = await http.get(
+    `/purchase/order-details?order_id=${order_id}`
+  );
+  return data;
+}
