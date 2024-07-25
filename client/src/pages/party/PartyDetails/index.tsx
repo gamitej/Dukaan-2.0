@@ -14,6 +14,11 @@ const tabsData = [
     content: PurchaseTable,
   },
   {
+    label: "Pending Payment Record",
+    value: "Pending Payment Record",
+    content: <CommonTable rows={[]} columns={[]} />,
+  },
+  {
     label: "Payment Record",
     value: "Payment Record",
     content: <CommonTable rows={[]} columns={[]} />,

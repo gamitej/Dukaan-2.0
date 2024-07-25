@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 // components
 import { commonCols } from "@/data/CommonTable";
@@ -10,9 +10,15 @@ import PurchaseModal from "../(components)/PurchaseModal";
 import { usePurchaseStore } from "@/store/purchaseStore";
 // services
 import { getPartyWisePuchaseDataApi } from "@/services/Purchase";
+import ConfirmationModel from "@/components/model/ConfirmationModel";
+import { useConfirmationStore } from "@/store/confirmationModelStore";
+import { formattedPurchaseTableColumns } from "../data/func";
 
 const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
   const { setIsModelOpen } = usePurchaseStore();
+
+  const { isConfirmationModelOpen, setIsConfirmationModelOpen, selectedId } =
+    useConfirmationStore();
 
   /**
    * ========================= API CALL ===========================
@@ -24,42 +30,36 @@ const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
     queryFn: () => getPartyWisePuchaseDataApi(partyId),
   });
 
+  /**
+   * =========================== EVENT-HANDLER =======================
+   */
+
   // formatted columns data
   const formattedCols = useMemo(() => {
-    const columns = [
-      { header: "Order Id", accessorkey: "order_id" },
-      ...commonCols,
-    ];
-
-    return columns?.map(({ header, accessorkey }) => {
-      return {
-        header: header,
-        id: accessorkey,
-        accessorkey: accessorkey,
-        accessorFn: (row: any) => row[accessorkey],
-        Cell: ({ row }: { row: any }) => {
-          const rowValue = row.original[accessorkey];
-
-          if (accessorkey === "order_id") return <CopyCode code={rowValue} />;
-
-          if (accessorkey === "price") return `Rs ${rowValue}`;
-
-          if (accessorkey === "date")
-            return dayjs(rowValue).format("DD-MMM-YYYY");
-
-          return rowValue;
-        },
-      };
-    });
+    return formattedPurchaseTableColumns(commonCols);
   }, [commonCols]);
+
+  const handleDelete = ({ original }: { original: any }) => {
+    console.log({ original });
+    setIsConfirmationModelOpen("hi");
+  };
 
   /**
    * TSX
    */
   return (
     <div>
+      <ConfirmationModel
+        title="Delete"
+        message="done"
+        handleConfirm={() => "yes"}
+        open={isConfirmationModelOpen}
+        handleClose={setIsConfirmationModelOpen}
+      />
       <PurchaseModal partyId={partyId} />
       <CommonTable
+        enableEditing
+        openDeleteConfirmModal={handleDelete}
         isLoading={isLoading}
         topToolbarComp={
           <div>

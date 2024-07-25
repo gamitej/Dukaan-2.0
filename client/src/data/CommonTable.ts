@@ -4,7 +4,6 @@
 
 // column for sales & purchase table data
 export const commonCols = [
-  //   { header: "Order Id", accessorkey: "order_id" },
   { header: "Date", accessorkey: "date" },
   { header: "Product", accessorkey: "product" },
   { header: "Category", accessorkey: "category" },
