@@ -1,9 +1,7 @@
-import dayjs from "dayjs";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 // components
 import { commonCols } from "@/data/CommonTable";
-import CopyCode from "@/components/common/CopyCode";
 import CommonTable from "@/components/table/CommonTable";
 import PurchaseModal from "../(components)/PurchaseModal";
 // store
@@ -17,7 +15,7 @@ import { formattedPurchaseTableColumns } from "../data/func";
 const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
   const { setIsModelOpen } = usePurchaseStore();
 
-  const { isConfirmationModelOpen, setIsConfirmationModelOpen, selectedId } =
+  const { isConfirmationModelOpen, setIsConfirmationModelOpen, selectedData } =
     useConfirmationStore();
 
   /**
@@ -41,7 +39,7 @@ const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
 
   const handleDelete = ({ original }: { original: any }) => {
     console.log({ original });
-    setIsConfirmationModelOpen("hi");
+    setIsConfirmationModelOpen(original);
   };
 
   /**

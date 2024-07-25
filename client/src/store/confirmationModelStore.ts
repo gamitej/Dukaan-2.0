@@ -1,21 +1,23 @@
 import { create } from "zustand";
 
 interface ConfirmationModelState {
-  selectedId: string | null;
+  selectedData: { [key: string]: any } | null;
   isConfirmationModelOpen: boolean;
-  setIsConfirmationModelOpen: (selectedid?: string | null) => void;
+  setIsConfirmationModelOpen: (
+    selectedData?: { [key: string]: any } | null
+  ) => void;
 }
 
 export const useConfirmationStore = create<ConfirmationModelState>((set) => ({
-  selectedId: null,
+  selectedData: null,
   isConfirmationModelOpen: false,
-  setIsConfirmationModelOpen: (selectedId = null) => {
+  setIsConfirmationModelOpen: (selectedData = null) => {
     set((state) => {
-      const id = !state.isConfirmationModelOpen ? selectedId : null;
+      const id = !state.isConfirmationModelOpen ? selectedData : null;
 
       return {
         ...state,
-        selectedId: id,
+        selectedData: id,
         isConfirmationModelOpen: !state.isConfirmationModelOpen,
       };
     });
