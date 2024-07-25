@@ -97,6 +97,8 @@ const PartyDetails = () => {
       <div className="mt-8">
         <BasicTab tabData={tabsData} data={data} />
       </div>
+      <br />
+      <br />
     </div>
   );
 };

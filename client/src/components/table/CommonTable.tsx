@@ -26,7 +26,7 @@ const CommonTable: FC<CommonTableProps> = ({
   topToolbarComp,
   openDetailsModal,
   isLoading = false,
-  tableHeight = "100%",
+  tableHeight = "35rem",
   enableDelete = false,
   enableEditing = false,
   openDeleteConfirmModal,
@@ -36,6 +36,7 @@ const CommonTable: FC<CommonTableProps> = ({
     columns,
     data: rows,
     state: { isLoading },
+    initialState: { density: "compact" },
     enableEditing,
     renderTopToolbarCustomActions: () => {
       return topToolbarComp;
