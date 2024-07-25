@@ -18,6 +18,7 @@ import PartyRoute from "./routes/party.route.js";
 import ProductRoute from "./routes/product.route.js";
 import IdentityRoute from "./routes/identity.route.js";
 import PurchaseRoute from "./routes/purchase.route.js";
+import PendingPaymentRoute from "./routes/pendingPayment.route.js";
 
 const PORT = 3001;
 const app = express();
@@ -40,6 +41,7 @@ app.use("/api/stocks", StockRoute);
 app.use("/api/product", ProductRoute);
 app.use("/api/identity", IdentityRoute);
 app.use("/api/purchase", PurchaseRoute);
+app.use("/api/pending-payment", PendingPaymentRoute);
 
 app.listen(PORT, () => {
   console.log(`listening on port http://localhost:${PORT}`);

@@ -59,3 +59,27 @@ export async function DeletePurchaseFromPendingPayment(req, transaction) {
     return { data: error, isError: true };
   }
 }
+
+export async function GetPartyPendingPaymentDetails(req, res) {
+  try {
+    const { party_id } = req.query;
+
+    if (!party_id) return res.status(400).json("Missing party_id parameter");
+
+    // Fetch purchase data based on party_id
+    const pendingPaymentData = await PendingPayment.findAll({
+      where: {
+        party_id: party_id,
+      },
+      order: [
+        ["createdAt", "DESC"],
+        ["order_id", "ASC"],
+      ],
+    });
+
+    if (!pendingPaymentData)
+      return res.json(404).json("Party pending payment not found!");
+
+    return res.status(200).json(pendingPaymentData);
+  } catch (error) {}
+}

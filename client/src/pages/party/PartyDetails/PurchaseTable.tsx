@@ -52,7 +52,7 @@ const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
   });
 
   /**
-   * =========================== EVENT-HANDLER =======================
+   * =========================== EVENT-HANDLER ==========================
    */
 
   // formatted columns data
@@ -61,7 +61,7 @@ const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
   }, [commonCols]);
 
   const handleDelete = ({ original }: { original: any }) => {
-    console.log({ original });
+    // console.log({ original });
     setIsConfirmationModelOpen(original);
   };
 
@@ -91,7 +91,7 @@ const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
               onClick={setIsModelOpen}
               className="hover:bg-indigo-500 cursor-pointer bg-indigo-400 py-2 px-3 text-white rounded-sm"
             >
-              Add Payment
+              Add Purchase
             </button>
           </div>
         }
