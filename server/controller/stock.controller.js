@@ -47,11 +47,23 @@ export const getAllStocksData = async (req, res) => {
       ],
     });
 
-    if (allStocks?.length === 0) {
-      return res.status(404).json("No stocks found");
-    }
+    if (allStocks?.length === 0) return res.status(404).json("No stocks found");
 
-    return res.status(200).json(allStocks);
+    const categoryMapping = allStocks.reduce((acc, item) => {
+      const { Product } = item;
+      if (acc[Product.category]) {
+        acc[Product.category].items.push(item);
+        acc[Product.category].totalQuantity += item.quantity;
+      } else {
+        acc[Product.category] = {
+          items: [item],
+          totalQuantity: item.quantity,
+        };
+      }
+      return acc;
+    }, {});
+
+    return res.status(200).json(categoryMapping);
   } catch (error) {
     return res
       .status(500)

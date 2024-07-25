@@ -4,6 +4,7 @@ import BasicModal from "../model/BasicModel";
 import { useGlobleStore } from "@/store/globalStore";
 // services
 import { getAllStocksData } from "@/services/stocks";
+import StockCard from "../cards/StockCard";
 
 const Stocks = () => {
   const { isStockModelOpen, setIsStockModelOpen } = useGlobleStore();
@@ -26,11 +27,13 @@ const Stocks = () => {
   return (
     <div>
       <BasicModal
+        modalHeight="80vh"
+        modalWidth="50vw"
         title="Stocks Overview"
         isOpen={isStockModelOpen}
         onClose={setIsStockModelOpen}
       >
-        hi
+        <StockCard stocksData={stocksData} />
       </BasicModal>
     </div>
   );
