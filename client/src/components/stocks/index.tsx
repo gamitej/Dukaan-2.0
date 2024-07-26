@@ -14,7 +14,7 @@ const Stocks = () => {
    */
 
   // Query to fetch all options data
-  const { data: stocksData = [] } = useQuery({
+  const { data: stocksData = [], isLoading } = useQuery({
     queryKey: ["all-stocks", isStockModelOpen],
     queryFn: () => getAllStocksData(),
   });
@@ -31,7 +31,7 @@ const Stocks = () => {
         isOpen={isStockModelOpen}
         onClose={setIsStockModelOpen}
       >
-        <StockCard stocksData={stocksData} />
+        <StockCard stocksData={stocksData} isLoading={isLoading} />
       </BasicModal>
     </div>
   );

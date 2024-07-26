@@ -1,10 +1,13 @@
 import * as React from "react";
+// components
+import LoadingSpinner from "../loading/LoadingSpinner";
 import Accordion from "@mui/material/Accordion";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 // icons
 import { FaTimesCircle, FaCheckCircle } from "react-icons/fa";
+import { MdRemoveShoppingCart } from "react-icons/md";
 
 interface Product {
   product: string;
@@ -32,15 +35,38 @@ interface StocksData {
 
 interface StockCardPorps {
   stocksData: StocksData;
+  isLoading?: boolean;
 }
 
-export default function StockCard({ stocksData = {} }: StockCardPorps) {
+export default function StockCard({
+  stocksData = {},
+  isLoading = false,
+}: StockCardPorps) {
   const [expanded, setExpanded] = React.useState<string | false>(false);
 
   const handleChange =
     (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
+
+  if (isLoading) {
+    return (
+      <div className="w-full h-[32rem] flex justify-center items-center">
+        <LoadingSpinner text="loading stocks data..." />
+      </div>
+    );
+  }
+
+  if (Object.keys(stocksData).length === 0) {
+    return (
+      <div className="w-full h-[32rem] flex justify-center items-center">
+        <div className="flex flex-col justify-center items-center gap-3">
+          <MdRemoveShoppingCart className="text-red-400 text-6xl" />
+          <p className="text-lightDark text-2xl">No stock found</p>
+        </div>
+      </div>
+    );
+  }
 
   /**
    * TSX
