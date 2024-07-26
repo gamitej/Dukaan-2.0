@@ -21,7 +21,9 @@ export async function addPartyPaymentDataApi(req: any) {
   return data;
 }
 
-export async function deletePartyPaymentDataApi(partyId: string) {
-  const { data } = await http.post(`/payment/party-wise?party_id=${partyId}`);
+export async function deletePartyPaymentDataApi(req: any) {
+  const reqestedData = req?.original;
+
+  const { data } = await http.post(`/payment/delete`, reqestedData);
   return data;
 }

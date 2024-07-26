@@ -114,3 +114,34 @@ export async function UpdatePaidAmountDetails(req, transaction) {
     return { data: error, isError: true };
   }
 }
+
+export async function DeletePaidAmountDetails(req, transaction) {
+  try {
+    const { order_id = "", payment: amount } = req;
+
+    // Check if the order already exists
+    const existingPayment = await PendingPayment.findOne({
+      where: { order_id },
+      transaction,
+    });
+
+    if (!existingPayment)
+      return { data: "Order id not found in pending payment", isError: true };
+
+    const total_paid_amount = existingPayment.paid_amount - parseInt(amount);
+
+    if (total_paid_amount >= 0) {
+      // Update the existing order's total_amount
+      existingPayment.paid_amount = total_paid_amount;
+      await existingPayment.save({ transaction });
+      return { data: order_id, isError: false };
+    }
+
+    return {
+      data: "Incorrect payment data",
+      isError: true,
+    };
+  } catch (error) {
+    return { data: error, isError: true };
+  }
+}

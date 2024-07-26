@@ -1,6 +1,9 @@
 import Payment from "../models/payment.model.js";
 import sequelize from "../database/connection.js";
-import { UpdatePaidAmountDetails } from "./pendingPayment.controller.js";
+import {
+  DeletePaidAmountDetails,
+  UpdatePaidAmountDetails,
+} from "./pendingPayment.controller.js";
 
 export async function GetPartyPaymentDetails(req, res) {
   try {
@@ -43,7 +46,6 @@ export async function AddPartyPaymentDetails(req, res) {
       transaction
     );
 
-    console.log(data, isError);
     if (isError) throw new Error(data);
 
     // Step 2: Create a new payment entry
@@ -68,3 +70,39 @@ export async function AddPartyPaymentDetails(req, res) {
     return res.status(500).json(error.message || error);
   }
 }
+
+export const DeletePartyPaymentDetails = async (req, res) => {
+  const transaction = await sequelize.transaction();
+
+  try {
+    const { order_id, payment_id, payment: amount } = req.body;
+
+    if (!order_id) return res.status(409).json("Order Id field is required");
+    if (!payment_id)
+      return res.status(409).json("Payment Id field is required");
+    if (!amount) return res.status(409).json("Payment field is required");
+
+    // Step 1: Delete party order paid amount
+    const { data, isError } = await DeletePaidAmountDetails(
+      req.body,
+      transaction
+    );
+
+    if (isError) throw new Error(data);
+
+    // Step 2: Delete from payment table
+    const paymentDelete = await Payment.destroy(
+      { where: { payment_id: payment_id } },
+      { transaction }
+    );
+
+    if (!paymentDelete) throw new Error("Payment not found!");
+
+    // Step 3: Commit the transaction
+    await transaction.commit();
+    return res.status(200).json("Payment record deleted successfully!");
+  } catch (error) {
+    await transaction.rollback();
+    return res.status(500).json(error.message || error);
+  }
+};
