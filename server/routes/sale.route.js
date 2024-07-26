@@ -1,0 +1,15 @@
+import express from "express";
+import { GetProductSaleDetails } from "../controller/sale.controller.js";
+
+const router = express.Router();
+
+// Get sale details
+router.get("/", GetProductSaleDetails);
+
+// Add product sale details
+router.post("/add", AddProductSale);
+
+// Delete product sale details
+router.post("/delete", DeleteProductSale);
+
+export default router;

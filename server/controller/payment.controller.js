@@ -59,10 +59,10 @@ export async function AddPartyPaymentDetails(req, res) {
     if (!payment) throw new Error("Something went wrong in creating payment!");
 
     // Step 3: Commit the transaction
-    transaction.commit();
+    await transaction.commit();
     return res.status(200).json("Payment created successfully!");
   } catch (error) {
-    transaction.rollback();
+    await transaction.rollback();
     return res.status(500).json(error);
   }
 }

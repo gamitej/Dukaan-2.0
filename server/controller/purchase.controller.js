@@ -36,7 +36,7 @@ export const addPurchaseData = async (req, res) => {
       throw new Error(order_id);
     }
 
-    // Step 3: Add a new purchase table
+    // Step 3: Add a new in purchase table
     await Purchase.create(
       {
         ...requestData,
@@ -47,7 +47,7 @@ export const addPurchaseData = async (req, res) => {
       { transaction }
     );
 
-    // Step 4: Update or insert stock table
+    // Step 4: Update or insert in stock table
     const stock = await Stock.findOne({
       where: { product_id: result.prod_id },
       transaction,
@@ -163,7 +163,7 @@ export const deletePartyPurchaseData = async (req, res) => {
       { transaction }
     );
 
-    if (!purchaseDelete) throw new Error("Purchase not found!");
+    if (!purchaseDelete) throw new Error("Purchase product not found!");
 
     // Step 3: Delete purchase product quantity from stock table
     const stock = await Stock.findOne({
