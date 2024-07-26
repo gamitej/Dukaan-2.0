@@ -12,7 +12,7 @@ const PaymentTable = ({ partyId = "" }: { partyId: string }) => {
 
   // Query to fetch party payment data
   const { data: partyPaymentRowsData = [], isLoading } = useQuery({
-    queryKey: ["get-party-payment-data", partyId],
+    queryKey: ["party-payment-data", partyId],
     queryFn: () => getPartyPaymentDataApi(partyId),
   });
 

@@ -1,18 +1,24 @@
-import { useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { FormEvent, useMemo } from "react";
+import toast from "react-hot-toast";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 // components
 import DetailsModel from "./DetailsModel";
 import PaymentModel from "./PaymentModel";
 import CommonTable from "../table/CommonTable";
 // services
-import { getPartyPendingPaymentDataApi } from "@/services/PendingPayment";
+import {
+  addPartyPaymentDataApi,
+  getPartyPendingPaymentDataApi,
+} from "@/services/PendingPayment";
 // data
 import { pendingPaymentCols } from "@/data/CommonTable";
 import { formattedPendingPaymentTableColumns } from "./func";
 import { usePendingPaymentStore } from "@/store/pendingPaymentStore";
 
 const PendingPaymentTable = ({ partyId = "" }: { partyId: string }) => {
-  const { setIsDetailModelOpen, setIsPaymentModelOpen } =
+  const queryClient = useQueryClient();
+
+  const { formData, setIsDetailModelOpen, setIsPaymentModelOpen, setReset } =
     usePendingPaymentStore();
 
   /**
@@ -25,6 +31,23 @@ const PendingPaymentTable = ({ partyId = "" }: { partyId: string }) => {
     queryFn: () => getPartyPendingPaymentDataApi(partyId),
   });
 
+  // delete purchase data
+  const { mutate: mutationAddPartyPaymentData } = useMutation({
+    mutationFn: addPartyPaymentDataApi,
+    onSuccess: () => {
+      setReset();
+      toast.success("Added successfully", { duration: 1500 });
+      queryClient.invalidateQueries({
+        queryKey: ["pending-payment-data", partyId],
+      });
+    },
+    onError: () => {
+      toast.error("Something went wrong", {
+        duration: 1500,
+      });
+    },
+  });
+
   /**
    * =========================== EVENT-HANDLER ==========================
    */
@@ -34,13 +57,25 @@ const PendingPaymentTable = ({ partyId = "" }: { partyId: string }) => {
     return formattedPendingPaymentTableColumns(pendingPaymentCols);
   }, [pendingPaymentCols]);
 
+  // addPurchaseDataApi
+  const handleSubmitForm = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    console.log({ formData });
+
+    mutationAddPartyPaymentData({
+      ...formData,
+      party_id: partyId,
+    });
+  };
+
   /**
    * TSX
    */
   return (
     <div>
       <DetailsModel />
-      <PaymentModel />
+      <PaymentModel handleSubmitForm={handleSubmitForm} />
       <CommonTable
         enableEditing
         enableViewDetails

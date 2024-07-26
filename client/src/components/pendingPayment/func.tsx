@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import CopyCode from "../common/CopyCode";
 
 export const paymentModeOptions = [
   { label: "UPI", value: "UPI" },
@@ -19,12 +20,7 @@ export const formattedPendingPaymentTableColumns = (commonCols: any) => {
         Cell: ({ row }: { row: any }) => {
           const rowValue = row.original[accessorkey];
 
-          if (accessorkey === "order_id")
-            return (
-              <p className="max-w-[7.5rem] overflow-hidden text-ellipsis whitespace-nowrap bg-gray-100 p-2 rounded">
-                {rowValue}
-              </p>
-            );
+          if (accessorkey === "order_id") return <CopyCode code={rowValue} />;
 
           if (accessorkey === "total_amount" || accessorkey === "paid_amount")
             return `Rs ${rowValue}`;

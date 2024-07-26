@@ -12,8 +12,12 @@ export async function getPartyPaymentDataApi(partyId: string) {
   return data;
 }
 
-export async function addPartyPaymentDataApi(partyId: string) {
-  const { data } = await http.post(`/pending-payment/add?party_id=${partyId}`);
+export async function addPartyPaymentDataApi(req: any) {
+  const { party_id } = req;
+
+  console.log(req);
+
+  const { data } = await http.post(`/payment/add?party_id=${party_id}`, req);
   return data;
 }
 

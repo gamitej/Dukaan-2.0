@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { ChangeEvent } from "react";
+import { ChangeEvent, FormEvent } from "react";
 // components
 import Dropdown from "../fields/Dropdown";
 import BasicModal from "../model/BasicModel";
@@ -9,7 +9,11 @@ import BasicDatePicker from "../fields/BasicDatePicker";
 import { usePendingPaymentStore } from "@/store/pendingPaymentStore";
 import { paymentModeOptions } from "./func";
 
-const PaymentModel = () => {
+const PaymentModel = ({
+  handleSubmitForm,
+}: {
+  handleSubmitForm: (e: FormEvent<HTMLFormElement>) => void;
+}) => {
   const {
     setReset,
     isFormValid,
@@ -17,7 +21,6 @@ const PaymentModel = () => {
     formData,
     setFormData,
     isPaymentModelOpen,
-    setIsPaymentModelOpen,
   } = usePendingPaymentStore();
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -41,12 +44,12 @@ const PaymentModel = () => {
         modalWidth="45rem"
         title="Add Payment"
         isOpen={isPaymentModelOpen}
-        onClose={() => {
-          setReset();
-          setIsPaymentModelOpen();
-        }}
+        onClose={setReset}
       >
-        <form className="w-full flex flex-col items-center gap-6">
+        <form
+          onSubmit={handleSubmitForm}
+          className="w-full flex flex-col items-center gap-6"
+        >
           <div className="w-full flex items-center gap-3">
             {/* date */}
             <BasicDatePicker
