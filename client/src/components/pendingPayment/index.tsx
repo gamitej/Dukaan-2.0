@@ -41,9 +41,10 @@ const PendingPaymentTable = ({ partyId = "" }: { partyId: string }) => {
         queryKey: ["pending-payment-data", partyId],
       });
     },
-    onError: () => {
-      toast.error("Something went wrong", {
-        duration: 1500,
+    onError: (err: any) => {
+      const message = err?.response?.data;
+      toast.error(message || "Something went wrong", {
+        duration: 2200,
       });
     },
   });

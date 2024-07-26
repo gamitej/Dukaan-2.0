@@ -86,7 +86,7 @@ export async function GetPartyPendingPaymentDetails(req, res) {
 
 export async function UpdatePaidAmountDetails(req, transaction) {
   try {
-    const { order_id = "", amount } = req;
+    const { order_id = "", payment: amount } = req;
 
     // Check if the order already exists
     const existingPayment = await PendingPayment.findOne({
@@ -95,11 +95,11 @@ export async function UpdatePaidAmountDetails(req, transaction) {
     });
 
     if (!existingPayment)
-      return { data: "Order id not found in pending payment", error: true };
+      return { data: "Order id not found in pending payment", isError: true };
 
     const total_paid_amount = parseInt(amount) + existingPayment.paid_amount;
 
-    if (existingPayment.total_amount <= total_paid_amount) {
+    if (existingPayment.total_amount >= total_paid_amount) {
       // Update the existing order's total_amount
       existingPayment.paid_amount = total_paid_amount;
       await existingPayment.save({ transaction });

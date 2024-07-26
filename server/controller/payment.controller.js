@@ -1,5 +1,6 @@
 import Payment from "../models/payment.model.js";
 import sequelize from "../database/connection.js";
+import { UpdatePaidAmountDetails } from "./pendingPayment.controller.js";
 
 export async function GetPartyPaymentDetails(req, res) {
   try {
@@ -37,12 +38,13 @@ export async function AddPartyPaymentDetails(req, res) {
       return res.status(400).json("Missing order_id parameter");
 
     // Step 1: Update party order paid amount
-    const { data, error } = await UpdatePaidAmountDetails(
+    const { data, isError } = await UpdatePaidAmountDetails(
       req.body,
       transaction
     );
 
-    if (error) throw new Error(data);
+    console.log(data, isError);
+    if (isError) throw new Error(data);
 
     // Step 2: Create a new payment entry
     const payment = await Payment.create(
@@ -51,7 +53,7 @@ export async function AddPartyPaymentDetails(req, res) {
         order_id: requestedData.order_id,
         payment_date: requestedData.date,
         payment: parseInt(requestedData.payment),
-        payment_type: requestedData.payment_type,
+        payment_mode: requestedData.payment_mode,
       },
       { transaction }
     );
@@ -63,6 +65,6 @@ export async function AddPartyPaymentDetails(req, res) {
     return res.status(200).json("Payment created successfully!");
   } catch (error) {
     await transaction.rollback();
-    return res.status(500).json(error);
+    return res.status(500).json(error.message || error);
   }
 }
