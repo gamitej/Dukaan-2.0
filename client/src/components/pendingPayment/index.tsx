@@ -9,9 +9,11 @@ import { pendingPaymentCols } from "@/data/CommonTable";
 import { formattedPendingPaymentTableColumns } from "./func";
 import DetailsModel from "./DetailsModel";
 import { usePendingPaymentStore } from "@/store/pendingPaymentStore";
+import PaymentModel from "./PaymentModel";
 
 const PendingPaymentTable = ({ partyId = "" }: { partyId: string }) => {
-  const { setIsDetailModelOpen } = usePendingPaymentStore();
+  const { setIsDetailModelOpen, setIsPaymentModelOpen } =
+    usePendingPaymentStore();
 
   /**
    * ========================= API CALL ===========================
@@ -38,6 +40,7 @@ const PendingPaymentTable = ({ partyId = "" }: { partyId: string }) => {
   return (
     <div>
       <DetailsModel />
+      <PaymentModel />
       <CommonTable
         enableEditing
         enableViewDetails
@@ -46,7 +49,7 @@ const PendingPaymentTable = ({ partyId = "" }: { partyId: string }) => {
         topToolbarComp={
           <div>
             <button
-              //   onClick={setIsModelOpen}
+              onClick={setIsPaymentModelOpen}
               className="hover:bg-indigo-500 cursor-pointer bg-indigo-400 py-2 px-3 text-white rounded-sm"
             >
               Add Payment

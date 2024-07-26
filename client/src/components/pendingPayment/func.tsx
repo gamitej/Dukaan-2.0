@@ -1,5 +1,11 @@
 import dayjs from "dayjs";
 
+export const paymentModeOptions = [
+  { label: "UPI", value: "UPI" },
+  { label: "Cash", value: "Cash" },
+  { label: "Account", value: "Account" },
+];
+
 export const formattedPendingPaymentTableColumns = (commonCols: any) => {
   if (commonCols.length === 0) return [];
 
