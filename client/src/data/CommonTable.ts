@@ -35,3 +35,14 @@ export const pendingPaymentCols = [
   { header: "Total Amount", accessorkey: "total_amount" },
   { header: "Paid Amount", accessorkey: "paid_amount" },
 ];
+
+/**
+ * =================  PAYMENT COLS ================
+ */
+
+export const paymentCols = [
+  { header: "Order Id", accessorkey: "order_id" },
+  { header: "Date", accessorkey: "date" },
+  { header: "payment", accessorkey: "payment" },
+  { header: "Payment Mode", accessorkey: "payment_mode" },
+];

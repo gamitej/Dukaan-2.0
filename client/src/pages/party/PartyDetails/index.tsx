@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import PurchaseTable from "./PurchaseTable";
 import BasicTab from "@/components/common/BasicTab";
 import CommonTable from "@/components/table/CommonTable";
+import PaymentTable from "@/components/cards/PaymentTable";
 import PendingPaymentTable from "@/components/pendingPayment";
 // hooks
 import { PartyDetailsReponse, usePartyDetails } from "@/hooks/usePartyDetails";
@@ -22,7 +23,7 @@ const tabsData = [
   {
     label: "Payment Record",
     value: "Payment Record",
-    content: <CommonTable rows={[]} columns={[]} />,
+    content: PaymentTable,
   },
   {
     label: "Return Record",

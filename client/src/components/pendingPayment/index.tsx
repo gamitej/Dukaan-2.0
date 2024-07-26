@@ -1,15 +1,15 @@
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 // components
+import DetailsModel from "./DetailsModel";
+import PaymentModel from "./PaymentModel";
 import CommonTable from "../table/CommonTable";
 // services
 import { getPartyPendingPaymentDataApi } from "@/services/PendingPayment";
 // data
 import { pendingPaymentCols } from "@/data/CommonTable";
 import { formattedPendingPaymentTableColumns } from "./func";
-import DetailsModel from "./DetailsModel";
 import { usePendingPaymentStore } from "@/store/pendingPaymentStore";
-import PaymentModel from "./PaymentModel";
 
 const PendingPaymentTable = ({ partyId = "" }: { partyId: string }) => {
   const { setIsDetailModelOpen, setIsPaymentModelOpen } =
