@@ -1,4 +1,6 @@
+import toast from "react-hot-toast";
 import { FormEvent, useMemo } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 // components
 import { Fields } from "@/components/common/type";
 import BasicModal from "@/components/model/BasicModel";
@@ -8,15 +10,39 @@ import { useProduct } from "@/hooks/useProducts";
 // store
 import { usePurchaseStore } from "@/store/purchaseStore";
 import { formInputFieldsData } from "@/data/options";
+import { addPartyReturnDataApi } from "@/services/Return";
 
-const ReturnModel = () => {
-  const { isModelOpen, setIsModelOpen, formData } = usePurchaseStore();
+const ReturnModel = ({ partyId }: { partyId: string }) => {
+  const queryClient = useQueryClient();
+
+  const { isModelOpen, setIsModelOpen, formData, setResetFormData } =
+    usePurchaseStore();
 
   const {
     categoryOptions = [],
     companyOptions = {},
     productOptions = {},
   } = useProduct();
+
+  // =================== API CALL'S START ======================
+
+  // Mutation to add party return data
+  const { mutate: mutateAddReturnData } = useMutation({
+    mutationFn: addPartyReturnDataApi,
+    onSuccess: () => {
+      setResetFormData();
+      toast.success("Added successfully", { duration: 1200 });
+      queryClient.invalidateQueries({
+        queryKey: ["return-data", partyId],
+      });
+    },
+    onError: (err: any) => {
+      const message = err.response.data;
+      toast.error(message || "Error while adding sales data", {
+        duration: 1200,
+      });
+    },
+  });
 
   const formDropdownFieldsData: Fields[] = useMemo(() => {
     return [
@@ -46,6 +72,7 @@ const ReturnModel = () => {
 
   const handleSubmitForm = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    mutateAddReturnData({ ...formData, party_id: partyId });
   };
 
   /**

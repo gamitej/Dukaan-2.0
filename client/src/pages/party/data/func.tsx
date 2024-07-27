@@ -30,3 +30,28 @@ export const formattedPurchaseTableColumns = (commonCols: any) => {
     };
   });
 };
+
+export const formattedSalesTableColumns = (commonCols: any) => {
+  if (commonCols.length === 0) return [];
+
+  return commonCols?.map(
+    ({ header, accessorkey }: { header: string; accessorkey: string }) => {
+      return {
+        header: header,
+        id: accessorkey,
+        accessorkey: accessorkey,
+        accessorFn: (row: any) => row[accessorkey],
+        Cell: ({ row }: { row: any }) => {
+          const rowValue = row.original[accessorkey];
+
+          if (accessorkey === "price") return `Rs ${rowValue}`;
+
+          if (accessorkey === "date")
+            return dayjs(rowValue).format("DD-MMM-YYYY");
+
+          return rowValue;
+        },
+      };
+    }
+  );
+};

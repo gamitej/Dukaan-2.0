@@ -1,4 +1,6 @@
+import toast from "react-hot-toast";
 import { FormEvent, useMemo } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 // components
 import { Fields } from "@/components/common/type";
 import BasicModal from "@/components/model/BasicModel";
@@ -8,15 +10,38 @@ import { useProduct } from "@/hooks/useProducts";
 // store
 import { usePurchaseStore } from "@/store/purchaseStore";
 import { formInputFieldsData } from "@/data/options";
+import { addSalesDataApi } from "@/services/Sales";
 
 const SalesModel = () => {
-  const { isModelOpen, setIsModelOpen, formData } = usePurchaseStore();
+  const queryClient = useQueryClient();
+  const { isModelOpen, setIsModelOpen, formData, setResetFormData } =
+    usePurchaseStore();
 
   const {
     categoryOptions = [],
     companyOptions = {},
     productOptions = {},
   } = useProduct();
+
+  // =================== API CALL'S START ======================
+
+  // Mutation to add party purchase data
+  const { mutate: mutateAddSalesData } = useMutation({
+    mutationFn: addSalesDataApi,
+    onSuccess: () => {
+      setResetFormData();
+      toast.success("Added successfully", { duration: 1200 });
+      queryClient.invalidateQueries({
+        queryKey: ["sales-data"],
+      });
+    },
+    onError: (err: any) => {
+      const message = err.response.data;
+      toast.error(message || "Error while adding sales data", {
+        duration: 1200,
+      });
+    },
+  });
 
   const formDropdownFieldsData: Fields[] = useMemo(() => {
     return [
@@ -46,6 +71,7 @@ const SalesModel = () => {
 
   const handleSubmitForm = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    mutateAddSalesData(formData);
   };
 
   /**
