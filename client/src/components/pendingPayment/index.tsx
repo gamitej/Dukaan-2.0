@@ -1,5 +1,5 @@
-import { FormEvent, useMemo } from "react";
 import toast from "react-hot-toast";
+import { FormEvent, useMemo } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 // components
 import DetailsModel from "./DetailsModel";
@@ -13,6 +13,7 @@ import {
 // data
 import { pendingPaymentCols } from "@/data/CommonTable";
 import { formattedPendingPaymentTableColumns } from "./func";
+// store
 import { usePendingPaymentStore } from "@/store/pendingPaymentStore";
 
 const PendingPaymentTable = ({ partyId = "" }: { partyId: string }) => {
@@ -58,11 +59,9 @@ const PendingPaymentTable = ({ partyId = "" }: { partyId: string }) => {
     return formattedPendingPaymentTableColumns(pendingPaymentCols);
   }, [pendingPaymentCols]);
 
-  // addPurchaseDataApi
+  // submit pending payment data
   const handleSubmitForm = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    console.log({ formData });
 
     mutationAddPartyPaymentData({
       ...formData,

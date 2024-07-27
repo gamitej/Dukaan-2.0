@@ -1,4 +1,3 @@
-// import sequelize from "../database/connection.js";
 import PendingPayment from "../models/pendingPayment.model.js";
 
 export async function PurchaseToPendingPayment(req, transaction) {

@@ -1,13 +1,13 @@
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 // components
+import Return from "@/components/return";
 import PurchaseTable from "./PurchaseTable";
 import BasicTab from "@/components/common/BasicTab";
 import PaymentTable from "@/components/cards/PaymentTable";
 import PendingPaymentTable from "@/components/pendingPayment";
 // hooks
 import { PartyDetailsReponse, usePartyDetails } from "@/hooks/usePartyDetails";
-import Return from "@/components/return";
 
 const tabsData = [
   {
@@ -75,14 +75,13 @@ const PartyDetails = () => {
    */
   return (
     <div className="w-[90%] mx-auto mt-10">
-      <div className="flex justify-between items-center gap-4 bg-indigo-400 py-4 px-6 rounded-md">
+      <div className="flex justify-between items-center gap-4 bg-lightDark py-4 px-6 rounded-md">
         <div className="flex flex-col gap-3">
           <div className="text-white text-2xl capitalize font-[550]">
-            Name : <span className="font-normal">{partyDetails.name}</span>
+            owner : <span className="font-normal">{partyDetails.name}</span>
           </div>
           <div className="text-white text-2xl capitalize font-[550]">
-            Shop name :{" "}
-            <span className="font-normal">{partyDetails.shopName}</span>
+            Shop : <span className="font-normal">{partyDetails.shopName}</span>
           </div>
         </div>
 
