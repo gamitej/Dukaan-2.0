@@ -1,8 +1,9 @@
+import sequelize from "../database/connection.js";
+// models
 import Sales from "../models/sales.model.js";
+import Stock from "../models/stock.model.js";
 import Product from "../models/product.model.js";
 import { ProductExistsByCategory } from "./product.controller.js";
-import sequelize from "../database/connection.js";
-import Stock from "../models/stock.model.js";
 
 export const GetProductSaleDetails = async (req, res) => {
   try {

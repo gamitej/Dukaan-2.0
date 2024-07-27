@@ -20,6 +20,10 @@ const Return = sequelize.define("Return", {
       key: "party_id",
     },
   },
+  return_date: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
   order_id: {
     type: DataTypes.STRING,
     allowNull: false,
