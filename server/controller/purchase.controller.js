@@ -19,25 +19,20 @@ export const addPurchaseData = async (req, res) => {
     // Step 1: Check if product exists
     const result = await ProductExistsByCategory(req.body);
 
-    if (result.isError) {
-      throw new Error(result.error);
-    }
+    if (result.isError) throw new Error(result.error);
 
-    if (!result.prod_id) {
-      throw new Error("Product id not found!");
-    }
+    if (!result.prod_id) throw new Error("Product id not found!");
+
     // Step 2: Retrieve order_id from PendingPayment
     const { data, isError } = await PurchaseToPendingPayment(
       requestData,
       transaction
     );
 
-    if (isError) {
-      throw new Error(order_id);
-    }
+    if (isError) throw new Error(order_id);
 
     // Step 3: Add a new in purchase table
-    await Purchase.create(
+    const purchaseCreated = await Purchase.create(
       {
         ...requestData,
         order_id: data,
@@ -47,6 +42,8 @@ export const addPurchaseData = async (req, res) => {
       { transaction }
     );
 
+    if (!purchaseCreated) throw new Error("Error while creating purchase!");
+
     // Step 4: Update or insert in stock table
     const stock = await Stock.findOne({
       where: { product_id: result.prod_id },
@@ -55,26 +52,26 @@ export const addPurchaseData = async (req, res) => {
 
     const { quantity } = req.body;
     const quantity_in_num = parseInt(quantity);
+    const currentQuantity = parseInt(stock.quantity) || 0;
 
     if (stock) {
-      const currentQuantity = parseInt(stock.quantity) || 0;
-
       // Update existing stock
-      await stock.update(
+      const stockUpdated = await stock.update(
         { quantity: currentQuantity + quantity_in_num },
         { transaction }
       );
-    } else {
-      // Insert new stock table
-      await Stock.create(
-        { product_id: result.prod_id, quantity: quantity_in_num },
-        { transaction }
-      );
+
+      if (!stockUpdated) throw new Error("Error while updating product stock!");
     }
+    // Insert new stock table
+    const stockCreated = await Stock.create(
+      { product_id: result.prod_id, quantity: quantity_in_num },
+      { transaction }
+    );
+    if (!stockCreated) throw new Error("Error while creating product stock!");
 
     // Step 5: Commit the transaction
     await transaction.commit();
-
     return res.status(200).json("Purchase record added successfully!");
   } catch (error) {
     await transaction.rollback();
@@ -171,20 +168,18 @@ export const deletePartyPurchaseData = async (req, res) => {
       transaction,
     });
 
+    if (!stock) throw new Error("Product not found in stock!");
+
     const { quantity } = requestData;
     const quantity_in_num = parseInt(quantity);
+    const currentQuantity = parseInt(stock.quantity) || 0;
 
-    if (stock) {
-      const currentQuantity = parseInt(stock.quantity) || 0;
-
-      // Update existing stock
-      await stock.update(
-        { quantity: currentQuantity - quantity_in_num },
-        { transaction }
-      );
-    } else {
-      throw new Error("Product not found in stock!");
-    }
+    // Update existing stock
+    const stockUpdated = await stock.update(
+      { quantity: currentQuantity - quantity_in_num },
+      { transaction }
+    );
+    if (!stockUpdated) throw new Error("Error while updationg product stock!");
 
     // Step 5: Commit the transaction
     await transaction.commit();

@@ -4,6 +4,7 @@ import PendingPayment from "../models/pendingPayment.model.js";
 export async function PurchaseToPendingPayment(req, transaction) {
   try {
     const { order_id = "", party_id, price } = req;
+    const price_num = parseInt(price);
 
     // Check if the order already exists
     const existingPayment = await PendingPayment.findOne({
@@ -11,23 +12,32 @@ export async function PurchaseToPendingPayment(req, transaction) {
       transaction,
     });
 
-    const price_num = parseInt(price);
-
     if (existingPayment) {
       // Update the existing order's total_amount
       existingPayment.total_amount += price_num;
-      await existingPayment.save({ transaction });
+      const addPayment = await existingPayment.save({ transaction });
+
+      if (!addPayment)
+        return {
+          data: "Error while adding payment in pending payment",
+          isError: true,
+        };
+
       return { data: order_id, isError: false };
     } else {
       // Create a new PendingPayment entry
-      const data = await PendingPayment.create(
+      const paymentCreated = await PendingPayment.create(
         {
           party_id,
           total_amount: price_num,
         },
         { transaction }
       );
-      return { data: data.order_id, isError: false };
+
+      if (!paymentCreated)
+        return { data: "Error while creating pending payment!", isError: true };
+
+      return { data: paymentCreated.order_id, isError: false };
     }
   } catch (error) {
     return { data: error, isError: true };
@@ -37,6 +47,7 @@ export async function PurchaseToPendingPayment(req, transaction) {
 export async function DeletePurchaseFromPendingPayment(req, transaction) {
   try {
     const { order_id = "", price } = req;
+    const price_num = parseInt(price);
 
     // Check if the order already exists
     const existingPayment = await PendingPayment.findOne({
@@ -44,16 +55,17 @@ export async function DeletePurchaseFromPendingPayment(req, transaction) {
       transaction,
     });
 
-    if (!existingPayment) {
+    if (!existingPayment)
       return { data: "Order id not found in pending payment", error: true };
-    }
 
-    const price_num = parseInt(price);
+    // ! add a case for if user tries to delete purchase record and its payment is already done
 
     // Update the existing order's total_amount
     existingPayment.total_amount -= price_num;
-    await existingPayment.save({ transaction });
+    const paymentUpdated = await existingPayment.save({ transaction });
 
+    if (!paymentUpdated)
+      return { data: "Error while updating pending payment", isError: true };
     return { data: order_id, isError: false };
   } catch (error) {
     return { data: error, isError: true };
@@ -102,7 +114,14 @@ export async function UpdatePaidAmountDetails(req, transaction) {
     if (existingPayment.total_amount >= total_paid_amount) {
       // Update the existing order's total_amount
       existingPayment.paid_amount = total_paid_amount;
-      await existingPayment.save({ transaction });
+      const paymentUpdated = await existingPayment.save({ transaction });
+
+      if (!paymentUpdated)
+        return {
+          data: "Error while adding total payment in pending payment",
+          isError: true,
+        };
+
       return { data: order_id, isError: false };
     }
 
