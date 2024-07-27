@@ -14,6 +14,7 @@ const AddProductDetailsForm: FC<AddProductDetailsFormProps> = ({
   formDropdownFieldsData = [],
   formInputFieldsData = [],
   handleSubmit,
+  disableCheckBox = false,
 }) => {
   const {
     formData,
@@ -61,15 +62,17 @@ const AddProductDetailsForm: FC<AddProductDetailsFormProps> = ({
                 placeholder={"enter order ID"}
               />
             )}
-            <CheckBox
-              width="30%"
-              isChecked={isChecked}
-              setChecked={() => {
-                setIsChecked();
-                setIsFormValid();
-              }}
-              label="add orderId"
-            />
+            {!disableCheckBox && (
+              <CheckBox
+                width="30%"
+                isChecked={isChecked}
+                setChecked={() => {
+                  setIsChecked(!isChecked);
+                  setIsFormValid();
+                }}
+                label="add orderId"
+              />
+            )}
           </div>
         )}
       </div>

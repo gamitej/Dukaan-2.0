@@ -3,11 +3,11 @@ import { useParams } from "react-router-dom";
 // components
 import PurchaseTable from "./PurchaseTable";
 import BasicTab from "@/components/common/BasicTab";
-import CommonTable from "@/components/table/CommonTable";
 import PaymentTable from "@/components/cards/PaymentTable";
 import PendingPaymentTable from "@/components/pendingPayment";
 // hooks
 import { PartyDetailsReponse, usePartyDetails } from "@/hooks/usePartyDetails";
+import Return from "@/components/return";
 
 const tabsData = [
   {
@@ -28,7 +28,7 @@ const tabsData = [
   {
     label: "Return Record",
     value: "Return Record",
-    content: <CommonTable rows={[]} columns={[]} />,
+    content: Return,
   },
 ];
 

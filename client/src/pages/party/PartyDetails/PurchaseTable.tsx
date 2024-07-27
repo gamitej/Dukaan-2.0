@@ -19,7 +19,7 @@ import { formattedPurchaseTableColumns } from "../data/func";
 
 const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
   const queryClient = useQueryClient();
-  const { setIsModelOpen } = usePurchaseStore();
+  const { setIsModelOpen, setIsChecked } = usePurchaseStore();
 
   const { isConfirmationModelOpen, setIsConfirmationModelOpen, selectedData } =
     useConfirmationStore();
@@ -66,6 +66,11 @@ const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
     setIsConfirmationModelOpen(selectedData);
   };
 
+  const handleClick = () => {
+    setIsModelOpen();
+    setIsChecked(false);
+  };
+
   //
 
   /**
@@ -90,7 +95,7 @@ const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
         topToolbarComp={
           <div>
             <button
-              onClick={setIsModelOpen}
+              onClick={handleClick}
               className="hover:bg-indigo-500 cursor-pointer bg-indigo-400 py-2 px-3 text-white rounded-sm"
             >
               Add Purchase

@@ -1,7 +1,7 @@
+import SalesModel from "./SalesModel";
 import CommonTable from "@/components/table/CommonTable";
 // store
 import { usePurchaseStore } from "@/store/purchaseStore";
-import SalesModel from "./SalesModel";
 
 const SalesTable = () => {
   const { setIsModelOpen } = usePurchaseStore();

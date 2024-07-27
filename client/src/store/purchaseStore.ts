@@ -14,7 +14,7 @@ export type FormDataPurchase = {
 
 interface PurchaseState {
   isChecked: boolean;
-  setIsChecked: () => void;
+  setIsChecked: (value: boolean) => void;
 
   isModelOpen: boolean;
   setIsModelOpen: () => void;
@@ -41,8 +41,8 @@ const defaultFormData = {
 
 export const usePurchaseStore = create<PurchaseState>((set) => ({
   isChecked: false,
-  setIsChecked: () => {
-    set((state) => ({ ...state, isChecked: !state.isChecked }));
+  setIsChecked: (value) => {
+    set((state) => ({ ...state, isChecked: value }));
   },
 
   isModelOpen: false,
