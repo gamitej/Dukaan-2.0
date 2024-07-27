@@ -10,8 +10,7 @@ export async function addSalesDataApi(req: any) {
   return data;
 }
 
-export async function deleteSalesDataApi(req: any) {
-  const reqestedData = req?.original;
+export async function deleteSalesDataApi(reqestedData: any) {
   const { data } = await http.post(`/sales/delete`, reqestedData);
   return data;
 }

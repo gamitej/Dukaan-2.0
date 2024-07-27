@@ -8,7 +8,7 @@ import {
 const router = express.Router();
 
 // Get sale details
-router.get("/", GetProductSaleDetails);
+router.get("/all", GetProductSaleDetails);
 
 // Add product sale details
 router.post("/add", AddProductSale);

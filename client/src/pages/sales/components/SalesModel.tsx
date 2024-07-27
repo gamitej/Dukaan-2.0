@@ -30,7 +30,7 @@ const SalesModel = () => {
     mutationFn: addSalesDataApi,
     onSuccess: () => {
       setResetFormData();
-      toast.success("Added successfully", { duration: 1200 });
+      toast.success("Added successfully", { duration: 1800 });
       queryClient.invalidateQueries({
         queryKey: ["sales-data"],
       });
@@ -38,7 +38,7 @@ const SalesModel = () => {
     onError: (err: any) => {
       const message = err.response.data;
       toast.error(message || "Error while adding sales data", {
-        duration: 1200,
+        duration: 2000,
       });
     },
   });

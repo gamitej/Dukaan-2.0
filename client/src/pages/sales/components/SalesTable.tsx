@@ -36,9 +36,9 @@ const SalesTable = () => {
     mutationFn: deleteSalesDataApi,
     onSuccess: () => {
       setIsConfirmationModelOpen();
-      toast.success("Deleted successfully", { duration: 1200 });
+      toast.success("Deleted successfully", { duration: 2000 });
       queryClient.invalidateQueries({
-        queryKey: ["purchase-data"],
+        queryKey: ["sales-data"],
       });
     },
     onError: (err: any) => {
@@ -62,8 +62,6 @@ const SalesTable = () => {
   const formattedCols = useMemo(() => {
     return formattedSalesTableColumns(commonCols);
   }, [commonCols]);
-
-  console.log({ salesRowsData });
 
   /**
    * TSX
@@ -94,7 +92,7 @@ const SalesTable = () => {
             </button>
           </div>
         }
-        rows={[]}
+        rows={salesRowsData || []}
         columns={formattedCols}
       />
     </div>

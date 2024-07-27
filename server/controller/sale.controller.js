@@ -7,17 +7,8 @@ import { ProductExistsByCategory } from "./product.controller.js";
 
 export const GetProductSaleDetails = async (req, res) => {
   try {
-    const { party_id } = req.query;
-
-    if (!party_id) {
-      return res.status(400).json("Missing party_id parameter");
-    }
-
     // Fetch purchase data based on party_id
     const sales = await Sales.findAll({
-      where: {
-        party_id: party_id,
-      },
       order: [["date", "DESC"]],
       include: [
         {
@@ -88,28 +79,28 @@ export const AddProductSale = async (req, res) => {
       transaction,
     });
 
+    if (!stock) throw new Error("Product not found in stock!");
+
     const { quantity } = req.body;
     const quantity_in_num = parseInt(quantity);
+    const currentQuantity = parseInt(stock.quantity) || 0;
 
-    if (stock) {
-      const currentQuantity = parseInt(stock.quantity) || 0;
+    if (quantity_in_num === 0)
+      throw new Error("Quantity must be greater than zero");
 
-      // Update existing stock
-      await stock.update(
-        { quantity: currentQuantity + quantity_in_num },
-        { transaction }
-      );
-    } else {
-      // Insert new stock table
-      await Stock.create(
-        { product_id: result.prod_id, quantity: quantity_in_num },
-        { transaction }
-      );
-    }
+    if (currentQuantity < quantity_in_num)
+      throw new Error("Product quantity is out of range");
+
+    // Update existing stock
+    const stockUpdated = await stock.update(
+      { quantity: currentQuantity - quantity_in_num },
+      { transaction }
+    );
+
+    if (!stockUpdated) throw new Error("Error while updating stock!");
 
     // Step 5: Commit the transaction
     await transaction.commit();
-
     return res.status(200).json("Sale record added successfully!");
   } catch (error) {
     await transaction.rollback();
@@ -137,20 +128,20 @@ export const DeleteProductSale = async (req, res) => {
       transaction,
     });
 
+    if (!stock) throw new Error("Product not found in stock table");
+
     const { quantity } = requestData;
     const quantity_in_num = parseInt(quantity);
 
-    if (stock) {
-      const currentQuantity = parseInt(stock.quantity) || 0;
+    const currentQuantity = parseInt(stock.quantity) || 0;
 
-      // Update existing stock
-      await stock.update(
-        { quantity: currentQuantity - quantity_in_num },
-        { transaction }
-      );
-    } else {
-      throw new Error("Sale product not found in stock!");
-    }
+    // Update existing stock
+    const stockUpdated = await stock.update(
+      { quantity: currentQuantity + quantity_in_num },
+      { transaction }
+    );
+    if (!stockUpdated)
+      throw new Error("Something went wrong while updation stock!");
 
     // Step 3: Commit the transaction
     await transaction.commit();
