@@ -1,4 +1,7 @@
 import Return from "../models/return.model.js";
+import Product from "../models/product.model.js";
+// controllers
+import { ProductExistsByCategory } from "./product.controller.js";
 
 export const GetPartyReturnDetails = async (req, res) => {
   try {
@@ -13,7 +16,7 @@ export const GetPartyReturnDetails = async (req, res) => {
       where: {
         party_id: party_id,
       },
-      order: [["date", "DESC"]],
+      order: [["return_date", "DESC"]],
       include: [
         {
           model: Product,
@@ -42,14 +45,14 @@ export const GetPartyReturnDetails = async (req, res) => {
         company,
         category,
         quantity,
-        amount,
+        price:amount,
         product_id,
       };
     });
 
     return res.status(200).json(formattedReturnData);
   } catch (error) {
-    return res.status(500).json(error);
+    return res.status(500).json(error.message || error);
   }
 };
 
@@ -67,6 +70,9 @@ export const AddPartyReturnData = async (req, res) => {
     // Step 2: Add a new in return table
     const sale = await Return.create({
       product_id: result.prod_id,
+      return_date: requestData.date,
+      order_id: requestData.orderId,
+      amount: parseInt(requestData.price),
       ...requestData,
     });
 

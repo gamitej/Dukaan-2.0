@@ -10,6 +10,9 @@ import {
   getPartyReturnDataApi,
 } from "@/services/Return";
 import ConfirmationModel from "../model/ConfirmationModel";
+import { useMemo } from "react";
+import { formattedSalesTableColumns } from "@/pages/party/data/func";
+import { commonCols } from "@/data/CommonTable";
 
 const Return = ({ partyId }: { partyId: string }) => {
   const queryClient = useQueryClient();
@@ -60,7 +63,10 @@ const Return = ({ partyId }: { partyId: string }) => {
     setIsChecked(true);
   };
 
-  console.log({ partyPurchaseReturnRowsData });
+  // formatted columns data
+  const formattedCols = useMemo(() => {
+    return formattedSalesTableColumns(commonCols);
+  }, [commonCols]);
 
   /**
    * TSX
@@ -91,8 +97,8 @@ const Return = ({ partyId }: { partyId: string }) => {
             </button>
           </div>
         }
-        rows={[]}
-        columns={[]}
+        rows={partyPurchaseReturnRowsData || []}
+        columns={formattedCols}
       />
     </div>
   );

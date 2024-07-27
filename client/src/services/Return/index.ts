@@ -11,8 +11,7 @@ export async function addPartyReturnDataApi(req: any) {
   return data;
 }
 
-export async function deletePartyReturnDataApi(req: any) {
-  const reqestedData = req?.original;
+export async function deletePartyReturnDataApi(reqestedData: any) {
   const { data } = await http.post(`/return/delete`, reqestedData);
   return data;
 }
