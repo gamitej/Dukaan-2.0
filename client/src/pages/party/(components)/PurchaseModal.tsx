@@ -1,4 +1,4 @@
-import { FormEvent } from "react";
+import { FormEvent, useMemo } from "react";
 import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 // service
@@ -11,6 +11,7 @@ import AddProductDetailsForm from "@/components/common/AddProductDetailsForm";
 import { useProduct } from "@/hooks/useProducts";
 // store
 import { usePurchaseStore } from "@/store/purchaseStore";
+import { formInputFieldsData } from "@/data/options";
 
 const PurchaseModal = ({ partyId }: { partyId: string }) => {
   const queryClient = useQueryClient();
@@ -44,58 +45,32 @@ const PurchaseModal = ({ partyId }: { partyId: string }) => {
     },
   });
 
-  const formDropdownFieldsData: Fields[] = [
-    {
-      id: "category",
-      width: "100%",
-      type: "dropdown",
-      label: "Category",
-      options: categoryOptions,
-    },
-    {
-      id: "product",
-      options: productOptions[formData.category],
-      width: "100%",
-      type: "dropdown",
-      label: "Product",
-    },
-    {
-      id: "company",
-      options: companyOptions[formData.category],
-      width: "100%",
-      type: "dropdown",
-      label: "Company",
-    },
-  ];
+  const formDropdownFieldsData: Fields[] = useMemo(() => {
+    return [
+      {
+        id: "category",
+        width: "100%",
+        type: "dropdown",
+        label: "Category",
+        options: categoryOptions,
+      },
+      {
+        id: "product",
+        options: productOptions[formData.category],
+        width: "100%",
+        type: "dropdown",
+        label: "Product",
+      },
+      {
+        id: "company",
+        options: companyOptions[formData.category],
+        width: "100%",
+        type: "dropdown",
+        label: "Company",
+      },
+    ];
+  }, [companyOptions, productOptions, categoryOptions, formData.category]);
 
-  const formInputFieldsData: Fields[] = [
-    {
-      id: "price",
-      label: "Price",
-      width: "60%",
-      inputField: "number",
-      type: "input",
-      placeholder: "enter price...",
-    },
-    {
-      width: "20%",
-      type: "input",
-      id: "quantity",
-      inputField: "number",
-      label: "Quantity",
-      placeholder: "enter quantity...",
-    },
-    {
-      id: "weight",
-      type: "input",
-      width: "20%",
-      label: "Weight",
-      inputField: "text",
-      placeholder: "enter weight...",
-    },
-  ];
-
-  // addPurchaseDataApi
   const handleSubmitForm = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     mutateAddPurchaseData({
