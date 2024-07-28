@@ -14,7 +14,10 @@ export async function GetPartyPaymentDetails(req, res) {
     if (!startDate) return res.status(400).json("Missing start date parameter");
     if (!endDate) return res.status(400).json("Missing end date parameter");
 
-    const dateCondition = DateCondition(req.query);
+    const dateCondition = DateCondition({
+      ...req.query,
+      date_label: "payment_date",
+    });
 
     // Fetch purchase data based on party_id
     const paymentData = await Payment.findAll({

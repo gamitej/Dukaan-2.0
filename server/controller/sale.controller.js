@@ -13,7 +13,7 @@ export const GetProductSaleDetails = async (req, res) => {
     if (!startDate) return res.status(400).json("Missing start date parameter");
     if (!endDate) return res.status(400).json("Missing end date parameter");
 
-    const dateCondition = DateCondition(req.query);
+    const dateCondition = DateCondition({ ...req.query, date_label: "date" });
 
     // Fetch purchase data based on party_id
     const sales = await Sales.findAll({

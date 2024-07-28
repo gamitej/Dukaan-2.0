@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import toast from "react-hot-toast";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 // components
 import CommonTable from "@/components/table/CommonTable";
 import PurchaseModal from "../(components)/PurchaseModal";
@@ -9,18 +9,14 @@ import ConfirmationModel from "@/components/model/ConfirmationModel";
 import { usePurchaseStore } from "@/store/purchaseStore";
 import { useConfirmationStore } from "@/store/confirmationModelStore";
 // services
-import {
-  deletePartyPuchaseDataApi,
-  getPartyWisePuchaseDataApi,
-} from "@/services/Purchase";
+import { deletePartyPuchaseDataApi } from "@/services/Purchase";
+import { usePartyPurchaseData } from "../common/usePartyPurchaseData";
 // data
 import { commonCols } from "@/data/CommonTable";
 import { formattedPurchaseTableColumns } from "../data/func";
-import { useGlobleStore } from "@/store/globalStore";
 
 const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
   const queryClient = useQueryClient();
-  const { selectedDateRange } = useGlobleStore();
   const { setIsModelOpen, setIsChecked } = usePurchaseStore();
 
   const { isConfirmationModelOpen, setIsConfirmationModelOpen, selectedData } =
@@ -31,10 +27,10 @@ const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
    */
 
   // Query to fetch party purchase data
-  const { data: partyPurchaseRowsData = [], isLoading } = useQuery({
-    queryKey: ["purchase-data", partyId, selectedDateRange],
-    queryFn: () => getPartyWisePuchaseDataApi(partyId, selectedDateRange),
-  });
+  const { purchases: partyPurchaseRowsData = [], isLoading } =
+    usePartyPurchaseData({
+      partyId,
+    });
 
   // delete purchase data
   const { mutate: mutationDeletePartyPurchaseData } = useMutation({

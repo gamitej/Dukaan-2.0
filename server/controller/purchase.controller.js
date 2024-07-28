@@ -1,3 +1,4 @@
+import { Op, fn, col } from "sequelize";
 import sequelize from "../database/connection.js";
 // models
 import Stock from "../models/stock.model.js";
@@ -90,7 +91,7 @@ export const getPartyPurchaseData = async (req, res) => {
 
     const dateCondition = DateCondition(req.query);
 
-    // Fetch purchase data based on party_id
+    // Fetch purchase data and calculate the total price
     const purchases = await Purchase.findAll({
       where: {
         party_id: party_id,
@@ -108,9 +109,20 @@ export const getPartyPurchaseData = async (req, res) => {
       ],
     });
 
-    if (purchases.length === 0) {
-      return res.status(200).json([]);
-    }
+    // Query to get the total price
+    const totalResult = await Purchase.findOne({
+      where: {
+        party_id: party_id,
+        ...dateCondition,
+      },
+      attributes: [[fn("SUM", col("price")), "totalPrice"]],
+    });
+
+    // Extract the total price from the result
+    const totalPrice = totalResult ? totalResult.dataValues.totalPrice : 0;
+
+    if (purchases.length === 0)
+      return res.status(200).json({ purchases: [], totalPrice: totalPrice });
 
     const formattedPurchase = purchases.map((item) => {
       const {
@@ -138,7 +150,7 @@ export const getPartyPurchaseData = async (req, res) => {
       };
     });
 
-    return res.status(200).json(formattedPurchase);
+    return res.status(200).json({ purchases: formattedPurchase, totalPrice });
   } catch (error) {
     return res
       .status(500)

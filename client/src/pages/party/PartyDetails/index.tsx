@@ -10,6 +10,7 @@ import PendingPaymentTable from "@/components/pendingPayment";
 import { PartyDetailsReponse, usePartyDetails } from "@/hooks/usePartyDetails";
 import BasicDateRangePicker from "@/components/fields/DateRangePicker";
 import { useGlobleStore } from "@/store/globalStore";
+import TotalCard from "../common/TotalCard";
 
 const tabsData = [
   {
@@ -97,8 +98,9 @@ const PartyDetails = () => {
         </div>
       </div>
 
-      <div className="mt-4">
+      <div className="mt-4 flex justify-between items-center">
         <BasicDateRangePicker setDateRangeChange={setSelectedDateRabge} />
+        <TotalCard />
       </div>
 
       <div className="mt-4">

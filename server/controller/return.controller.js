@@ -2,6 +2,7 @@ import Return from "../models/return.model.js";
 import Product from "../models/product.model.js";
 // controllers
 import { ProductExistsByCategory } from "./product.controller.js";
+import { DateCondition } from "../utils/date.js";
 
 export const GetPartyReturnDetails = async (req, res) => {
   try {
@@ -11,7 +12,10 @@ export const GetPartyReturnDetails = async (req, res) => {
     if (!startDate) return res.status(400).json("Missing start date parameter");
     if (!endDate) return res.status(400).json("Missing end date parameter");
 
-    const dateCondition = DateCondition(req.query);
+    const dateCondition = DateCondition({
+      ...req.query,
+      date_label: "return_date",
+    });
 
     // Fetch purchase data based on party_id
     const returnData = await Return.findAll({

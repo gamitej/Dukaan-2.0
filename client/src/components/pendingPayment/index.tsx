@@ -1,25 +1,21 @@
 import toast from "react-hot-toast";
 import { FormEvent, useMemo } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 // components
 import DetailsModel from "./DetailsModel";
 import PaymentModel from "./PaymentModel";
 import CommonTable from "../table/CommonTable";
 // services
-import {
-  addPartyPaymentDataApi,
-  getPartyPendingPaymentDataApi,
-} from "@/services/PendingPayment";
+import { addPartyPaymentDataApi } from "@/services/PendingPayment";
+import { usePartyPendingPayment } from "@/hooks/usePartyPendingPayment";
 // data
 import { pendingPaymentCols } from "@/data/CommonTable";
 import { formattedPendingPaymentTableColumns } from "./func";
 // store
 import { usePendingPaymentStore } from "@/store/pendingPaymentStore";
-import { useGlobleStore } from "@/store/globalStore";
 
 const PendingPaymentTable = ({ partyId = "" }: { partyId: string }) => {
   const queryClient = useQueryClient();
-  const { selectedDateRange } = useGlobleStore();
 
   const { formData, setIsDetailModelOpen, setIsPaymentModelOpen, setReset } =
     usePendingPaymentStore();
@@ -29,10 +25,10 @@ const PendingPaymentTable = ({ partyId = "" }: { partyId: string }) => {
    */
 
   // Query to fetch party purchase data
-  const { data: partyPendingPaymentRowsData = [], isLoading } = useQuery({
-    queryKey: ["pending-payment-data", partyId, selectedDateRange],
-    queryFn: () => getPartyPendingPaymentDataApi(partyId, selectedDateRange),
-  });
+  const { isLoading, partyPendingPaymentRowsData = [] } =
+    usePartyPendingPayment({
+      partyId,
+    });
 
   // delete purchase data
   const { mutate: mutationAddPartyPaymentData } = useMutation({

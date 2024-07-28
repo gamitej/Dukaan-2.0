@@ -1,5 +1,6 @@
-import PendingPayment from "../models/pendingPayment.model.js";
+import { fn, col, literal } from "sequelize";
 import { DateCondition } from "../utils/date.js";
+import PendingPayment from "../models/pendingPayment.model.js";
 
 export async function PurchaseToPendingPayment(req, transaction) {
   try {
@@ -80,7 +81,10 @@ export async function GetPartyPendingPaymentDetails(req, res) {
     if (!startDate) return res.status(400).json("Missing start date parameter");
     if (!endDate) return res.status(400).json("Missing end date parameter");
 
-    const dateCondition = DateCondition(req.query);
+    const dateCondition = DateCondition({
+      ...req.query,
+      date_label: "createdAt",
+    });
 
     // Fetch purchase data based on party_id
     const pendingPaymentData = await PendingPayment.findAll({
@@ -94,11 +98,35 @@ export async function GetPartyPendingPaymentDetails(req, res) {
       ],
     });
 
+    // Query to get the total purchase amount and total pending payment
+    const totals = await PendingPayment.findOne({
+      where: {
+        party_id: party_id,
+        ...dateCondition,
+      },
+      attributes: [
+        [fn("SUM", col("total_amount")), "totalPurchase"],
+        [
+          fn("SUM", literal("total_amount - paid_amount")),
+          "totalPendingPayment",
+        ],
+      ],
+    });
+
     if (!pendingPaymentData)
       return res.json(404).json("Party pending payment not found!");
 
-    return res.status(200).json(pendingPaymentData);
-  } catch (error) {}
+    const totalPurchase = totals[0]?.dataValues.totalPurchase || 0;
+    const totalPendingPayment = totals[0]?.dataValues.totalPendingPayment || 0;
+
+    return res
+      .status(200)
+      .json({ pendingPaymentData, totalPurchase, totalPendingPayment });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: error.message || "Internal Server Error" });
+  }
 }
 
 export async function UpdatePaidAmountDetails(req, transaction) {
