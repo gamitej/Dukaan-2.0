@@ -1,5 +1,6 @@
 import { FormDataPurchase } from "@/store/purchaseStore";
 import http from "../httpService";
+import { DateRangeType } from "@/store/globalStore";
 
 interface AddPurchasePorps extends FormDataPurchase {
   party_id: string;
@@ -11,8 +12,13 @@ export async function addPurchaseDataApi(req: AddPurchasePorps) {
   return data;
 }
 
-export async function getPartyWisePuchaseDataApi(partyId: string) {
-  const { data } = await http.get(`/purchase/party-wise?party_id=${partyId}`);
+export async function getPartyWisePuchaseDataApi(
+  partyId: string,
+  selectedDateRange: DateRangeType
+) {
+  const { data } = await http.get(
+    `/purchase/party-wise?party_id=${partyId}&startDate=${selectedDateRange.startDate}&endDate=${selectedDateRange.endDate}`
+  );
   return data;
 }
 

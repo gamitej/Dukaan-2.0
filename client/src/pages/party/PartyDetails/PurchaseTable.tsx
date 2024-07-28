@@ -16,9 +16,11 @@ import {
 // data
 import { commonCols } from "@/data/CommonTable";
 import { formattedPurchaseTableColumns } from "../data/func";
+import { useGlobleStore } from "@/store/globalStore";
 
 const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
   const queryClient = useQueryClient();
+  const { selectedDateRange } = useGlobleStore();
   const { setIsModelOpen, setIsChecked } = usePurchaseStore();
 
   const { isConfirmationModelOpen, setIsConfirmationModelOpen, selectedData } =
@@ -30,8 +32,8 @@ const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
 
   // Query to fetch party purchase data
   const { data: partyPurchaseRowsData = [], isLoading } = useQuery({
-    queryKey: ["purchase-data", partyId],
-    queryFn: () => getPartyWisePuchaseDataApi(partyId),
+    queryKey: ["purchase-data", partyId, selectedDateRange],
+    queryFn: () => getPartyWisePuchaseDataApi(partyId, selectedDateRange),
   });
 
   // delete purchase data

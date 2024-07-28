@@ -13,7 +13,10 @@ interface BasicDateRangePicker {
 export default function BasicDateRangePicker({
   setDateRangeChange,
 }: BasicDateRangePicker) {
-  const [date, setDate] = useState<DateRangeType>({
+  const [date, setDate] = useState<{
+    startDate: dayjs.Dayjs;
+    endDate: dayjs.Dayjs;
+  }>({
     startDate: dayjs(),
     endDate: dayjs(),
   });
@@ -24,7 +27,10 @@ export default function BasicDateRangePicker({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setDateRangeChange(date);
+    setDateRangeChange({
+      startDate: dayjs(date.startDate).format("YYYY-MM-DD"),
+      endDate: dayjs(date.startDate).format("YYYY-MM-DD"),
+    });
   };
 
   /**

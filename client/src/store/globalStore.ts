@@ -2,8 +2,8 @@ import dayjs from "dayjs";
 import { create } from "zustand";
 
 export type DateRangeType = {
-  startDate: dayjs.Dayjs;
-  endDate: dayjs.Dayjs;
+  startDate: string;
+  endDate: string;
 };
 
 interface GlobalState {
@@ -30,8 +30,8 @@ export const useGlobleStore = create<GlobalState>((set) => ({
   },
 
   selectedDateRange: {
-    startDate: dayjs(),
-    endDate: dayjs(),
+    startDate: dayjs().format("YYYY-MM-DD"),
+    endDate: dayjs().format("YYYY-MM-DD"),
   },
   setSelectedDateRabge: (value) => {
     set((state) => ({ ...state, selectedDateRange: value }));
