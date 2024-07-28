@@ -1,7 +1,10 @@
+import { DateRangeType } from "@/store/globalStore";
 import http from "../httpService";
 
-export async function getSalesDataApi() {
-  const { data } = await http.get(`/sales/all`);
+export async function getSalesDataApi(selectedDateRange: DateRangeType) {
+  const { data } = await http.get(
+    `/sales/all?startDate=${selectedDateRange.startDate}&endDate=${selectedDateRange.endDate}`
+  );
   return data;
 }
 

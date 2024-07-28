@@ -13,10 +13,12 @@ import { deleteSalesDataApi, getSalesDataApi } from "@/services/Sales";
 // data
 import { commonCols } from "@/data/CommonTable";
 import { formattedSalesTableColumns } from "@/pages/party/data/func";
+import { useGlobleStore } from "@/store/globalStore";
 
 const SalesTable = () => {
   const queryClient = useQueryClient();
   const { setIsModelOpen } = usePurchaseStore();
+  const { selectedDateRange } = useGlobleStore();
 
   const { isConfirmationModelOpen, setIsConfirmationModelOpen, selectedData } =
     useConfirmationStore();
@@ -27,8 +29,8 @@ const SalesTable = () => {
 
   // Query to fetch sales data
   const { data: salesRowsData = [], isLoading } = useQuery({
-    queryKey: ["sales-data"],
-    queryFn: () => getSalesDataApi(),
+    queryKey: ["sales-data", selectedDateRange],
+    queryFn: () => getSalesDataApi(selectedDateRange),
   });
 
   // delete sale data

@@ -1,7 +1,11 @@
+import { useMemo } from "react";
 import toast from "react-hot-toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+// components
 import ReturnModel from "./ReturnModel";
 import CommonTable from "@/components/table/CommonTable";
+import ConfirmationModel from "../model/ConfirmationModel";
+import { formattedSalesTableColumns } from "@/pages/party/data/func";
 // store
 import { usePurchaseStore } from "@/store/purchaseStore";
 import { useConfirmationStore } from "@/store/confirmationModelStore";
@@ -9,13 +13,12 @@ import {
   deletePartyReturnDataApi,
   getPartyReturnDataApi,
 } from "@/services/Return";
-import ConfirmationModel from "../model/ConfirmationModel";
-import { useMemo } from "react";
-import { formattedSalesTableColumns } from "@/pages/party/data/func";
 import { commonCols } from "@/data/CommonTable";
+import { useGlobleStore } from "@/store/globalStore";
 
 const Return = ({ partyId }: { partyId: string }) => {
   const queryClient = useQueryClient();
+  const { selectedDateRange } = useGlobleStore();
   const { setIsModelOpen, setIsChecked } = usePurchaseStore();
 
   const { isConfirmationModelOpen, setIsConfirmationModelOpen, selectedData } =
@@ -27,8 +30,8 @@ const Return = ({ partyId }: { partyId: string }) => {
 
   // Query to fetch party purchase data
   const { data: partyPurchaseReturnRowsData = [], isLoading } = useQuery({
-    queryKey: ["return-data", partyId],
-    queryFn: () => getPartyReturnDataApi(partyId),
+    queryKey: ["return-data", partyId, selectedDateRange],
+    queryFn: () => getPartyReturnDataApi(partyId, selectedDateRange),
   });
 
   // delete purchase data

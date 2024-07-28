@@ -12,9 +12,11 @@ import {
 } from "@/services/PendingPayment";
 import { useConfirmationStore } from "@/store/confirmationModelStore";
 import toast from "react-hot-toast";
+import { useGlobleStore } from "@/store/globalStore";
 
 const PaymentTable = ({ partyId = "" }: { partyId: string }) => {
   const queryClient = useQueryClient();
+  const { selectedDateRange } = useGlobleStore();
 
   const { isConfirmationModelOpen, setIsConfirmationModelOpen, selectedData } =
     useConfirmationStore();
@@ -26,7 +28,7 @@ const PaymentTable = ({ partyId = "" }: { partyId: string }) => {
   // Query to fetch party payment data
   const { data: partyPaymentRowsData = [], isLoading } = useQuery({
     queryKey: ["party-payment-data", partyId],
-    queryFn: () => getPartyPaymentDataApi(partyId),
+    queryFn: () => getPartyPaymentDataApi(partyId, selectedDateRange),
   });
 
   // delete purchase data

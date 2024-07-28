@@ -1,7 +1,13 @@
+import { DateRangeType } from "@/store/globalStore";
 import http from "../httpService";
 
-export async function getPartyReturnDataApi(partyId: string) {
-  const { data } = await http.get(`/return/party-wise?party_id=${partyId}`);
+export async function getPartyReturnDataApi(
+  partyId: string,
+  selectedDateRange: DateRangeType
+) {
+  const { data } = await http.get(
+    `/return/party-wise?party_id=${partyId}&startDate=${selectedDateRange.startDate}&endDate=${selectedDateRange.endDate}`
+  );
   return data;
 }
 

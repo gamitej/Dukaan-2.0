@@ -15,9 +15,11 @@ import { pendingPaymentCols } from "@/data/CommonTable";
 import { formattedPendingPaymentTableColumns } from "./func";
 // store
 import { usePendingPaymentStore } from "@/store/pendingPaymentStore";
+import { useGlobleStore } from "@/store/globalStore";
 
 const PendingPaymentTable = ({ partyId = "" }: { partyId: string }) => {
   const queryClient = useQueryClient();
+  const { selectedDateRange } = useGlobleStore();
 
   const { formData, setIsDetailModelOpen, setIsPaymentModelOpen, setReset } =
     usePendingPaymentStore();
@@ -28,8 +30,8 @@ const PendingPaymentTable = ({ partyId = "" }: { partyId: string }) => {
 
   // Query to fetch party purchase data
   const { data: partyPendingPaymentRowsData = [], isLoading } = useQuery({
-    queryKey: ["pending-payment-data", partyId],
-    queryFn: () => getPartyPendingPaymentDataApi(partyId),
+    queryKey: ["pending-payment-data", partyId, selectedDateRange],
+    queryFn: () => getPartyPendingPaymentDataApi(partyId, selectedDateRange),
   });
 
   // delete purchase data
