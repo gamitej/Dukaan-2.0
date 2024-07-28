@@ -54,9 +54,9 @@ export const addPurchaseData = async (req, res) => {
 
     const { quantity } = req.body;
     const quantity_in_num = parseInt(quantity);
-    const currentQuantity = parseInt(stock.quantity) || 0;
 
     if (stock) {
+      const currentQuantity = parseInt(stock.quantity) || 0;
       // Update existing stock
       const stockUpdated = await stock.update(
         { quantity: currentQuantity + quantity_in_num },
@@ -109,20 +109,7 @@ export const getPartyPurchaseData = async (req, res) => {
       ],
     });
 
-    // Query to get the total price
-    const totalResult = await Purchase.findOne({
-      where: {
-        party_id: party_id,
-        ...dateCondition,
-      },
-      attributes: [[fn("SUM", col("price")), "totalPrice"]],
-    });
-
-    // Extract the total price from the result
-    const totalPrice = totalResult ? totalResult.dataValues.totalPrice : 0;
-
-    if (purchases.length === 0)
-      return res.status(200).json({ purchases: [], totalPrice: totalPrice });
+    if (purchases.length === 0) return res.status(200).json({ purchases: [] });
 
     const formattedPurchase = purchases.map((item) => {
       const {
@@ -150,7 +137,7 @@ export const getPartyPurchaseData = async (req, res) => {
       };
     });
 
-    return res.status(200).json({ purchases: formattedPurchase, totalPrice });
+    return res.status(200).json({ purchases: formattedPurchase });
   } catch (error) {
     return res
       .status(500)

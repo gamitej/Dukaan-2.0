@@ -86,21 +86,17 @@ const PartyDetails = () => {
           <div className="text-white text-2xl capitalize font-[550]">
             Shop : <span className="font-normal">{partyDetails.shopName}</span>
           </div>
+          <div className="text-white text-2xl capitalize font-[550]">
+            Contact :{" "}
+            <span className="font-normal">{partyDetails.contact}</span>
+          </div>
         </div>
 
-        <div>
-          <button
-            // onClick={setIsModelOpen}
-            className="bg-rose-400 text-white px-2 py-1 rounded-sm shadow-md text-xl bg-med"
-          >
-            Contact : {partyDetails.contact}
-          </button>
-        </div>
+        <TotalCard />
       </div>
 
       <div className="mt-4 flex justify-between items-center">
         <BasicDateRangePicker setDateRangeChange={setSelectedDateRabge} />
-        <TotalCard />
       </div>
 
       <div className="mt-4">

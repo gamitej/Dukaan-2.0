@@ -99,7 +99,7 @@ export async function GetPartyPendingPaymentDetails(req, res) {
     });
 
     // Query to get the total purchase amount and total pending payment
-    const totals = await PendingPayment.findOne({
+    const totals = await PendingPayment.findAll({
       where: {
         party_id: party_id,
         ...dateCondition,

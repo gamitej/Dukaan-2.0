@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
+import Party from "./party.model.js";
 import sequelize from "../database/connection.js";
 import generateUUID from "../utils/uuidGenerator.js";
-import Party from "./party.model.js";
 
 const PendingPayment = sequelize.define("PendingPayment", {
   order_id: {
