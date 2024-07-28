@@ -75,8 +75,8 @@ const PartyDetails = () => {
    */
   return (
     <div className="w-[90%] mx-auto mt-10">
-      <div className="flex justify-between items-center gap-4 bg-lightDark py-4 px-6 rounded-md">
-        <div className="flex flex-col gap-3">
+      <div className="flex justify-between items-center gap-2 bg-lightDark py-4 px-6 rounded-md">
+        <div className="flex gap-6">
           <div className="text-white text-2xl capitalize font-[550]">
             owner : <span className="font-normal">{partyDetails.name}</span>
           </div>
@@ -88,7 +88,7 @@ const PartyDetails = () => {
         <div>
           <button
             // onClick={setIsModelOpen}
-            className="bg-rose-400 text-white px-2 py-1 rounded-md shadow-md text-xl bg-med"
+            className="bg-rose-400 text-white px-2 py-1 rounded-sm shadow-md text-xl bg-med"
           >
             Contact : {partyDetails.contact}
           </button>

@@ -129,6 +129,7 @@ export const getPartyPurchaseData = async (req, res) => {
         weight,
         order_id,
         price,
+        avg_price: parseInt(price) / parseInt(quantity),
         product_id,
       };
     });
