@@ -12,11 +12,6 @@ export const DateCondition = ({
 
   let dateCondition = {};
 
-  // Get the first day of the current month
-  const firstDayOfCurrentMonth = dayjs().startOf("month").format("YYYY-MM-DD");
-
-  console.log(firstDayOfCurrentMonth);
-
   if (
     parsedStartDate.isSame(currentDate, "day") &&
     parsedEndDate.isSame(currentDate, "day")
