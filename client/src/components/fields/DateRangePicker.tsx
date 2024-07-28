@@ -29,7 +29,7 @@ export default function BasicDateRangePicker({
     e.preventDefault();
     setDateRangeChange({
       startDate: dayjs(date.startDate).format("YYYY-MM-DD"),
-      endDate: dayjs(date.startDate).format("YYYY-MM-DD"),
+      endDate: dayjs(date.endDate).format("YYYY-MM-DD"),
     });
   };
 
@@ -52,6 +52,7 @@ export default function BasicDateRangePicker({
           />
           <DatePicker
             label="End Date"
+            maxDate={dayjs()}
             format="DD-MMM-YY"
             value={date.endDate}
             minDate={date.startDate}
