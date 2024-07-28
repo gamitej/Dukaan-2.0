@@ -4,7 +4,7 @@ import generateUUID from "../utils/uuidGenerator.js";
 // models
 import Product from "./product.model.js";
 import Party from "../models/party.model.js";
-import Purchase from "../models/purchase.model.js";
+import PendingPayment from "./pendingPayment.model.js";
 
 const Return = sequelize.define("Return", {
   id: {
@@ -28,7 +28,7 @@ const Return = sequelize.define("Return", {
     type: DataTypes.STRING,
     allowNull: false,
     references: {
-      model: Purchase,
+      model: PendingPayment,
       key: "order_id",
     },
   },
@@ -50,9 +50,9 @@ const Return = sequelize.define("Return", {
   },
 });
 
-Purchase.hasMany(Return, { foreignKey: "order_id" });
+PendingPayment.hasMany(Return, { foreignKey: "order_id" });
 
-Return.belongsTo(Purchase, { foreignKey: "order_id" });
+Return.belongsTo(PendingPayment, { foreignKey: "order_id" });
 
 Party.hasMany(Return, { foreignKey: "party_id" });
 
