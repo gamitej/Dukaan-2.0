@@ -4,12 +4,21 @@ import Sales from "../models/sales.model.js";
 import Stock from "../models/stock.model.js";
 import Product from "../models/product.model.js";
 import { ProductExistsByCategory } from "./product.controller.js";
+import { DateCondition } from "../utils/date.js";
 
 export const GetProductSaleDetails = async (req, res) => {
   try {
+    const { startDate, endDate } = req.query;
+
+    if (!startDate) return res.status(400).json("Missing start date parameter");
+    if (!endDate) return res.status(400).json("Missing end date parameter");
+
+    const dateCondition = DateCondition(req.query);
+
     // Fetch purchase data based on party_id
     const sales = await Sales.findAll({
       order: [["date", "DESC"]],
+      ...dateCondition,
       include: [
         {
           model: Product,

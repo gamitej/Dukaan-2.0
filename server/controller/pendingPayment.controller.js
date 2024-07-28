@@ -1,4 +1,5 @@
 import PendingPayment from "../models/pendingPayment.model.js";
+import { DateCondition } from "../utils/date.js";
 
 export async function PurchaseToPendingPayment(req, transaction) {
   try {
@@ -73,14 +74,19 @@ export async function DeletePurchaseFromPendingPayment(req, transaction) {
 
 export async function GetPartyPendingPaymentDetails(req, res) {
   try {
-    const { party_id } = req.query;
+    const { party_id, startDate, endDate } = req.query;
 
     if (!party_id) return res.status(400).json("Missing party_id parameter");
+    if (!startDate) return res.status(400).json("Missing start date parameter");
+    if (!endDate) return res.status(400).json("Missing end date parameter");
+
+    const dateCondition = DateCondition(req.query);
 
     // Fetch purchase data based on party_id
     const pendingPaymentData = await PendingPayment.findAll({
       where: {
         party_id: party_id,
+        ...dateCondition,
       },
       order: [
         ["createdAt", "DESC"],

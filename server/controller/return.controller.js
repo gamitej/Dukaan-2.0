@@ -5,16 +5,19 @@ import { ProductExistsByCategory } from "./product.controller.js";
 
 export const GetPartyReturnDetails = async (req, res) => {
   try {
-    const { party_id } = req.query;
+    const { party_id, startDate, endDate } = req.query;
 
-    if (!party_id) {
-      return res.status(400).json("Missing party_id parameter");
-    }
+    if (!party_id) return res.status(400).json("Missing party_id parameter");
+    if (!startDate) return res.status(400).json("Missing start date parameter");
+    if (!endDate) return res.status(400).json("Missing end date parameter");
+
+    const dateCondition = DateCondition(req.query);
 
     // Fetch purchase data based on party_id
     const returnData = await Return.findAll({
       where: {
         party_id: party_id,
+        ...dateCondition,
       },
       order: [["return_date", "DESC"]],
       include: [
@@ -45,7 +48,7 @@ export const GetPartyReturnDetails = async (req, res) => {
         company,
         category,
         quantity,
-        price:amount,
+        price: amount,
         product_id,
       };
     });

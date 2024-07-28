@@ -4,17 +4,23 @@ import {
   DeletePaidAmountDetails,
   UpdatePaidAmountDetails,
 } from "./pendingPayment.controller.js";
+import { DateCondition } from "../utils/date.js";
 
 export async function GetPartyPaymentDetails(req, res) {
   try {
-    const { party_id } = req.query;
+    const { party_id, startDate, endDate } = req.query;
 
     if (!party_id) return res.status(400).json("Missing party_id parameter");
+    if (!startDate) return res.status(400).json("Missing start date parameter");
+    if (!endDate) return res.status(400).json("Missing end date parameter");
+
+    const dateCondition = DateCondition(req.query);
 
     // Fetch purchase data based on party_id
     const paymentData = await Payment.findAll({
       where: {
         party_id: party_id,
+        ...dateCondition,
       },
       order: [
         ["payment_date", "DESC"],
