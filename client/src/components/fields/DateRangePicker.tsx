@@ -1,36 +1,15 @@
 import dayjs from "dayjs";
-import { useState } from "react";
-import { DateRangeType } from "@/store/globalStore";
+import { useGlobleStore } from "@/store/globalStore";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
-interface BasicDateRangePicker {
-  setDateRangeChange: (value: DateRangeType) => void;
-}
+export default function BasicDateRangePicker() {
+  const { selectedDateRange, setSelectedDateRange } = useGlobleStore();
 
-export default function BasicDateRangePicker({
-  setDateRangeChange,
-}: BasicDateRangePicker) {
-  const [date, setDate] = useState<{
-    startDate: dayjs.Dayjs;
-    endDate: dayjs.Dayjs;
-  }>({
-    startDate: dayjs(),
-    endDate: dayjs(),
-  });
-
-  const handleEndDateChange = (newDate: dayjs.Dayjs | any, date: string) => {
-    setDate((prev) => ({ ...prev, [date]: newDate }));
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setDateRangeChange({
-      startDate: dayjs(date.startDate).format("YYYY-MM-DD"),
-      endDate: dayjs(date.endDate).format("YYYY-MM-DD"),
-    });
+  const handleEndDateChange = (newDate: dayjs.Dayjs | any, label: string) => {
+    setSelectedDateRange(label, dayjs(newDate).format("YYYY-MM-DD"));
   };
 
   /**
@@ -39,31 +18,22 @@ export default function BasicDateRangePicker({
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={["DatePicker"]}>
-        <form
-          onSubmit={handleSubmit}
-          className="w-fit bg-white flex gap-2 px-6 py-4 shadow-md rounded-md"
-        >
+        <form className="w-fit bg-white flex gap-2 px-6 py-4 shadow-md rounded-md">
           <DatePicker
             format="DD-MMM-YY"
             label="Start Date"
-            maxDate={date.endDate}
-            value={date.startDate}
+            maxDate={dayjs(selectedDateRange.endDate)}
+            value={dayjs(selectedDateRange.startDate)}
             onChange={(newValue) => handleEndDateChange(newValue, "startDate")}
           />
           <DatePicker
             label="End Date"
             maxDate={dayjs()}
             format="DD-MMM-YY"
-            value={date.endDate}
-            minDate={date.startDate}
+            value={dayjs(selectedDateRange.endDate)}
+            minDate={dayjs(selectedDateRange.startDate)}
             onChange={(newValue) => handleEndDateChange(newValue, "endDate")}
           />
-          <button
-            type="submit"
-            className="bg-lightDark text-white px-4 py-1 rounded-sm shadow-md hover:bg-slate-500"
-          >
-            submit
-          </button>
         </form>
       </DemoContainer>
     </LocalizationProvider>

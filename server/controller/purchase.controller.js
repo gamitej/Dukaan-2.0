@@ -64,13 +64,14 @@ export const addPurchaseData = async (req, res) => {
       );
 
       if (!stockUpdated) throw new Error("Error while updating product stock!");
+    } else {
+      // Insert new stock table
+      const stockCreated = await Stock.create(
+        { product_id: result.prod_id, quantity: quantity_in_num },
+        { transaction }
+      );
+      if (!stockCreated) throw new Error("Error while creating product stock!");
     }
-    // Insert new stock table
-    const stockCreated = await Stock.create(
-      { product_id: result.prod_id, quantity: quantity_in_num },
-      { transaction }
-    );
-    if (!stockCreated) throw new Error("Error while creating product stock!");
 
     // Step 5: Commit the transaction
     await transaction.commit();
@@ -132,7 +133,7 @@ export const getPartyPurchaseData = async (req, res) => {
         weight,
         order_id,
         price,
-        avg_price: parseInt(price) / parseInt(quantity),
+        avg_price: parseInt(parseInt(price) / parseInt(quantity)),
         product_id,
       };
     });
@@ -150,21 +151,21 @@ export const deletePartyPurchaseData = async (req, res) => {
   try {
     const requestData = req.body;
 
-    // Step 1: Remove order_id price from PendingPayment table
-    const { data, isError } = await DeletePurchaseFromPendingPayment(
-      requestData,
-      transaction
-    );
-
-    if (isError) throw new Error(data);
-
-    // Step 2: Delete from purchase table
+    // Step 1: Delete from purchase table
     const purchaseDelete = await Purchase.destroy(
       { where: { purchase_id: requestData.purchase_id } },
       { transaction }
     );
 
     if (!purchaseDelete) throw new Error("Purchase product not found!");
+
+    // Step 2: Remove order_id price from PendingPayment table
+    const { data, isError } = await DeletePurchaseFromPendingPayment(
+      requestData,
+      transaction
+    );
+
+    if (isError) throw new Error(data);
 
     // Step 3: Delete purchase product quantity from stock table
     const stock = await Stock.findOne({

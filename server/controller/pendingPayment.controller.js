@@ -61,12 +61,25 @@ export async function DeletePurchaseFromPendingPayment(req, transaction) {
 
     // ! add a case for if user tries to delete purchase record and its payment is already done
 
-    // Update the existing order's total_amount
-    existingPayment.total_amount -= price_num;
-    const paymentUpdated = await existingPayment.save({ transaction });
+    if (existingPayment.total_amount === price_num) {
+      const pendingDelete = await PendingPayment.destroy(
+        { where: { order_id } },
+        { transaction }
+      );
 
-    if (!paymentUpdated)
-      return { data: "Error while updating pending payment", isError: true };
+      if (!pendingDelete)
+        return {
+          data: "Error while deleting pending payment data",
+          isError: true,
+        };
+    } else {
+      // Update the existing order's total_amount
+      existingPayment.total_amount -= price_num;
+      const paymentUpdated = await existingPayment.save({ transaction });
+
+      if (!paymentUpdated)
+        return { data: "Error while updating pending payment", isError: true };
+    }
     return { data: order_id, isError: false };
   } catch (error) {
     return { data: error, isError: true };

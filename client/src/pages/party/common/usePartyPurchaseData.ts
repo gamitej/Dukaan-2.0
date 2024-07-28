@@ -18,7 +18,6 @@ export const usePartyPurchaseData = ({
   // Query to fetch party purchase data
   const { data = {}, isLoading } = useQuery({
     queryKey: ["purchase-data", partyId, selectedDateRange],
-    enabled: Boolean(partyId),
     queryFn: () => getPartyWisePuchaseDataApi(partyId, selectedDateRange),
   });
 

@@ -3,14 +3,13 @@ import { useParams } from "react-router-dom";
 // components
 import Return from "@/components/return";
 import PurchaseTable from "./PurchaseTable";
+import TotalCard from "../common/TotalCard";
 import BasicTab from "@/components/common/BasicTab";
 import PaymentTable from "@/components/cards/PaymentTable";
 import PendingPaymentTable from "@/components/pendingPayment";
+import BasicDateRangePicker from "@/components/fields/DateRangePicker";
 // hooks
 import { PartyDetailsReponse, usePartyDetails } from "@/hooks/usePartyDetails";
-import BasicDateRangePicker from "@/components/fields/DateRangePicker";
-import { useGlobleStore } from "@/store/globalStore";
-import TotalCard from "../common/TotalCard";
 
 const tabsData = [
   {
@@ -37,7 +36,6 @@ const tabsData = [
 
 const PartyDetails = () => {
   const { id: partyId } = useParams();
-  const { setSelectedDateRabge } = useGlobleStore();
   const { data: partiesData = [], isLoading } = usePartyDetails();
 
   const partyDetails = useMemo(() => {
@@ -96,7 +94,7 @@ const PartyDetails = () => {
       </div>
 
       <div className="mt-4 flex justify-between items-center">
-        <BasicDateRangePicker setDateRangeChange={setSelectedDateRabge} />
+        <BasicDateRangePicker />
       </div>
 
       <div className="mt-4">

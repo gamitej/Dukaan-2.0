@@ -14,7 +14,7 @@ interface GlobalState {
   setIsStockModelOpen: () => void;
 
   selectedDateRange: DateRangeType;
-  setSelectedDateRabge: (value: DateRangeType) => void;
+  setSelectedDateRange: (label: string, value: string) => void;
 }
 
 export const useGlobleStore = create<GlobalState>((set) => ({
@@ -30,10 +30,13 @@ export const useGlobleStore = create<GlobalState>((set) => ({
   },
 
   selectedDateRange: {
-    startDate: dayjs().format("YYYY-MM-DD"),
+    startDate: dayjs().startOf("month").format("YYYY-MM-DD"),
     endDate: dayjs().format("YYYY-MM-DD"),
   },
-  setSelectedDateRabge: (value) => {
-    set((state) => ({ ...state, selectedDateRange: value }));
+  setSelectedDateRange: (label, value) => {
+    set((state) => ({
+      ...state,
+      selectedDateRange: { ...state.selectedDateRange, [label]: value },
+    }));
   },
 }));

@@ -73,8 +73,9 @@ export default function StockCard({
    */
   return (
     <div className="w-full">
-      {Object.entries(stocksData).map(([category, value]) => (
+      {Object.entries(stocksData).map(([category, value], idx) => (
         <Accordion
+          key={idx}
           elevation={0}
           sx={{ border: "1px solid lightgray" }}
           expanded={expanded === category}
@@ -111,8 +112,11 @@ export default function StockCard({
           <div className="bg-gray-300 w-full h-[.05rem]"></div>
           <AccordionDetails>
             <div className="grid grid-cols-12 gap-3 mt-2">
-              {value?.items?.map((item) => (
-                <div className="col-span-6 flex justify-between items-center bg-[#E7F0DC] border-1 px-3 py-2 rounded-sm">
+              {value?.items?.map((item, idx) => (
+                <div
+                  key={`deatils-${idx}`}
+                  className="col-span-6 flex justify-between items-center bg-[#E7F0DC] border-1 px-3 py-2 rounded-sm"
+                >
                   <div className="flex justify-center items-center gap-2">
                     <p
                       className={`${

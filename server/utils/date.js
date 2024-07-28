@@ -7,10 +7,15 @@ export const DateCondition = ({
   date_label = "purchase_date",
 }) => {
   const currentDate = dayjs().format("YYYY-MM-DD");
-  const parsedStartDate = dayjs(startDate);
-  const parsedEndDate = dayjs(endDate);
+  const parsedStartDate = dayjs(startDate).subtract(1, "day");
+  const parsedEndDate = dayjs(endDate).add(1, "day");
 
   let dateCondition = {};
+
+  // Get the first day of the current month
+  const firstDayOfCurrentMonth = dayjs().startOf("month").format("YYYY-MM-DD");
+
+  console.log(firstDayOfCurrentMonth);
 
   if (
     parsedStartDate.isSame(currentDate, "day") &&
