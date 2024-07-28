@@ -8,6 +8,8 @@ import PaymentTable from "@/components/cards/PaymentTable";
 import PendingPaymentTable from "@/components/pendingPayment";
 // hooks
 import { PartyDetailsReponse, usePartyDetails } from "@/hooks/usePartyDetails";
+import BasicDateRangePicker from "@/components/fields/DateRangePicker";
+import { useGlobleStore } from "@/store/globalStore";
 
 const tabsData = [
   {
@@ -34,7 +36,7 @@ const tabsData = [
 
 const PartyDetails = () => {
   const { id: partyId } = useParams();
-
+  const { setSelectedDateRabge } = useGlobleStore();
   const { data: partiesData = [], isLoading } = usePartyDetails();
 
   const partyDetails = useMemo(() => {
@@ -74,7 +76,7 @@ const PartyDetails = () => {
    * TSX
    */
   return (
-    <div className="w-[90%] mx-auto mt-10">
+    <div className="relative w-[90%] mx-auto mt-10">
       <div className="flex justify-between items-center gap-2 bg-lightDark py-4 px-6 rounded-md">
         <div className="flex gap-6">
           <div className="text-white text-2xl capitalize font-[550]">
@@ -94,7 +96,12 @@ const PartyDetails = () => {
           </button>
         </div>
       </div>
-      <div className="mt-8">
+
+      <div className="mt-4">
+        <BasicDateRangePicker setDateRangeChange={setSelectedDateRabge} />
+      </div>
+
+      <div className="mt-4">
         <BasicTab tabData={tabsData} data={data} />
       </div>
       <br />
