@@ -1,4 +1,3 @@
-import { Op, fn, col } from "sequelize";
 import sequelize from "../database/connection.js";
 // models
 import Stock from "../models/stock.model.js";
@@ -179,12 +178,15 @@ export const deletePartyPurchaseData = async (req, res) => {
     const quantity_in_num = parseInt(quantity);
     const currentQuantity = parseInt(stock.quantity) || 0;
 
+    if (currentQuantity < quantity_in_num)
+      throw new Error("Product quantity is out of range");
+
     // Update existing stock
     const stockUpdated = await stock.update(
       { quantity: currentQuantity - quantity_in_num },
       { transaction }
     );
-    if (!stockUpdated) throw new Error("Error while updationg product stock!");
+    if (!stockUpdated) throw new Error("Error while updating product stock!");
 
     // Step 5: Commit the transaction
     await transaction.commit();
