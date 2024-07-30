@@ -7,6 +7,9 @@ import InputField from "@/components/fields/InputField";
 import BasicDatePicker from "@/components/fields/BasicDatePicker";
 // store
 import { useExpenseStore } from "@/store/expenseStore";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { addExpenseApi } from "@/services/Expense";
 
 const dropDownOptions = [
   { label: "Salary", value: "salary" },
@@ -18,6 +21,8 @@ const dropDownOptions = [
 ];
 
 const ExpenseModel = () => {
+  const queryClient = useQueryClient();
+
   const {
     isModelOpen,
     setIsModelOpen,
@@ -25,7 +30,30 @@ const ExpenseModel = () => {
     setFormData,
     setIsFormValid,
     isFormValid,
+    setResetFormData,
   } = useExpenseStore();
+
+  // =================== API CALL'S START ======================
+
+  // Mutation to add party name
+  const { mutate: mutateAddExpenseData } = useMutation({
+    mutationFn: addExpenseApi,
+    onSuccess: () => {
+      setResetFormData();
+      toast.success("Added successfully", { duration: 1200 });
+      queryClient.invalidateQueries({
+        queryKey: ["expenses-data"],
+      });
+    },
+    onError: (err: any) => {
+      const message = err.response.data;
+      toast.error(message || "Error while adding expense data", {
+        duration: 1200,
+      });
+    },
+  });
+
+  // ===================== EVENT_HANDLER ======================
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -40,11 +68,7 @@ const ExpenseModel = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // setReset();
-
-    // const { name, shop, contact } = formData;
-
-    // mutateAddPartNameData({ party_name: name, shop_name: shop, contact });
+    mutateAddExpenseData(formData);
   };
 
   /**
@@ -88,13 +112,13 @@ const ExpenseModel = () => {
               placeholder={"enter description..."}
             />
             <Dropdown
-              id="expense_type"
+              id="category"
               width={"30%"}
               options={dropDownOptions}
               label={"Expense Type"}
-              value={formData.expense_type}
+              value={formData.category}
               setInputChange={(value: string) => {
-                handleChangeDropDown("expense_type", value);
+                handleChangeDropDown("category", value);
               }}
             />
           </div>

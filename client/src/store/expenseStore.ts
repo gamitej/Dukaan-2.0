@@ -4,12 +4,12 @@ import { create } from "zustand";
 const defaultFormData = {
   amount: 0,
   description: "",
-  expense_type: "",
+  category: "",
   date: dayjs().format("YYYY-MM-DD"),
 };
 
 export type FormDataExpense = {
-  expense_type: string;
+  category: string;
   description: string;
   amount: number;
   date: string;
