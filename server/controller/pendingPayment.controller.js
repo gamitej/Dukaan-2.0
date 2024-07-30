@@ -59,10 +59,10 @@ export async function DeletePurchaseFromPendingPayment(req, transaction) {
       throw new Error("Can't delete purchase because payment is made");
 
     if (existingPayment.total_amount === price_num) {
-      const pendingDelete = await PendingPayment.destroy(
-        { where: { order_id } },
-        { transaction }
-      );
+      const pendingDelete = await PendingPayment.destroy({
+        where: { order_id },
+        transaction,
+      });
 
       if (!pendingDelete)
         throw new Error("Error while deleting pending payment data");
@@ -74,6 +74,7 @@ export async function DeletePurchaseFromPendingPayment(req, transaction) {
       if (!paymentUpdated)
         throw new Error("Error while updating pending payment");
     }
+    return;
   } catch (error) {
     console.error("DeletePurchaseFromPendingPayment Error:", error); // Debugging
     throw new Error(error.message || error);

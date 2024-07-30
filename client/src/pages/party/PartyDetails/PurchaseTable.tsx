@@ -45,7 +45,7 @@ const PurchaseTable = ({ partyId = "" }: { partyId: string }) => {
     onError: (err: any) => {
       const message = err?.response?.data;
       toast.error(message || "Something went wrong", {
-        duration: 1200,
+        duration: 3500,
       });
     },
   });

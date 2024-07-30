@@ -35,7 +35,7 @@ const AddPartyModel = () => {
     onError: (err: any) => {
       const message = err.response.data;
       toast.error(message || "Error while adding sales data", {
-        duration: 1200,
+        duration: 4000,
       });
     },
   });
