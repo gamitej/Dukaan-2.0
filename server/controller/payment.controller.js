@@ -50,12 +50,7 @@ export async function AddPartyPaymentDetails(req, res) {
       return res.status(400).json("Missing order_id parameter");
 
     // Step 1: Update party order paid amount
-    const { data, isError } = await UpdatePaidAmountDetails(
-      req.body,
-      transaction
-    );
-
-    if (isError) throw new Error(data);
+    const { data } = await UpdatePaidAmountDetails(req.body, transaction);
 
     // Step 2: Create a new payment entry
     const payment = await Payment.create(

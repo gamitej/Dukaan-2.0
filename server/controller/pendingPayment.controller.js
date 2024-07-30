@@ -146,7 +146,7 @@ export async function UpdatePaidAmountDetails(req, transaction) {
     });
 
     if (!existingPayment)
-      return { data: "Order id not found in pending payment", isError: true };
+      throw new Error("Order id not found in pending payment");
 
     const total_paid_amount = parseInt(amount) + existingPayment.paid_amount;
 
@@ -156,20 +156,14 @@ export async function UpdatePaidAmountDetails(req, transaction) {
       const paymentUpdated = await existingPayment.save({ transaction });
 
       if (!paymentUpdated)
-        return {
-          data: "Error while adding total payment in pending payment",
-          isError: true,
-        };
+        throw new Error("Error while adding total payment in pending payment");
 
-      return { data: order_id, isError: false };
+      return { data: order_id };
     }
 
-    return {
-      data: "Payment cannot be greather than total amount",
-      isError: true,
-    };
+    throw new Error("Payment cannot be greather than total amount");
   } catch (error) {
-    return { data: error, isError: true };
+    throw new Error(error.message || error);
   }
 }
 
@@ -184,7 +178,7 @@ export async function DeletePaidAmountDetails(req, transaction) {
     });
 
     if (!existingPayment)
-      return { data: "Order id not found in pending payment", isError: true };
+      throw new Error("Order id not found in pending payment");
 
     const total_paid_amount = existingPayment.paid_amount - parseInt(amount);
 
@@ -192,14 +186,11 @@ export async function DeletePaidAmountDetails(req, transaction) {
       // Update the existing order's total_amount
       existingPayment.paid_amount = total_paid_amount;
       await existingPayment.save({ transaction });
-      return { data: order_id, isError: false };
+      return { data: order_id };
     }
 
-    return {
-      data: "Incorrect payment data",
-      isError: true,
-    };
+    throw new Error("Incorrect payment data");
   } catch (error) {
-    return { data: error, isError: true };
+    throw new Error(error.message || error);
   }
 }
