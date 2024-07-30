@@ -25,12 +25,7 @@ export const addPurchaseData = async (req, res) => {
     if (!result.prod_id) throw new Error("Product id not found!");
 
     // Step 2: Retrieve order_id from PendingPayment
-    const { data, isError } = await PurchaseToPendingPayment(
-      requestData,
-      transaction
-    );
-
-    if (isError) throw new Error(order_id);
+    const { data } = await PurchaseToPendingPayment(requestData, transaction);
 
     // Step 3: Add a new in purchase table
     const purchaseCreated = await Purchase.create(
@@ -57,10 +52,8 @@ export const addPurchaseData = async (req, res) => {
     if (stock) {
       const currentQuantity = parseInt(stock.quantity) || 0;
       // Update existing stock
-      const stockUpdated = await stock.update(
-        { quantity: currentQuantity + quantity_in_num },
-        { transaction }
-      );
+      stock.quantity = currentQuantity + quantity_in_num;
+      const stockUpdated = await stock.save({ transaction });
 
       if (!stockUpdated) throw new Error("Error while updating product stock!");
     } else {
@@ -151,20 +144,15 @@ export const deletePartyPurchaseData = async (req, res) => {
     const requestData = req.body;
 
     // Step 1: Delete from purchase table
-    const purchaseDelete = await Purchase.destroy(
-      { where: { purchase_id: requestData.purchase_id } },
-      { transaction }
-    );
+    const purchaseDelete = await Purchase.destroy({
+      where: { purchase_id: requestData.purchase_id },
+      transaction,
+    });
 
     if (!purchaseDelete) throw new Error("Purchase product not found!");
 
     // Step 2: Remove order_id price from PendingPayment table
-    const { data, isError } = await DeletePurchaseFromPendingPayment(
-      requestData,
-      transaction
-    );
-
-    if (isError) throw new Error(data);
+    await DeletePurchaseFromPendingPayment(requestData, transaction);
 
     // Step 3: Delete purchase product quantity from stock table
     const stock = await Stock.findOne({
@@ -182,16 +170,16 @@ export const deletePartyPurchaseData = async (req, res) => {
       throw new Error("Product quantity is out of range");
 
     // Update existing stock
-    const stockUpdated = await stock.update(
-      { quantity: currentQuantity - quantity_in_num },
-      { transaction }
-    );
+    stock.quantity = currentQuantity - quantity_in_num;
+    const stockUpdated = await stock.save({ transaction });
+
     if (!stockUpdated) throw new Error("Error while updating product stock!");
 
     // Step 5: Commit the transaction
     await transaction.commit();
     return res.status(200).json("Purchase record deleted successfully!");
   } catch (error) {
+    console.error("Transaction Error:", error); // Debugging
     await transaction.rollback();
     return res.status(500).json(error.message || error);
   }
