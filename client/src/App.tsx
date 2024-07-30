@@ -7,6 +7,7 @@ import Navbar from "@/components/header/navbar";
 import Router from "./routes/Router";
 import FullScreenLoader from "./components/common/FullScreenLoader";
 import Stocks from "./components/stocks";
+import Summary from "./pages/summary";
 
 function App() {
   /**
@@ -25,6 +26,8 @@ function App() {
           <Router />
         </Suspense>
       </div>
+
+      <Summary />
 
       {/* ===== modals ===== */}
       <Stocks />

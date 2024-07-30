@@ -5,8 +5,10 @@ const Summary = () => {
    * TSX
    */
   return (
-    <div className="w-full">
-      <div className="text-white text-2xl">Summary</div>
+    <div className="w-[90%] m-auto mt-10">
+      <div className="text-white text-2xl text-center bg-lightDark py-4">
+        Summary
+      </div>
       <SummaryCard />
     </div>
   );
