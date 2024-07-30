@@ -5,8 +5,7 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+    "start": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
@@ -25,8 +24,6 @@
     "uuid": "^10.0.0"
   },
   "devDependencies": {
-    "jest": "^29.7.0",
-    "nodemon": "^3.1.4",
-    "supertest": "^7.0.0"
+    "nodemon": "^3.1.4"
   }
 }
