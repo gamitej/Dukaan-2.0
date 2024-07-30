@@ -12,16 +12,12 @@ const app = express();
 app.use(express.json());
 app.use(cors({ origin: process.env.FE_URL, credentials: true }));
 
-if (process.env.NODE_ENV !== "test") {
-  syncDatabase();
-}
+syncDatabase();
 
 app.use("/api", routes);
 
-if (process.env.NODE_ENV !== "test") {
-  app.listen(PORT, () => {
-    console.log(`listening on port http://localhost:${PORT}`);
-  });
-}
+app.listen(PORT, () => {
+  console.log(`listening on port http://localhost:${PORT}`);
+});
 
 export default app;
