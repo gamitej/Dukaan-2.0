@@ -1,5 +1,6 @@
 import { pageData } from "@/data/Home";
 import { useNavigate } from "react-router-dom";
+import Summary from "../summary";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -19,6 +20,8 @@ const Home = () => {
           <div className="text-xl">{item.desc}</div>
         </div>
       ))}
+
+      <Summary />
     </div>
   );
 };

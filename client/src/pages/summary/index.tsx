@@ -8,7 +8,7 @@ const Summary = () => {
    */
   return (
     <div className="w-[90%] m-auto mt-10">
-      <div className="text-white text-2xl bg-lightDark py-4 flex justify-center items-center gap-4">
+      <div className="text-white text-2xl bg-lightDark py-4 flex justify-center items-center gap-4 shadow-md rounded-md">
         Summary
       </div>
       <SummaryCard />

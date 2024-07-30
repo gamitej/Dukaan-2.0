@@ -1,13 +1,12 @@
 import { Suspense } from "react";
 import { Toaster } from "react-hot-toast";
 // components
+import Stocks from "./components/stocks";
 import Options from "@/components/options";
 import Navbar from "@/components/header/navbar";
+import FullScreenLoader from "./components/common/FullScreenLoader";
 // routes
 import Router from "./routes/Router";
-import FullScreenLoader from "./components/common/FullScreenLoader";
-import Stocks from "./components/stocks";
-import Summary from "./pages/summary";
 
 function App() {
   /**
@@ -26,8 +25,6 @@ function App() {
           <Router />
         </Suspense>
       </div>
-
-      <Summary />
 
       {/* ===== modals ===== */}
       <Stocks />
