@@ -92,7 +92,7 @@ export const AddPartyReturnData = async (req, res) => {
     if (!returnData)
       throw new Error("Something went wrong in the return table!");
 
-    // Step 4: Update or insert in stock table
+    // Step 3: Update or insert in stock table
     const stock = await Stock.findOne({
       where: { product_id: result.prod_id },
       transaction,
@@ -104,11 +104,10 @@ export const AddPartyReturnData = async (req, res) => {
     const currentQuantity = parseInt(stock.quantity) || 0;
     if (currentQuantity < quantity_in_num)
       throw new Error("Product quantity is out of range");
-    // Update existing stock
-    const stockUpdated = await stock.update(
-      { quantity: currentQuantity - quantity_in_num },
-      { transaction }
-    );
+    // Step 4: Update existing stock
+
+    stock.quantity = currentQuantity - quantity_in_num;
+    const stockUpdated = await stock.save({ transaction });
 
     if (!stockUpdated) throw new Error("Error while updating product stock!");
 
@@ -134,7 +133,7 @@ export const DeletePartyReturnData = async (req, res) => {
 
     if (!returnDelete) throw new Error("Return product id not found!");
 
-    // Step 4: Update or insert in stock table
+    // Step 2: Update or insert in stock table
     const stock = await Stock.findOne({
       where: { product_id: requestData.product_id },
       transaction,
@@ -144,19 +143,17 @@ export const DeletePartyReturnData = async (req, res) => {
 
     const quantity_in_num = parseInt(requestData.quantity);
     const currentQuantity = parseInt(stock.quantity) || 0;
-    // Update existing stock
-    const stockUpdated = await stock.update(
-      { quantity: currentQuantity + quantity_in_num },
-      { transaction }
-    );
+    // Step 3: Update existing stock
+    stock.quantity = quantity_in_num + currentQuantity;
+    const stockUpdated = await stock.save({ transaction });
 
     if (!stockUpdated) throw new Error("Error while updating product stock!");
 
-    // Step 5: Commit the transaction
+    // Step 4: Commit the transaction
     await transaction.commit();
-
     return res.status(200).json("Return record deleted successfully!");
   } catch (error) {
+    await transaction.rollback();
     return res.status(500).json(error.message || error);
   }
 };

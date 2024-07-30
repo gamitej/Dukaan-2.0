@@ -100,12 +100,9 @@ export const AddProductSale = async (req, res) => {
     if (currentQuantity < quantity_in_num)
       throw new Error("Product quantity is out of range");
 
-    // Update existing stock
-    const stockUpdated = await stock.update(
-      { quantity: currentQuantity - quantity_in_num },
-      { transaction }
-    );
-
+    // Step 4: Update existing stock
+    stock.quantity = currentQuantity - quantity_in_num;
+    const stockUpdated = await stock.save({ transaction });
     if (!stockUpdated) throw new Error("Error while updating stock!");
 
     // Step 5: Commit the transaction
@@ -124,10 +121,10 @@ export const DeleteProductSale = async (req, res) => {
     const requestData = req.body;
 
     // Step 1: Delete from sales table
-    const saleDelete = await Sales.destroy(
-      { where: { id: requestData.id } },
-      { transaction }
-    );
+    const saleDelete = await Sales.destroy({
+      where: { id: requestData.id },
+      transaction,
+    });
 
     if (!saleDelete) throw new Error("Sale product not found!");
 
@@ -144,15 +141,13 @@ export const DeleteProductSale = async (req, res) => {
 
     const currentQuantity = parseInt(stock.quantity) || 0;
 
-    // Update existing stock
-    const stockUpdated = await stock.update(
-      { quantity: currentQuantity + quantity_in_num },
-      { transaction }
-    );
+    // Step 3: Update existing stock
+    stock.quantity = currentQuantity + quantity_in_num;
+    const stockUpdated = await stock.save({ transaction });
     if (!stockUpdated)
       throw new Error("Something went wrong while updation stock!");
 
-    // Step 3: Commit the transaction
+    // Step 4: Commit the transaction
     await transaction.commit();
     return res.status(200).json("Sale product record deleted successfully!");
   } catch (error) {

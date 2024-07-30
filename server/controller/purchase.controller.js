@@ -169,7 +169,7 @@ export const deletePartyPurchaseData = async (req, res) => {
     if (currentQuantity < quantity_in_num)
       throw new Error("Product quantity is out of range");
 
-    // Update existing stock
+    // Step 4: Update existing stock
     stock.quantity = currentQuantity - quantity_in_num;
     const stockUpdated = await stock.save({ transaction });
 
