@@ -19,9 +19,7 @@ const SummaryCard = () => {
           <div className="w-full bg-orange-200 text-center py-3 text-xl text-lightDark font-[550] font-poppins">
             {label}
           </div>
-          <div className="text-2xl text-lightDark font-[550] font-poppins">
-            rs {value}
-          </div>
+          <div className="text-2xl text-lightDark font-poppins">Rs {value}</div>
         </div>
       ))}
     </div>

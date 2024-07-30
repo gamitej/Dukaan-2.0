@@ -1,3 +1,4 @@
+import Charts from "./(components)/charts";
 import SelectTab from "./(components)/SelectTab";
 import SummaryCard from "./(components)/SummaryCard";
 
@@ -12,6 +13,10 @@ const Summary = () => {
       </div>
       <SummaryCard />
       <SelectTab />
+      <Charts />
+      <br />
+      <br />
+      <br />
     </div>
   );
 };
