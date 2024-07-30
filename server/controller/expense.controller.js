@@ -49,7 +49,6 @@ export const DeleteExpense = async (req, res) => {
     // Step 1: Delete from return table
     const expenseDelete = await Expense.destroy({
       where: { id: requestData.id },
-      transaction,
     });
 
     if (!expenseDelete) throw new Error("Expense id not found!");

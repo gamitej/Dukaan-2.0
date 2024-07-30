@@ -46,3 +46,15 @@ export const paymentCols = [
   { header: "payment", accessorkey: "payment" },
   { header: "Payment Mode", accessorkey: "payment_mode" },
 ];
+
+/**
+ * =================  EXPENSE COLS ================
+ */
+
+export const expenseCols = [
+  // { header: "Id", accessorkey: "id" },
+  { header: "Date", accessorkey: "date" },
+  { header: "Description", accessorkey: "description" },
+  { header: "Expense Type", accessorkey: "category" },
+  { header: "Amount", accessorkey: "amount" },
+];

@@ -7,6 +7,9 @@ import { useConfirmationStore } from "@/store/confirmationModelStore";
 import ConfirmationModel from "@/components/model/ConfirmationModel";
 import toast from "react-hot-toast";
 import { useGlobleStore } from "@/store/globalStore";
+import { useMemo } from "react";
+import { expenseCols } from "@/data/CommonTable";
+import dayjs from "dayjs";
 
 const ExpenseTable = () => {
   const queryClient = useQueryClient();
@@ -20,13 +23,13 @@ const ExpenseTable = () => {
 
   const { selectedDateRange } = useGlobleStore();
 
-  // Query to fetch all options data
-  const { data = [], isLoading } = useQuery({
+  // Query to fetch all expense data
+  const { data: expenseRowData = [], isLoading } = useQuery({
     queryKey: ["expenses-data"],
     queryFn: () => getExpensenDataApi(selectedDateRange),
   });
 
-  // delete purchase data
+  // delete expense data
   const { mutate: mutationDeleteExpenseData } = useMutation({
     mutationFn: deleteExpenseApi,
     onSuccess: () => {
@@ -49,9 +52,26 @@ const ExpenseTable = () => {
    */
 
   // formatted columns data
-  // const formattedCols = useMemo(() => {
-  //   return formattedPurchaseTableColumns(commonCols);
-  // }, [commonCols]);
+  const formattedCols = useMemo(() => {
+    return expenseCols?.map(({ header, accessorkey }) => {
+      return {
+        header: header,
+        id: accessorkey,
+        accessorkey: accessorkey,
+        accessorFn: (row: any) => row[accessorkey],
+        Cell: ({ row }: { row: any }) => {
+          const rowValue = row.original[accessorkey];
+
+          if (accessorkey === "amount") return `Rs ${rowValue}`;
+
+          if (accessorkey === "date")
+            return dayjs(rowValue).format("DD-MMM-YYYY");
+
+          return rowValue;
+        },
+      };
+    });
+  }, [expenseCols]);
 
   const handleDelete = ({ original }: { original: any }) => {
     const selectedData = { ...original };
@@ -87,8 +107,8 @@ const ExpenseTable = () => {
             </button>
           </div>
         }
-        rows={[]}
-        columns={[]}
+        rows={expenseRowData || []}
+        columns={formattedCols || []}
       />
     </div>
   );
