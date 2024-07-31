@@ -5,6 +5,7 @@ import Product from "../models/product.model.js";
 import Purchase from "../models/purchase.model.js";
 import PendingPayment from "../models/pendingPayment.model.js";
 import Identity from "../models/identity.model.js";
+import { getAvgPrice } from "../utils/math.js";
 
 export const getOverallSummayOverview = async (req, res) => {
   try {
@@ -115,9 +116,10 @@ export const getCategoryWiseOverview = async (req, res) => {
       sold: `Rs ${item.sold.toFixed(1)}`,
       purchase: `Rs ${item.purchase.toFixed(1)}`,
       quantity: `${item.quantitySold} / ${item.quantityPurchased}`,
-      "avg-price": `Rs ${item.avgSoldPrice.toFixed(
-        1
-      )} / Rs ${item.avgPurchasePrice.toFixed(1)}`,
+      "avg-price": `Rs ${getAvgPrice(
+        item.sold,
+        item.quantitySold
+      )} / Rs ${getAvgPrice(item.purchase, item.quantityPurchased)}`,
       profit: `Rs ${item.profit.toFixed(1)}`,
     }));
 
