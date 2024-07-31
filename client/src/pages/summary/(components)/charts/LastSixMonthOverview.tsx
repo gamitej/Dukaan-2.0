@@ -1,28 +1,10 @@
-import BarCard from "@/components/cards/BarCard";
+import { useMemo } from "react";
 import colorMapping from "@/data/colors.json";
-import { getLastSixMonthOverview } from "@/services/Summary";
+import BarCard from "@/components/cards/BarCard";
 import { useQuery } from "@tanstack/react-query";
+import { getLastSixMonthOverview } from "@/services/Summary";
 
-const series = [
-  {
-    name: "Net Profit",
-    data: [44, 55, 57, 56, 61],
-  },
-  {
-    name: "Purchase",
-    data: [76, 85, 101, 98, 87],
-  },
-  {
-    name: "Sale",
-    data: [35, 41, 36, 26, 45],
-  },
-  {
-    name: "Expenses",
-    data: [35, 41, 36, 26, 45],
-  },
-];
-
-const cate = ["Jan", "Feb", "Mar", "Apr", "May"];
+// const cate = ["Jan", "Feb", "Mar", "Apr", "May"];
 
 const LastSixMonthOverview = () => {
   /**
@@ -30,12 +12,32 @@ const LastSixMonthOverview = () => {
    */
 
   // Query to fetch all options data
-  const { data: chartData = [], isLoading } = useQuery({
+  const { data: chartData = {}, isLoading } = useQuery({
     queryKey: ["monthly-overview"],
     queryFn: () => getLastSixMonthOverview(),
   });
 
-  console.log({ chartData });
+  const series = useMemo(() => {
+    return [
+      {
+        name: "Net Profit",
+        data: chartData?.series?.NetProfit || [],
+        // data: [1111, 2333, 3232, 4000, 5000, 9000],
+      },
+      {
+        name: "Purchase",
+        data: chartData?.series?.Purchase || [],
+      },
+      {
+        name: "Sale",
+        data: chartData?.series?.Sale || [],
+      },
+      {
+        name: "Expenses",
+        data: chartData?.series?.Expenses || [],
+      },
+    ];
+  }, [chartData]);
 
   /**
    * TSX
@@ -44,7 +46,8 @@ const LastSixMonthOverview = () => {
     <div className="w-full">
       <BarCard
         series={series}
-        categories={cate}
+        yAxisTitle="growth in rupees"
+        categories={chartData.cate}
         chartHeight={500}
         colors={[
           colorMapping.profit,

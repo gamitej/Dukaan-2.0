@@ -44,7 +44,29 @@ export const getLastSixMonthOverview = async (req, res) => {
     // Define date range
     const endDate = new Date(); // Current date
     const startDate = new Date();
-    startDate.setMonth(startDate.getMonth() - 6); // Date 6 months ago
+    startDate.setMonth(startDate.getMonth() - 5); // 6 months ago including the current month
+
+    // Create a list of the last 6 months
+    const months = [];
+    const cate = [];
+    for (let i = 0; i <= 5; i++) {
+      const date = new Date(startDate);
+      date.setMonth(date.getMonth() + i);
+      const month = date.getMonth() + 1; // getMonth() is zero-based
+      const year = date.getFullYear();
+      const monthKey = `${year}-${month < 10 ? "0" + month : month}`;
+      const readableMonth = `${month < 10 ? "0" + month : month}-${year}`;
+      months.push(monthKey);
+      cate.push(readableMonth);
+    }
+
+    // Initialize series with zeros
+    const series = {
+      NetProfit: Array(6).fill(0),
+      Purchase: Array(6).fill(0),
+      Sale: Array(6).fill(0),
+      Expenses: Array(6).fill(0),
+    };
 
     // Fetch monthly data
     const purchases = await Purchase.findAll({
@@ -101,46 +123,35 @@ export const getLastSixMonthOverview = async (req, res) => {
       ],
     });
 
-    // Process results into desired format
-    const months = [];
-    const series = {
-      NetProfit: [],
-      Purchase: [],
-      Sale: [],
-      Expenses: [],
-    };
-
+    // Process results into series format
     purchases.forEach((purchase) => {
       const month = purchase.get("month");
       const year = purchase.get("year");
       const key = `${year}-${month < 10 ? "0" + month : month}`;
-      if (!months.includes(key)) {
-        months.push(key);
+      const index = months.indexOf(key);
+      if (index !== -1) {
+        series.Purchase[index] = parseFloat(purchase.get("totalPurchase")) || 0;
       }
-      series.Purchase[months.indexOf(key)] =
-        parseFloat(purchase.get("totalPurchase")) || 0;
     });
 
     sales.forEach((sale) => {
       const month = sale.get("month");
       const year = sale.get("year");
       const key = `${year}-${month < 10 ? "0" + month : month}`;
-      if (!months.includes(key)) {
-        months.push(key);
+      const index = months.indexOf(key);
+      if (index !== -1) {
+        series.Sale[index] = parseFloat(sale.get("totalSales")) || 0;
       }
-      series.Sale[months.indexOf(key)] =
-        parseFloat(sale.get("totalSales")) || 0;
     });
 
     expenses.forEach((expense) => {
       const month = expense.get("month");
       const year = expense.get("year");
       const key = `${year}-${month < 10 ? "0" + month : month}`;
-      if (!months.includes(key)) {
-        months.push(key);
+      const index = months.indexOf(key);
+      if (index !== -1) {
+        series.Expenses[index] = parseFloat(expense.get("totalExpenses")) || 0;
       }
-      series.Expenses[months.indexOf(key)] =
-        parseFloat(expense.get("totalExpenses")) || 0;
     });
 
     // Generate Net Profit
@@ -148,12 +159,6 @@ export const getLastSixMonthOverview = async (req, res) => {
       return (
         sale - (series.Purchase[index] || 0) - (series.Expenses[index] || 0)
       );
-    });
-
-    // Convert month keys to readable format
-    const cate = months.map((key) => {
-      const [year, month] = key.split("-");
-      return `${month}-${year}`;
     });
 
     return res.status(200).json({

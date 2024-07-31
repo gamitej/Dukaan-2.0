@@ -41,6 +41,7 @@ const CategoryBarChart = () => {
     <div className="w-full">
       <BarCard
         chartHeight={400}
+        yAxisTitle="In rupees"
         series={series}
         categories={category}
         title="Category wise sale"
