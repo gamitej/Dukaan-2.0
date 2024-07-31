@@ -12,7 +12,7 @@ const router = express.Router();
 router.get("/overvall-summary", getOverallSummayOverview);
 
 // Get last 6 months overview
-router.post("/monthly-overview", getLastSixMonthOverview);
+router.get("/monthly-overview", getLastSixMonthOverview);
 
 // Get categories wise overview
 router.get("/category-overview", getCategoryWiseOverview);

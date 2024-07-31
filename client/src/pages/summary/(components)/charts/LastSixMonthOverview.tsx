@@ -1,5 +1,7 @@
 import BarCard from "@/components/cards/BarCard";
 import colorMapping from "@/data/colors.json";
+import { getLastSixMonthOverview } from "@/services/Summary";
+import { useQuery } from "@tanstack/react-query";
 
 const series = [
   {
@@ -23,6 +25,21 @@ const series = [
 const cate = ["Jan", "Feb", "Mar", "Apr", "May"];
 
 const LastSixMonthOverview = () => {
+  /**
+   * ========================= API CALL ===========================
+   */
+
+  // Query to fetch all options data
+  const { data: chartData = [], isLoading } = useQuery({
+    queryKey: ["monthly-overview"],
+    queryFn: () => getLastSixMonthOverview(),
+  });
+
+  console.log({ chartData });
+
+  /**
+   * TSX
+   */
   return (
     <div className="w-full">
       <BarCard
