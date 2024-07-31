@@ -16,12 +16,11 @@ export default function SelectTab() {
     <div className="w-full flex justify-center items-center mt-6 mb-6">
       <ToggleButtonGroup
         exclusive
-        
         color="primary"
         value={alignment}
         aria-label="Platform"
         onChange={handleChange}
-        sx={{ backgroundColor: "whitesmoke" }}
+        sx={{ backgroundColor: "whitesmoke", boxShadow: 2 }}
       >
         <ToggleButton value="chart" sx={{ color: "gray", fontWeight: 800 }}>
           Charts View
