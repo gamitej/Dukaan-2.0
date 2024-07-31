@@ -1,4 +1,6 @@
 import BasicTable from "@/components/table/BasicTable";
+import { getCategoryWiseOverview } from "@/services/Summary";
+import { useQuery } from "@tanstack/react-query";
 
 const cols = [
   { label: "Category", value: "category" },
@@ -38,11 +40,21 @@ const rows = [
 
 const CategoryTable = () => {
   /**
+   * ========================= API CALL ===========================
+   */
+
+  // Query to fetch all options data
+  const { data: tableData = [], isLoading } = useQuery({
+    queryKey: ["category-overview-table"],
+    queryFn: () => getCategoryWiseOverview(),
+  });
+
+  /**
    * TSX
    */
   return (
     <div>
-      <BasicTable cols={cols} rows={rows} />
+      <BasicTable cols={cols} rows={tableData || []} />
     </div>
   );
 };

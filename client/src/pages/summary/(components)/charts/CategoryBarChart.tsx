@@ -1,16 +1,39 @@
+import { useQuery } from "@tanstack/react-query";
 import BarCard from "@/components/cards/BarCard";
 import colorMapping from "@/data/colors.json";
-
-console.log(colorMapping);
-
-const cate = ["Wheat", "Pesticide", "Bajra", "Rice"];
-
-const series = [
-  { name: "Purchase", data: [50, 12, 20, 40] },
-  { name: "Sale", data: [50, 12, 27, 64] },
-];
+import { getCategoryWiseOverview } from "@/services/Summary";
+import { useMemo } from "react";
 
 const CategoryBarChart = () => {
+  /**
+   * ========================= API CALL ===========================
+   */
+
+  // Query to fetch all options data
+  const { data: chartData = [], isLoading } = useQuery({
+    queryKey: ["category-overview-table"],
+    queryFn: () => getCategoryWiseOverview(),
+  });
+
+  const { category, series } = useMemo(() => {
+    const sales: number[] = [];
+    const category: string[] = [];
+    const purchase: number[] = [];
+
+    chartData.forEach((item: any) => {
+      sales.push(item.totalSold);
+      category.push(item?.category);
+      purchase.push(item.totalPurchase);
+    });
+
+    const series = [
+      { name: "Purchase", data: purchase },
+      { name: "Sale", data: sales },
+    ];
+
+    return { category, series };
+  }, [chartData]);
+
   /**
    * TSX
    */
@@ -19,7 +42,7 @@ const CategoryBarChart = () => {
       <BarCard
         chartHeight={400}
         series={series}
-        categories={cate}
+        categories={category}
         title="Category wise sale"
         colors={[colorMapping.purchase, colorMapping.sale]}
       />
