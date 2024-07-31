@@ -1,11 +1,6 @@
 import colors from "@/data/colors.json";
-
-const data = [
-  { label: "Income", value: "1000" },
-  { label: "Sales", value: "1000" },
-  { label: "Purchase", value: "1000" },
-  { label: "Expenses", value: "1000" },
-];
+import { useQuery } from "@tanstack/react-query";
+import { getOverallSummayOverview } from "@/services/Summary";
 
 interface ColorMappingType {
   Sales: string;
@@ -22,9 +17,24 @@ const colorMapping: ColorMappingType = {
 };
 
 const SummaryCard: React.FC = () => {
+  /**
+   * ========================= API CALL ===========================
+   */
+
+  // Query to fetch all options data
+  const { data: summaryData = [], isLoading } = useQuery<
+    { label: string; value: string }[]
+  >({
+    queryKey: ["overall-summary"],
+    queryFn: () => getOverallSummayOverview(),
+  });
+
+  /**
+   * TSX
+   */
   return (
     <div className="grid grid-cols-12 gap-4 mt-4">
-      {data.map(({ label, value }, idx) => (
+      {summaryData.map(({ label, value }, idx) => (
         <div
           key={idx}
           className="col-span-3 bg-white flex flex-col gap-4 justify-center items-center pb-6 shadow-md rounded-md overflow-hidden"
