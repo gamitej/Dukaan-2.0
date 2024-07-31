@@ -2,14 +2,17 @@ import * as React from "react";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
-export default function SelectTab() {
-  const [alignment, setAlignment] = React.useState("chart");
+interface SelectTabProps {
+  view: "table" | "chart";
+  setView: (val: "table" | "chart") => void;
+}
 
+export default function SelectTab({ setView, view }: SelectTabProps) {
   const handleChange = (
     _event: React.MouseEvent<HTMLElement>,
-    newAlignment: string
+    newAlignment: "table" | "chart"
   ) => {
-    setAlignment(newAlignment);
+    setView(newAlignment);
   };
 
   return (
@@ -17,7 +20,7 @@ export default function SelectTab() {
       <ToggleButtonGroup
         exclusive
         color="primary"
-        value={alignment}
+        value={view}
         aria-label="Platform"
         onChange={handleChange}
         sx={{ backgroundColor: "whitesmoke", boxShadow: 2 }}
@@ -25,7 +28,7 @@ export default function SelectTab() {
         <ToggleButton value="chart" sx={{ color: "gray", fontWeight: 800 }}>
           Charts View
         </ToggleButton>
-        <ToggleButton value="tabular" sx={{ color: "gray", fontWeight: 800 }}>
+        <ToggleButton value="table" sx={{ color: "gray", fontWeight: 800 }}>
           Tabular View
         </ToggleButton>
       </ToggleButtonGroup>

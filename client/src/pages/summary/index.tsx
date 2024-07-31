@@ -1,8 +1,12 @@
+import { useState } from "react";
 import Charts from "./(components)/charts";
 import SelectTab from "./(components)/SelectTab";
 import SummaryCard from "./(components)/SummaryCard";
+import TableView from "./(components)/tables";
 
 const Summary = () => {
+  const [view, setView] = useState<"chart" | "table">("chart");
+
   /**
    * TSX
    */
@@ -12,8 +16,9 @@ const Summary = () => {
         Summary
       </div>
       <SummaryCard />
-      <SelectTab />
-      <Charts />
+      <SelectTab setView={setView} view={view} />
+
+      <div>{view === "table" ? <TableView /> : <Charts />}</div>
       <br />
       <br />
       <br />
