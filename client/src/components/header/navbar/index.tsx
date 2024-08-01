@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { PiShoppingCartFill } from "react-icons/pi";
 import { LuLeafyGreen } from "react-icons/lu";
 import { AiFillProduct } from "react-icons/ai";
@@ -24,15 +24,20 @@ const Header = () => {
         <h2 className="text-white text-2xl">DUKAAN</h2>
       </div>
       {/* right  */}
-      <div className="flex justify-center items-center gap-3">
+      <div className="flex justify-center items-center gap-4">
+        <div className="flex justify-center items-center gap-4 text-white font-[550] text-xl">
+          <Link to="/parties">Party</Link>
+          <Link to="/sales">Sales</Link>
+          <Link to="/expenses">Expenses</Link>
+        </div>
         <PiShoppingCartFill
           onClick={setIsStockModelOpen}
-          className="text-white text-4xl cursor-pointer"
+          className="text-white text-3xl cursor-pointer"
         />
 
         <AiFillProduct
           onClick={setIsModelOpen}
-          className="text-white text-4xl cursor-pointer"
+          className="text-white text-3xl cursor-pointer"
         />
       </div>
     </div>
