@@ -175,75 +175,109 @@ export const getLastSixMonthOverview = async (req, res) => {
 
 export const getCategoryWiseOverview = async (req, res) => {
   try {
-    const results = await Product.findAll({
+    // Fetch purchase data
+    const purchaseResults = await Purchase.findAll({
       attributes: [
-        "category",
-        [fn("SUM", col("Purchases.price")), "totalPurchase"],
-        [fn("SUM", col("Sales.price")), "totalSales"],
-        [fn("SUM", col("Sales.quantity")), "soldQuantity"],
-        [fn("SUM", col("Purchases.quantity")), "purchaseQuantity"],
-        [fn("AVG", col("Sales.price")), "avgSoldPrice"],
-        [fn("AVG", col("Purchases.price")), "avgPurchasePrice"],
-        [literal("(SUM(Sales.price) - SUM(Purchases.price))"), "profit"],
+        [col("Product.category"), "category"],
+        [fn("SUM", col("price")), "totalPurchase"],
+        [fn("SUM", col("quantity")), "purchaseQuantity"],
+        [fn("AVG", col("price")), "avgPurchasePrice"],
       ],
       include: [
         {
-          model: Purchase,
-          attributes: [],
-        },
-        {
-          model: Sales,
+          model: Product,
           attributes: [],
         },
       ],
-      group: ["Product.product_id", "Product.category"],
+      group: ["Product.category"],
+      raw: true,
     });
 
-    // Aggregate results
-    const aggregatedData = results.reduce((acc, result) => {
-      const category = result.get("category");
-      if (!acc[category]) {
-        acc[category] = {
+    // Fetch sales data
+    const salesResults = await Sales.findAll({
+      attributes: [
+        [col("Product.category"), "category"],
+        [fn("SUM", col("price")), "totalSales"],
+        [fn("SUM", col("quantity")), "soldQuantity"],
+        [fn("AVG", col("price")), "avgSoldPrice"],
+      ],
+      include: [
+        {
+          model: Product,
+          attributes: [],
+        },
+      ],
+      group: ["Product.category"],
+      raw: true,
+    });
+
+    // Combine and format results
+    const aggregatedData = {};
+
+    purchaseResults.forEach((result) => {
+      const category = result.category;
+      if (!aggregatedData[category]) {
+        aggregatedData[category] = {
           category,
-          sold: 0,
-          purchase: 0,
-          quantitySold: 0,
-          quantityPurchased: 0,
-          avgSoldPrice: 0,
+          totalPurchase: 0,
+          purchaseQuantity: 0,
           avgPurchasePrice: 0,
+          totalSales: 0,
+          soldQuantity: 0,
+          avgSoldPrice: 0,
           profit: 0,
         };
       }
-
-      acc[category].sold += parseFloat(result.get("totalSales") || 0);
-      acc[category].purchase += parseFloat(result.get("totalPurchase") || 0);
-      acc[category].quantitySold += parseFloat(result.get("soldQuantity") || 0);
-      acc[category].quantityPurchased += parseFloat(
-        result.get("purchaseQuantity") || 0
+      aggregatedData[category].totalPurchase += parseFloat(
+        result.totalPurchase || 0
       );
-      acc[category].avgSoldPrice += parseFloat(result.get("avgSoldPrice") || 0);
-      acc[category].avgPurchasePrice += parseFloat(
-        result.get("avgPurchasePrice") || 0
+      aggregatedData[category].purchaseQuantity += parseFloat(
+        result.purchaseQuantity || 0
       );
-      acc[category].profit += parseFloat(result.get("profit") || 0);
+      aggregatedData[category].avgPurchasePrice = parseFloat(
+        result.avgPurchasePrice || 0
+      );
+    });
 
-      return acc;
-    }, {});
+    salesResults.forEach((result) => {
+      const category = result.category;
+      if (!aggregatedData[category]) {
+        aggregatedData[category] = {
+          category,
+          totalPurchase: 0,
+          purchaseQuantity: 0,
+          avgPurchasePrice: 0,
+          totalSales: 0,
+          soldQuantity: 0,
+          avgSoldPrice: 0,
+          profit: 0,
+        };
+      }
+      aggregatedData[category].totalSales += parseFloat(result.totalSales || 0);
+      aggregatedData[category].soldQuantity += parseFloat(
+        result.soldQuantity || 0
+      );
+      aggregatedData[category].avgSoldPrice = parseFloat(
+        result.avgSoldPrice || 0
+      );
+      aggregatedData[category].profit =
+        parseFloat(aggregatedData[category].totalSales) -
+        parseFloat(aggregatedData[category].totalPurchase);
+    });
 
-    // Format data
     const formattedData = Object.values(aggregatedData).map((item) => ({
       category: item.category,
-      totalSold: item.sold,
-      totalPurchase: item.purchase,
-      soldQuantity: item.quantitySold,
-      purchaseQuantity: item.quantityPurchased,
-      sold: `Rs ${item.sold.toFixed(1)}`,
-      purchase: `Rs ${item.purchase.toFixed(1)}`,
-      quantity: `${item.quantitySold} / ${item.quantityPurchased}`,
+      totalSold: item.totalSales,
+      totalPurchase: item.totalPurchase,
+      soldQuantity: item.soldQuantity,
+      purchaseQuantity: item.purchaseQuantity,
+      sold: `Rs ${item.totalSales.toFixed(1)}`,
+      purchase: `Rs ${item.totalPurchase.toFixed(1)}`,
+      quantity: `${item.soldQuantity} / ${item.purchaseQuantity}`,
       "avg-price": `Rs ${getAvgPrice(
-        item.sold,
-        item.quantitySold
-      )} / Rs ${getAvgPrice(item.purchase, item.quantityPurchased)}`,
+        item.totalSales,
+        item.soldQuantity
+      )} / Rs ${getAvgPrice(item.totalPurchase, item.purchaseQuantity)}`,
       profit: `Rs ${item.profit.toFixed(1)}`,
     }));
 
