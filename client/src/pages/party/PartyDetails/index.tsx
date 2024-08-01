@@ -5,6 +5,7 @@ import Return from "@/components/return";
 import PurchaseTable from "./PurchaseTable";
 import TotalCard from "../common/TotalCard";
 import BasicTab from "@/components/common/BasicTab";
+import PartyOverview from "../(components)/PartyOverview";
 import PaymentTable from "@/components/cards/PaymentTable";
 import PendingPaymentTable from "@/components/pendingPayment";
 import BasicDateRangePicker from "@/components/fields/DateRangePicker";
@@ -12,6 +13,11 @@ import BasicDateRangePicker from "@/components/fields/DateRangePicker";
 import { PartyDetailsReponse, usePartyDetails } from "@/hooks/usePartyDetails";
 
 const tabsData = [
+  {
+    label: "Overview",
+    value: "Overview",
+    content: PartyOverview,
+  },
   {
     label: "Purchase Record",
     value: "Purchase Record",
@@ -89,8 +95,6 @@ const PartyDetails = () => {
             <span className="font-normal">{partyDetails.contact}</span>
           </div>
         </div>
-
-        <TotalCard />
       </div>
 
       <div className="mt-4 flex justify-between items-center">

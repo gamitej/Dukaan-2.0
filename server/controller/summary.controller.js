@@ -52,7 +52,8 @@ export const getLastSixMonthOverview = async (req, res) => {
     for (let i = 0; i <= 5; i++) {
       const date = new Date(startDate);
       date.setMonth(date.getMonth() + i);
-      const month = date.getMonth() + 1; // getMonth() is zero-based
+      // getMonth() is zero-based
+      const month = date.getMonth() + 1;
       const year = date.getFullYear();
       const monthKey = `${year}-${month < 10 ? "0" + month : month}`;
       const readableMonth = `${month < 10 ? "0" + month : month}-${year}`;

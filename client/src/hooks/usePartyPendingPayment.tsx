@@ -1,16 +1,13 @@
-import { usePartyPurchaseData } from "@/pages/party/common/usePartyPurchaseData";
-import { getPartyPendingPaymentDataApi } from "@/services/PendingPayment";
-import { useGlobleStore } from "@/store/globalStore";
 import { useQuery } from "@tanstack/react-query";
+import { useGlobleStore } from "@/store/globalStore";
+import { getPartyPendingPaymentDataApi } from "@/services/PendingPayment";
 
 export const usePartyPendingPayment = ({ partyId }: { partyId: string }) => {
   const { selectedDateRange } = useGlobleStore();
 
-  const { purchases } = usePartyPurchaseData({ partyId });
-
   // Query to fetch party purchase data
   const { data = [], isLoading } = useQuery({
-    queryKey: ["pending-payment-data", partyId, selectedDateRange, purchases],
+    queryKey: ["pending-payment-data", partyId, selectedDateRange],
     queryFn: () => getPartyPendingPaymentDataApi(partyId, selectedDateRange),
   });
 

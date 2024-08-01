@@ -242,3 +242,45 @@ export const getPartyOrderPurchaseData = async (req, res) => {
     return res.status(500).json(error.message || error);
   }
 };
+
+export const getPartyCategoriesPurchaseChartData = async (req, res) => {
+  try {
+    const { party_id, startDate, endDate } = req.query;
+
+    if (!party_id) return res.status(400).json("Missing party_id parameter");
+    if (!startDate) return res.status(400).json("Missing start date parameter");
+    if (!endDate) return res.status(400).json("Missing end date parameter");
+
+    const dateCondition = DateCondition(req.query);
+
+    const results = await Purchase.findAll({
+      attributes: [
+        "product_id",
+        [sequelize.fn("SUM", sequelize.col("price")), "total_purchase"],
+        [sequelize.fn("SUM", sequelize.col("quantity")), "total_quantity"],
+      ],
+      where: {
+        party_id,
+        ...dateCondition,
+      },
+      group: ["product_id"],
+      include: {
+        model: Product,
+        attributes: ["product", "category", "company"],
+      },
+    });
+
+    const formattedResults = results.map((result) => ({
+      product_id: result.product_id,
+      product: result.Product.product,
+      category: result.Product.category,
+      company: result.Product.company,
+      total_purchase: result.getDataValue("total_purchase"),
+      total_quantity: result.getDataValue("total_quantity"),
+    }));
+
+    return res.status(200).json(formattedResults);
+  } catch (error) {
+    return res.status(500).json(error.message || error);
+  }
+};

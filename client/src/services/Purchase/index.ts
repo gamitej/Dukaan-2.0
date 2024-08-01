@@ -40,3 +40,13 @@ export async function getPartyPurchaseOrderDetailsDataApi(req: any) {
   );
   return data;
 }
+
+export async function getPartyCategoriesPurchaseChartData(
+  partyId: string,
+  selectedDateRange: DateRangeType
+) {
+  const { data } = await http.get(
+    `/purchase/purchase-chart-data?party_id=${partyId}&startDate=${selectedDateRange.startDate}&endDate=${selectedDateRange.endDate}`
+  );
+  return data;
+}
