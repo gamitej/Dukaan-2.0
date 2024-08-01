@@ -21,7 +21,11 @@ const CategoryBarChart = () => {
     queryFn: () => getCategoryWiseOverview(selectedDateRange),
   });
 
-  const { category, series } = useMemo(() => {
+  const {
+    category,
+    series,
+    isEmpty = false,
+  } = useMemo(() => {
     const sales: number[] = [];
     const category: string[] = [];
     const purchase: number[] = [];
@@ -37,7 +41,10 @@ const CategoryBarChart = () => {
       { name: "Sale", data: sales },
     ];
 
-    return { category, series };
+    const isEmpty =
+      sales.length === 0 && category.length === 0 && purchase.length === 0;
+
+    return { category, series, isEmpty };
   }, [chartData]);
 
   /**
@@ -47,12 +54,12 @@ const CategoryBarChart = () => {
     <div className="w-full">
       <BarCard
         series={series}
-        chartHeight={400}
+        chartHeight={350}
         isLoading={isLoading}
         yAxisTitle="In rupees"
         categories={category}
         title="Category wise sale"
-        isError={category?.length == 0}
+        isError={isEmpty || category?.length == 0}
         colors={[colorMapping.purchase, colorMapping.sale]}
       />
     </div>

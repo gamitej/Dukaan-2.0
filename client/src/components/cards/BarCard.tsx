@@ -10,8 +10,8 @@ interface BarCardProps extends BarChartProps {
 }
 
 const BarCard: FC<BarCardProps> = ({
-  isLoading = false,
-  isError = false,
+  // isLoading = false,
+  // isError = false,
   title = "title",
   enableBorder = false,
   ...res
@@ -29,14 +29,14 @@ const BarCard: FC<BarCardProps> = ({
         <p className="text-2xl font-semibold text-lightDark">{title}</p>
       </div>
       <div className="px-4">
-        <ShowBarChart isLoading={isLoading} {...res} />
+        <ShowBarChart {...res} />
       </div>
     </div>
   );
 };
 
 function ShowBarChart(props: any) {
-  const { isLoading, isError, ...res } = props;
+  const { isLoading = false, isError = false } = props;
 
   if (isLoading) {
     return (
@@ -49,12 +49,12 @@ function ShowBarChart(props: any) {
   if (isError) {
     return (
       <div className="h-[15rem] flex justify-center items-center">
-        <p className="text-lightDark text-md">Error Occured</p>
+        <p className="text-lightDark text-2xl">No data available</p>
       </div>
     );
   }
 
-  return <BarChart {...res} />;
+  return <BarChart {...props} />;
 }
 
 export default BarCard;

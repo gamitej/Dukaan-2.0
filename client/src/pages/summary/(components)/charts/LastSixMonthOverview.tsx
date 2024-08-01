@@ -35,6 +35,10 @@ const LastSixMonthOverview = () => {
     ];
   }, [chartData]);
 
+  const isAllDataZero = useMemo(() => {
+    return series.every((s) => s.data.every((point: number) => point === 0));
+  }, [series]);
+
   /**
    * TSX
    */
@@ -42,18 +46,18 @@ const LastSixMonthOverview = () => {
     <div className="w-full">
       <BarCard
         series={series}
-        isLoading={isLoading}
-        isError={chartData?.cate?.length == 0}
-        yAxisTitle="growth in rupees"
-        categories={chartData?.cate}
         chartHeight={500}
+        isLoading={isLoading}
+        categories={chartData?.cate}
+        yAxisTitle="growth in rupees"
+        title="Last 6 month overview"
+        isError={isAllDataZero || chartData?.cate?.length == 0}
         colors={[
           colorMapping.profit,
           colorMapping.purchase,
           colorMapping.sale,
           colorMapping.expense,
         ]}
-        title="Last 6 month overview"
       />
     </div>
   );
