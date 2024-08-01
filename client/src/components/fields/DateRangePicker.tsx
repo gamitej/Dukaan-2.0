@@ -5,7 +5,11 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
-export default function BasicDateRangePicker() {
+export default function BasicDateRangePicker({
+  size = "medium",
+}: {
+  size?: "medium" | "small";
+}) {
   const { selectedDateRange, setSelectedDateRange } = useGlobleStore();
 
   const handleEndDateChange = (newDate: dayjs.Dayjs | any, label: string) => {
@@ -18,10 +22,11 @@ export default function BasicDateRangePicker() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={["DatePicker"]}>
-        <form className="w-fit bg-white flex gap-2 px-6 py-4 shadow-md rounded-md">
+        <form className="w-fit bg-white flex gap-2 p-4 shadow-md rounded-md">
           <DatePicker
             format="DD-MMM-YY"
             label="Start Date"
+            slotProps={{ textField: { size } }}
             maxDate={dayjs(selectedDateRange.endDate)}
             value={dayjs(selectedDateRange.startDate)}
             onChange={(newValue) => handleEndDateChange(newValue, "startDate")}
@@ -30,6 +35,7 @@ export default function BasicDateRangePicker() {
             label="End Date"
             maxDate={dayjs()}
             format="DD-MMM-YY"
+            slotProps={{ textField: { size } }}
             value={dayjs(selectedDateRange.endDate)}
             minDate={dayjs(selectedDateRange.startDate)}
             onChange={(newValue) => handleEndDateChange(newValue, "endDate")}

@@ -14,7 +14,7 @@ const Summary = () => {
   return (
     <div className="w-[90%] m-auto mt-2">
       <div className="flex justify-end mb-8">
-        <BasicDateRangePicker />
+        <BasicDateRangePicker size="small" />
       </div>
       <SummaryCard />
       <SelectTab setView={setView} view={view} />

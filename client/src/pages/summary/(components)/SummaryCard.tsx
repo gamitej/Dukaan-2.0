@@ -1,6 +1,7 @@
 import colors from "@/data/colors.json";
 import { useQuery } from "@tanstack/react-query";
 import { getOverallSummayOverview } from "@/services/Summary";
+import { useGlobleStore } from "@/store/globalStore";
 
 interface ColorMappingType {
   Sales: string;
@@ -17,6 +18,8 @@ const colorMapping: ColorMappingType = {
 };
 
 const SummaryCard: React.FC = () => {
+  const { selectedDateRange } = useGlobleStore();
+
   /**
    * ========================= API CALL ===========================
    */
@@ -25,8 +28,8 @@ const SummaryCard: React.FC = () => {
   const { data: summaryData = [] } = useQuery<
     { label: string; value: string }[]
   >({
-    queryKey: ["overall-summary"],
-    queryFn: () => getOverallSummayOverview(),
+    queryKey: ["overall-summary", selectedDateRange],
+    queryFn: () => getOverallSummayOverview(selectedDateRange),
   });
 
   /**

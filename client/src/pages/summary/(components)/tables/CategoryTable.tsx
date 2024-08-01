@@ -1,5 +1,6 @@
 import BasicTable from "@/components/table/BasicTable";
 import { getCategoryWiseOverview } from "@/services/Summary";
+import { useGlobleStore } from "@/store/globalStore";
 import { useQuery } from "@tanstack/react-query";
 
 const cols = [
@@ -39,14 +40,16 @@ const rows = [
 ];
 
 const CategoryTable = () => {
+  const { selectedDateRange } = useGlobleStore();
+
   /**
    * ========================= API CALL ===========================
    */
 
   // Query to fetch all options data
-  const { data: tableData = [], isLoading } = useQuery({
-    queryKey: ["category-overview-table"],
-    queryFn: () => getCategoryWiseOverview(),
+  const { data: tableData = [] } = useQuery({
+    queryKey: ["category-overview-table", selectedDateRange],
+    queryFn: () => getCategoryWiseOverview(selectedDateRange),
   });
 
   /**
