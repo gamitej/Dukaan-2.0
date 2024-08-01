@@ -18,6 +18,9 @@ const Sales = () => {
       <div className="mt-8">
         <SalesTable />
       </div>
+      <br />
+      <br />
+      <br />
     </div>
   );
 };
