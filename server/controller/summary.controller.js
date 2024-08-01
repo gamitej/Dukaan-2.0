@@ -5,18 +5,34 @@ import Expense from "../models/expense.model.js";
 import Product from "../models/product.model.js";
 import Purchase from "../models/purchase.model.js";
 import PendingPayment from "../models/pendingPayment.model.js";
+import { DateCondition } from "../utils/date.js";
 
 export const getOverallSummayOverview = async (req, res) => {
   try {
-    const totalPurchaseResult = await PendingPayment.findOne({
-      attributes: [[fn("SUM", col("total_amount")), "totalPurchase"]],
+    const { startDate, endDate } = req.query;
+
+    if (!startDate) return res.status(400).json("Missing start date parameter");
+    if (!endDate) return res.status(400).json("Missing end date parameter");
+
+    const dateCondition = DateCondition(req.query);
+
+    const totalPurchaseResult = await Purchase.findOne({
+      where: { ...dateCondition },
+      attributes: [[fn("SUM", col("price")), "totalPurchase"]],
+    });
+
+    const saleDateCondition = DateCondition({
+      ...req.query,
+      date_label: "date",
     });
 
     const totalSalesResult = await Sales.findOne({
+      where: { ...saleDateCondition },
       attributes: [[fn("SUM", col("price")), "totalSales"]],
     });
 
     const totalExpensesResult = await Expense.findOne({
+      where: { ...saleDateCondition },
       attributes: [[fn("SUM", col("amount")), "totalExpenses"]],
     });
 
@@ -175,8 +191,16 @@ export const getLastSixMonthOverview = async (req, res) => {
 
 export const getCategoryWiseOverview = async (req, res) => {
   try {
+    const { startDate, endDate } = req.query;
+
+    if (!startDate) return res.status(400).json("Missing start date parameter");
+    if (!endDate) return res.status(400).json("Missing end date parameter");
+
+    const dateCondition = DateCondition(req.query);
+
     // Fetch purchase data
     const purchaseResults = await Purchase.findAll({
+      where: { ...dateCondition },
       attributes: [
         [col("Product.category"), "category"],
         [fn("SUM", col("price")), "totalPurchase"],
@@ -193,8 +217,14 @@ export const getCategoryWiseOverview = async (req, res) => {
       raw: true,
     });
 
+    const saleDateCondition = DateCondition({
+      ...req.query,
+      date_label: "date",
+    });
+
     // Fetch sales data
     const salesResults = await Sales.findAll({
+      where: { ...saleDateCondition },
       attributes: [
         [col("Product.category"), "category"],
         [fn("SUM", col("price")), "totalSales"],

@@ -1,18 +1,24 @@
-import { useQuery } from "@tanstack/react-query";
-import BarCard from "@/components/cards/BarCard";
-import colorMapping from "@/data/colors.json";
-import { getCategoryWiseOverview } from "@/services/Summary";
 import { useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+// components
+import BarCard from "@/components/cards/BarCard";
+// data
+import colorMapping from "@/data/colors.json";
+// store & services
+import { useGlobleStore } from "@/store/globalStore";
+import { getCategoryWiseOverview } from "@/services/Summary";
 
 const CategoryBarChart = () => {
+  const { selectedDateRange } = useGlobleStore();
+
   /**
    * ========================= API CALL ===========================
    */
 
   // Query to fetch all options data
   const { data: chartData = [], isLoading } = useQuery({
-    queryKey: ["category-overview-table"],
-    queryFn: () => getCategoryWiseOverview(),
+    queryKey: ["category-overview-table", selectedDateRange],
+    queryFn: () => getCategoryWiseOverview(selectedDateRange),
   });
 
   const { category, series } = useMemo(() => {
