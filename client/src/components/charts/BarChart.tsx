@@ -4,6 +4,7 @@ import ReactApexChart from "react-apexcharts";
 
 export interface BarChartProps {
   series: any[];
+  yAxisSetUp: any;
   categories: any[];
   colors?: string[];
   chartHeight?: number;
@@ -15,9 +16,10 @@ const BarChart: FC<BarChartProps> = ({
   series = [],
   categories = [],
   chartHeight = 300,
-  yAxisTitle = "y-axis-title",
   xAxisType = "category",
-  colors = ["#304758", "#F15B46", "#F15B46", "#F15B46"],
+  yAxisSetUp = undefined,
+  yAxisTitle = "y-axis-title",
+  colors = ["#835AF1", "#5E88FC", "#74DBEF", "#FF6363"],
 }) => {
   const options: ApexOptions = {
     chart: {
@@ -33,22 +35,24 @@ const BarChart: FC<BarChartProps> = ({
     dataLabels: {
       enabled: false,
     },
-    yaxis: {
-      title: {
-        text: yAxisTitle,
-        style: {
-          fontSize: "14px",
+    yaxis: yAxisSetUp
+      ? yAxisSetUp
+      : {
+          title: {
+            text: yAxisTitle,
+            style: {
+              fontSize: "14px",
+            },
+          },
+          labels: {
+            formatter: function (y) {
+              return y.toFixed(0);
+            },
+            style: {
+              fontSize: "12px",
+            },
+          },
         },
-      },
-      labels: {
-        formatter: function (y) {
-          return y.toFixed(0);
-        },
-        style: {
-          fontSize: "12px",
-        },
-      },
-    },
     xaxis: {
       type: xAxisType,
       categories,

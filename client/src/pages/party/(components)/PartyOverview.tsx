@@ -2,6 +2,9 @@ import { useGlobleStore } from "@/store/globalStore";
 import TotalCard from "../common/TotalCard";
 import { useQuery } from "@tanstack/react-query";
 import { getPartyCategoriesPurchaseChartData } from "@/services/Purchase";
+import BarCard from "@/components/cards/BarCard";
+import { useMemo } from "react";
+import { formattPurchaseChartData } from "../data/func";
 
 const PartyOverview = ({ partyId = "" }: { partyId: string }) => {
   const { selectedDateRange } = useGlobleStore();
@@ -13,15 +16,30 @@ const PartyOverview = ({ partyId = "" }: { partyId: string }) => {
       getPartyCategoriesPurchaseChartData(partyId, selectedDateRange),
   });
 
-  console.log({ chartData });
+  const {
+    category = [],
+    series = [],
+    yAxisSetUp = [],
+  } = useMemo(() => {
+    return formattPurchaseChartData(chartData);
+  }, [chartData]);
 
   /**
    * TSX
    */
   return (
-    <div>
+    <div className="w-full flex flex-col gap-4">
       <TotalCard />
-      <div></div>
+      <BarCard
+        enableBorder
+        chartHeight={350}
+        isLoading={isLoading}
+        series={series || []}
+        yAxisSetUp={yAxisSetUp}
+        categories={category || []}
+        title="Product wise purchase"
+        isError={category?.length === 0}
+      />
     </div>
   );
 };

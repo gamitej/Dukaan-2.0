@@ -13,8 +13,10 @@ const TotalCard = () => {
    * TSX
    */
   return (
-    <div className="flex gap-3 items-center bg-white px-4 py-2 border">
-      <div>Total Purchase : {isLoading ? "....." : `Rs ${totalPurchase}`}</div>
+    <div className="flex gap-3 items-center bg-white px-4 py-2 border-2 border-zinc-400 rounded-md text-xl text-mediumDark">
+      <div className="border-r-2 border-zinc-400 pr-4">
+        Total Purchase : {isLoading ? "....." : `Rs ${totalPurchase}`}
+      </div>
       <div>
         Pending Payment : {isLoading ? "....." : `Rs ${totalPendingPayment}`}
       </div>

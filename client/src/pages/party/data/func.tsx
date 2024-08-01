@@ -59,3 +59,49 @@ export const formattedSalesTableColumns = (commonCols: any) => {
     }
   );
 };
+
+export const formattPurchaseChartData = (chartData: any) => {
+  const avg: number[] = [];
+  const quantity: number[] = [];
+  const purchase: number[] = [];
+
+  const category: string[] = [];
+
+  chartData.forEach((item: any) => {
+    category.push(item?.product);
+    quantity.push(item?.total_quantity);
+    purchase.push(item?.total_purchase);
+    avg.push(parseInt(item?.avg_purchase));
+  });
+
+  const series = [
+    { name: "Purchase", data: purchase, yAxis: 0 },
+    { name: "Quantity", data: quantity, yAxis: 1 },
+    { name: "Avg", data: avg, yAxis: 0 },
+  ];
+
+  const yAxisSetUp = [
+    {
+      title: {
+        text: "Purchase / Avg",
+        style: {
+          fontSize: "14px",
+        },
+      },
+    },
+    {
+      opposite: true,
+      title: {
+        text: "Quantity",
+        style: {
+          fontSize: "14px",
+        },
+      },
+      min: 0,
+      max: Math.max(...quantity) * 1.2,
+      tickInterval: Math.max(...quantity) / 5,
+    },
+  ];
+
+  return { category, series, yAxisSetUp };
+};

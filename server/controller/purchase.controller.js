@@ -10,6 +10,7 @@ import {
   DeletePurchaseFromPendingPayment,
 } from "./pendingPayment.controller.js";
 import { DateCondition } from "../utils/date.js";
+import { getAvgPrice } from "../utils/math.js";
 
 export const addPurchaseData = async (req, res) => {
   const transaction = await sequelize.transaction();
@@ -271,12 +272,15 @@ export const getPartyCategoriesPurchaseChartData = async (req, res) => {
     });
 
     const formattedResults = results.map((result) => ({
-      product_id: result.product_id,
       product: result.Product.product,
-      category: result.Product.category,
       company: result.Product.company,
-      total_purchase: result.getDataValue("total_purchase"),
-      total_quantity: result.getDataValue("total_quantity"),
+      category: result.Product.category,
+      total_purchase: parseInt(result.getDataValue("total_purchase")),
+      total_quantity: parseInt(result.getDataValue("total_quantity")),
+      avg_purchase: getAvgPrice(
+        parseInt(result.getDataValue("total_purchase")),
+        parseInt(result.getDataValue("total_quantity"))
+      ),
     }));
 
     return res.status(200).json(formattedResults);
