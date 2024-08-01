@@ -40,11 +40,13 @@ const CategoryBarChart = () => {
   return (
     <div className="w-full">
       <BarCard
-        chartHeight={400}
-        yAxisTitle="In rupees"
         series={series}
+        chartHeight={400}
+        isLoading={isLoading}
+        yAxisTitle="In rupees"
         categories={category}
         title="Category wise sale"
+        isError={category?.length == 0}
         colors={[colorMapping.purchase, colorMapping.sale]}
       />
     </div>

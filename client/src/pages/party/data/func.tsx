@@ -77,7 +77,7 @@ export const formattPurchaseChartData = (chartData: any) => {
   const series = [
     { name: "Purchase", data: purchase, yAxis: 0 },
     { name: "Quantity", data: quantity, yAxis: 1 },
-    { name: "Avg", data: avg, yAxis: 0 },
+    // { name: "Avg", data: avg, yAxis: 1 },
   ];
 
   const yAxisSetUp = [

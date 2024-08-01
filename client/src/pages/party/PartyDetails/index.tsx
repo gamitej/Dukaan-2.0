@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 // components
 import Return from "@/components/return";
 import PurchaseTable from "./PurchaseTable";
-import TotalCard from "../common/TotalCard";
 import BasicTab from "@/components/common/BasicTab";
 import PartyOverview from "../(components)/PartyOverview";
 import PaymentTable from "@/components/cards/PaymentTable";

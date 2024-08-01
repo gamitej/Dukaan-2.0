@@ -24,6 +24,8 @@ const PartyOverview = ({ partyId = "" }: { partyId: string }) => {
     return formattPurchaseChartData(chartData);
   }, [chartData]);
 
+  console.log({ series });
+
   /**
    * TSX
    */

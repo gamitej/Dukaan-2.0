@@ -4,14 +4,11 @@ import BarCard from "@/components/cards/BarCard";
 import { useQuery } from "@tanstack/react-query";
 import { getLastSixMonthOverview } from "@/services/Summary";
 
-// const cate = ["Jan", "Feb", "Mar", "Apr", "May"];
-
 const LastSixMonthOverview = () => {
   /**
    * ========================= API CALL ===========================
    */
 
-  // Query to fetch all options data
   const { data: chartData = {}, isLoading } = useQuery({
     queryKey: ["monthly-overview"],
     queryFn: () => getLastSixMonthOverview(),
@@ -22,7 +19,6 @@ const LastSixMonthOverview = () => {
       {
         name: "Net Profit",
         data: chartData?.series?.NetProfit || [],
-        // data: [1111, 2333, 3232, 4000, 5000, 9000],
       },
       {
         name: "Purchase",
@@ -46,8 +42,10 @@ const LastSixMonthOverview = () => {
     <div className="w-full">
       <BarCard
         series={series}
+        isLoading={isLoading}
+        isError={chartData?.cate?.length == 0}
         yAxisTitle="growth in rupees"
-        categories={chartData.cate}
+        categories={chartData?.cate}
         chartHeight={500}
         colors={[
           colorMapping.profit,

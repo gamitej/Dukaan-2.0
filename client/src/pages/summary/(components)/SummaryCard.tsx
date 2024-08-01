@@ -22,7 +22,7 @@ const SummaryCard: React.FC = () => {
    */
 
   // Query to fetch all options data
-  const { data: summaryData = [], isLoading } = useQuery<
+  const { data: summaryData = [] } = useQuery<
     { label: string; value: string }[]
   >({
     queryKey: ["overall-summary"],
