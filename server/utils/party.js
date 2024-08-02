@@ -13,7 +13,7 @@ export async function insertParty(name) {
 // Function to retrieve all parties
 export async function getPartiesData() {
   try {
-    const parties = await Party.findAll();
+    const parties = await Party.findAll({ order: [["shop_name", "ASC"]] });
     if (!parties) return [];
     return parties;
   } catch (error) {
