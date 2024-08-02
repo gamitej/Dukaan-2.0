@@ -9,6 +9,10 @@ const PendingPayment = sequelize.define("PendingPayment", {
     primaryKey: true,
     defaultValue: () => generateUUID(),
   },
+  date: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
   party_id: {
     type: DataTypes.STRING,
     allowNull: false,

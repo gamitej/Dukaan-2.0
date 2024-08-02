@@ -4,7 +4,7 @@ import PendingPayment from "../models/pendingPayment.model.js";
 
 export async function PurchaseToPendingPayment(req, transaction) {
   try {
-    const { order_id = "", party_id, price } = req;
+    const { order_id = "", party_id, price, date } = req;
     const price_num = parseInt(price);
 
     // Check if the order already exists
@@ -28,6 +28,7 @@ export async function PurchaseToPendingPayment(req, transaction) {
         {
           party_id,
           total_amount: price_num,
+          date: date,
         },
         { transaction }
       );
@@ -80,6 +81,7 @@ export async function DeletePurchaseFromPendingPayment(req, transaction) {
     throw new Error(error.message || error);
   }
 }
+
 export async function GetPartyPendingPaymentDetails(req, res) {
   try {
     const { party_id, startDate, endDate } = req.query;
@@ -90,7 +92,7 @@ export async function GetPartyPendingPaymentDetails(req, res) {
 
     const dateCondition = DateCondition({
       ...req.query,
-      date_label: "createdAt",
+      date_label: "date",
     });
 
     // Fetch purchase data based on party_id
@@ -100,7 +102,7 @@ export async function GetPartyPendingPaymentDetails(req, res) {
         ...dateCondition,
       },
       order: [
-        ["createdAt", "DESC"],
+        ["date", "DESC"],
         ["order_id", "ASC"],
       ],
     });

@@ -25,7 +25,7 @@ export const formattedPendingPaymentTableColumns = (commonCols: any) => {
           if (accessorkey === "total_amount" || accessorkey === "paid_amount")
             return `Rs ${rowValue}`;
 
-          if (accessorkey === "createdAt") {
+          if (accessorkey === "date") {
             const date = dayjs(rowValue).format("DD-MMM-YYYY");
             return date;
           }

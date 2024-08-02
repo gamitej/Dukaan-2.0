@@ -31,7 +31,7 @@ export const returnCols = [
 
 export const pendingPaymentCols = [
   { header: "Order Id", accessorkey: "order_id" },
-  { header: "Date", accessorkey: "createdAt" },
+  { header: "Order Date", accessorkey: "date" },
   { header: "Total Amount", accessorkey: "total_amount" },
   { header: "Paid Amount", accessorkey: "paid_amount" },
 ];
