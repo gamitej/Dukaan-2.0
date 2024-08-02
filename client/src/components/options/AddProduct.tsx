@@ -66,6 +66,9 @@ const AddProduct = () => {
     return [];
   }, [companyOptions, formData.category]);
 
+  const isDisabled =
+    formData.product.length >= 3 && formData.category.length !== 0;
+
   /**
    * TSX
    */
@@ -107,7 +110,7 @@ const AddProduct = () => {
 
       <button
         type="submit"
-        disabled={formData.product.length < 4 && formData.category.length < 4}
+        disabled={!isDisabled}
         className=" disabled:bg-slate-300 bg-lightDark text-white py-3 hover:bg-slate-500 rounded-sm shadow-md"
       >
         submit
