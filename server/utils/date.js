@@ -7,7 +7,7 @@ export const DateCondition = ({
   date_label = "purchase_date",
 }) => {
   const currentDate = dayjs().format("YYYY-MM-DD");
-  const parsedStartDate = dayjs(startDate).subtract(1, "day");
+  const parsedStartDate = dayjs(startDate).subtract(0, "day");
   const parsedEndDate = dayjs(endDate).add(1, "day");
 
   let dateCondition = {};

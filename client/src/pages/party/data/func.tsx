@@ -68,7 +68,7 @@ export const formattPurchaseChartData = (chartData: any) => {
   const category: string[] = [];
 
   chartData.forEach((item: any) => {
-    category.push(item?.product);
+    category.push(`${item?.company}-${item?.product}`);
     quantity.push(item?.total_quantity);
     purchase.push(item?.total_purchase);
     avg.push(parseInt(item?.avg_purchase));

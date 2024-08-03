@@ -2,6 +2,7 @@ import BasicTable from "@/components/table/BasicTable";
 import { getCategoryWiseOverview } from "@/services/Summary";
 import { useGlobleStore } from "@/store/globalStore";
 import { useQuery } from "@tanstack/react-query";
+import _ from "lodash";
 
 const cols = [
   { label: "Category", value: "category" },
@@ -25,12 +26,14 @@ const CategoryTable = () => {
     queryFn: () => getCategoryWiseOverview(selectedDateRange),
   });
 
+  const sortedTableData = _.sortBy(tableData, "category");
+
   /**
    * TSX
    */
   return (
     <div>
-      <BasicTable cols={cols} rows={tableData || []} />
+      <BasicTable height="40rem" cols={cols} rows={sortedTableData || []} />
     </div>
   );
 };
