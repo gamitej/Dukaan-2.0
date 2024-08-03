@@ -25,7 +25,7 @@ const Stocks = () => {
   return (
     <div>
       <BasicModal
-        modalHeight="80vh"
+        modalHeight="95vh"
         modalWidth="50vw"
         title="Stocks Overview"
         isOpen={isStockModelOpen}
