@@ -1,11 +1,15 @@
+import _ from "lodash";
+import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
+// components
+import BarCard from "@/components/cards/BarCard";
+import BasicTable from "@/components/table/BasicTable";
+// services
 import { getSalesOverview } from "@/services/Sales";
 import { useGlobleStore } from "@/store/globalStore";
-import { formattSalesChartData } from "../data/func";
-import BarCard from "@/components/cards/BarCard";
-import { useMemo } from "react";
-import BasicTable from "@/components/table/BasicTable";
+// data
 import { salesOverviewCols } from "../data";
+import { formattSalesChartData } from "../data/func";
 
 const SalesOverview = () => {
   const { selectedDateRange } = useGlobleStore();
@@ -31,6 +35,8 @@ const SalesOverview = () => {
     );
   }, [chartData]);
 
+  const sortedTableData = _.sortBy(chartData, "total_sales");
+
   /**|
    * TSX
    */
@@ -50,7 +56,11 @@ const SalesOverview = () => {
         title="Product wise sales"
         isError={category?.length === 0}
       />
-      <BasicTable height="35rem" rows={chartData} cols={salesOverviewCols} />
+      <BasicTable
+        height="35rem"
+        rows={sortedTableData || []}
+        cols={salesOverviewCols}
+      />
     </div>
   );
 };

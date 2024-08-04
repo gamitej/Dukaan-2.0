@@ -1,9 +1,14 @@
-import { useGlobleStore } from "@/store/globalStore";
-import TotalCard from "../common/TotalCard";
-import { useQuery } from "@tanstack/react-query";
-import { getPartyCategoriesPurchaseChartData } from "@/services/Purchase";
-import BarCard from "@/components/cards/BarCard";
+import _ from "lodash";
 import { useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+// components
+import TotalCard from "../common/TotalCard";
+import BarCard from "@/components/cards/BarCard";
+import BasicTable from "@/components/table/BasicTable";
+// store
+import { useGlobleStore } from "@/store/globalStore";
+import { getPartyCategoriesPurchaseChartData } from "@/services/Purchase";
+import { purchaseOverviewCols } from "../data";
 import { formattPurchaseChartData } from "../data/func";
 
 const PartyOverview = ({ partyId = "" }: { partyId: string }) => {
@@ -24,6 +29,8 @@ const PartyOverview = ({ partyId = "" }: { partyId: string }) => {
     return formattPurchaseChartData(chartData);
   }, [chartData]);
 
+  const sortedTableData = _.sortBy(chartData, "category");
+
   /**
    * TSX
    */
@@ -39,6 +46,12 @@ const PartyOverview = ({ partyId = "" }: { partyId: string }) => {
         categories={category || []}
         title="Product wise purchase"
         isError={category?.length === 0}
+      />
+
+      <BasicTable
+        rows={sortedTableData || []}
+        cols={purchaseOverviewCols}
+        height="35rem"
       />
     </div>
   );
