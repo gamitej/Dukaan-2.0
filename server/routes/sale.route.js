@@ -3,6 +3,7 @@ import {
   AddProductSale,
   DeleteProductSale,
   GetProductSaleDetails,
+  GetSalesOverview,
 } from "../controller/sale.controller.js";
 
 const router = express.Router();
@@ -15,5 +16,8 @@ router.post("/add", AddProductSale);
 
 // Delete product sale details
 router.post("/delete", DeleteProductSale);
+
+// Get sale overview
+router.get("/overview", GetSalesOverview);
 
 export default router;

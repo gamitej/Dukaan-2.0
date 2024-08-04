@@ -5,6 +5,7 @@ import Stock from "../models/stock.model.js";
 import Product from "../models/product.model.js";
 import { ProductExistsByCategory } from "./product.controller.js";
 import { DateCondition } from "../utils/date.js";
+import { getAvgPrice } from "../utils/math.js";
 
 export const GetProductSaleDetails = async (req, res) => {
   try {
@@ -152,6 +153,49 @@ export const DeleteProductSale = async (req, res) => {
     return res.status(200).json("Sale product record deleted successfully!");
   } catch (error) {
     await transaction.rollback();
+    return res.status(500).json(error.message || error);
+  }
+};
+
+export const GetSalesOverview = async (req, res) => {
+  try {
+    const { startDate, endDate } = req.query;
+
+    if (!startDate) return res.status(400).json("Missing start date parameter");
+    if (!endDate) return res.status(400).json("Missing end date parameter");
+
+    const dateCondition = DateCondition({ ...req.query, date_label: "date" });
+
+    const results = await Sales.findAll({
+      attributes: [
+        "product_id",
+        [sequelize.fn("SUM", sequelize.col("price")), "total_sales"],
+        [sequelize.fn("SUM", sequelize.col("quantity")), "total_quantity"],
+      ],
+      where: {
+        ...dateCondition,
+      },
+      group: ["product_id"],
+      include: {
+        model: Product,
+        attributes: ["product", "category", "company"],
+      },
+    });
+
+    const formattedResults = results.map((result) => ({
+      product: result.Product.product,
+      company: result.Product.company,
+      category: result.Product.category,
+      total_sales: parseInt(result.getDataValue("total_sales")),
+      total_quantity: parseInt(result.getDataValue("total_quantity")),
+      avg_sale: getAvgPrice(
+        parseInt(result.getDataValue("total_sales")),
+        parseInt(result.getDataValue("total_quantity"))
+      ),
+    }));
+
+    return res.status(200).json(formattedResults);
+  } catch (error) {
     return res.status(500).json(error.message || error);
   }
 };

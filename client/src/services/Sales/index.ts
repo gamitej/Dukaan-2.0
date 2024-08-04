@@ -17,3 +17,10 @@ export async function deleteSalesDataApi(reqestedData: any) {
   const { data } = await http.post(`/sales/delete`, reqestedData);
   return data;
 }
+
+export async function getSalesOverview(selectedDateRange: DateRangeType) {
+  const { data } = await http.get(
+    `/sales/overview?startDate=${selectedDateRange.startDate}&endDate=${selectedDateRange.endDate}`
+  );
+  return data;
+}
