@@ -6,7 +6,7 @@ import TabContext from "@mui/lab/TabContext";
 
 interface BasicTabProps {
   tabData: { value: string; label: string; content: any }[];
-  data: any;
+  data?: any;
 }
 
 export default function BasicTab({ tabData = [], data = {} }: BasicTabProps) {

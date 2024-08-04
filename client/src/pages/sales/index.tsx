@@ -1,5 +1,20 @@
 import SalesTable from "./components/SalesTable";
+import BasicTab from "@/components/common/BasicTab";
+import SalesOverview from "./components/SalesOverview";
 import BasicDateRangePicker from "@/components/fields/DateRangePicker";
+
+const tabsData = [
+  {
+    label: "Overview",
+    value: "Overview",
+    content: SalesOverview,
+  },
+  {
+    label: "Sales Record",
+    value: "Sales Record",
+    content: SalesTable,
+  },
+];
 
 const Sales = () => {
   /**
@@ -16,7 +31,8 @@ const Sales = () => {
       </div>
       {/*=========== ALL SALES CARD ===========*/}
       <div className="mt-8">
-        <SalesTable />
+        {/* <SalesTable /> */}
+        <BasicTab tabData={tabsData} />
       </div>
       <br />
       <br />
