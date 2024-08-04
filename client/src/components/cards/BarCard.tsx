@@ -21,7 +21,7 @@ const BarCard: FC<BarCardProps> = ({
    */
   return (
     <div
-      className={`bg-white py-2 rounded-md  ${
+      className={`w-full bg-white py-2 rounded-md  ${
         enableBorder ? "border-2 border-zinc-400" : "shadow-md"
       }`}
     >

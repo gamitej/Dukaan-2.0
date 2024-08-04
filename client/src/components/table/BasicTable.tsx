@@ -18,7 +18,7 @@ const BasicTable: FC<BasicTableProps> = ({
    */
   return (
     <div
-      className="overflow-y-auto h-[100%] bg-white shadow-md border rounded-md"
+      className="w-full overflow-y-auto h-[100%] bg-white shadow-md border rounded-md"
       style={{ height: `calc(${height} - 7rem)` }}
     >
       <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">

@@ -1,6 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { getSalesOverview } from "@/services/Sales";
 import { useGlobleStore } from "@/store/globalStore";
+import { formattSalesChartData } from "../data/func";
+import BarCard from "@/components/cards/BarCard";
+import { useMemo } from "react";
+import BasicTable from "@/components/table/BasicTable";
+import { salesOverviewCols } from "../data";
 
 const SalesOverview = () => {
   const { selectedDateRange } = useGlobleStore();
@@ -11,20 +16,43 @@ const SalesOverview = () => {
     queryFn: () => getSalesOverview(selectedDateRange),
   });
 
-  console.log({ chartData });
+  const {
+    category = [],
+    series = [],
+    yAxisSetUp = [],
+  } = useMemo(() => {
+    return formattSalesChartData(chartData);
+  }, [chartData]);
 
-  // const {
-  //   category = [],
-  //   series = [],
-  //   yAxisSetUp = [],
-  // } = useMemo(() => {
-  //   return formattPurchaseChartData(chartData);
-  // }, [chartData]);
+  const totalSales = useMemo(() => {
+    return chartData.reduce(
+      (sum: number, item: any) => sum + item.total_sales,
+      0
+    );
+  }, [chartData]);
 
   /**|
    * TSX
    */
-  return <div>SalesOverview</div>;
+  return (
+    <div className="w-full flex flex-col gap-6">
+      <div className="w-fit flex items-center gap-2 border-2 border-slate-400 rounded-md p-2">
+        <p className="text-xl font-[550] text-indigo-500">Total Sales - </p>
+        <p className="text-xl font-[550] text-lightDark">Rs {totalSales}</p>
+      </div>
+      <BarCard
+        enableBorder
+        chartHeight={350}
+        isLoading={isLoading}
+        series={series || []}
+        yAxisSetUp={yAxisSetUp}
+        categories={category || []}
+        title="Product wise sales"
+        isError={category?.length === 0}
+      />
+      <BasicTable height="35rem" rows={chartData} cols={salesOverviewCols} />
+    </div>
+  );
 };
 
 export default SalesOverview;
