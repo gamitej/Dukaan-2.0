@@ -43,6 +43,14 @@ const Header = () => {
             Sales
           </NavLink>
           <NavLink
+            to="/purchases"
+            className={({ isActive }) =>
+              isActive ? "text-blue-400" : "text-white"
+            }
+          >
+            Purchases
+          </NavLink>
+          <NavLink
             to="/expenses"
             className={({ isActive }) =>
               isActive ? "text-blue-400" : "text-white"

@@ -6,6 +6,7 @@ const Home = lazy(() => import("@/pages/home"));
 const SalesPage = lazy(() => import("@/pages/sales"));
 const PartiesPage = lazy(() => import("@/pages/party"));
 const ExpensesPage = lazy(() => import("@/pages/expenses"));
+const PurchasePage = lazy(() => import("@/pages/purchase"));
 const PartyDetailsPage = lazy(() => import("@/pages/party/PartyDetails"));
 
 const Router = () => {
@@ -14,7 +15,6 @@ const Router = () => {
       path: "/",
       element: <Home />,
     },
-
     {
       path: "/parties",
       element: <PartiesPage />,
@@ -30,6 +30,18 @@ const Router = () => {
     {
       path: "/expenses",
       element: <ExpensesPage />,
+    },
+    {
+      path: "/purchases",
+      element: <PurchasePage />,
+    },
+    {
+      path: "*",
+      element: (
+        <div className="h-[75vh] w-full flex justify-center items-center text-[5rem] text-slate-400">
+          404
+        </div>
+      ),
     },
   ]);
 
