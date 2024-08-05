@@ -126,7 +126,7 @@ export const getPartyPurchaseData = async (req, res) => {
         weight,
         order_id,
         price,
-        avg_price: parseInt(parseInt(price) / parseInt(quantity)),
+        avg_price: Math.ceil(parseInt(price) / parseInt(quantity)),
         product_id,
       };
     });

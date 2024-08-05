@@ -18,8 +18,9 @@ export const GetProductSaleDetails = async (req, res) => {
 
     // Fetch purchase data based on party_id
     const sales = await Sales.findAll({
+      where: { ...dateCondition },
       order: [["date", "DESC"]],
-      ...dateCondition,
+
       include: [
         {
           model: Product,
@@ -50,6 +51,7 @@ export const GetProductSaleDetails = async (req, res) => {
         weight,
         price,
         product_id,
+        avg_price: Math.ceil(parseInt(price) / parseInt(quantity)),
       };
     });
 

@@ -38,7 +38,12 @@ export const formattedPurchaseTableColumns = (commonCols: any) => {
 export const formattedSalesTableColumns = (commonCols: any) => {
   if (commonCols.length === 0) return [];
 
-  return commonCols?.map(
+  const columns = [
+    ...commonCols,
+    { header: "Avg Price", accessorkey: "avg_price" },
+  ];
+
+  return columns?.map(
     ({ header, accessorkey }: { header: string; accessorkey: string }) => {
       return {
         header: header,
@@ -48,7 +53,8 @@ export const formattedSalesTableColumns = (commonCols: any) => {
         Cell: ({ row }: { row: any }) => {
           const rowValue = row.original[accessorkey];
 
-          if (accessorkey === "price") return `Rs ${rowValue}`;
+          if (accessorkey === "price" || accessorkey === "avg_price")
+            return `Rs ${rowValue}`;
 
           if (accessorkey === "date")
             return dayjs(rowValue).format("DD-MMM-YYYY");
