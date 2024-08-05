@@ -2,6 +2,7 @@ import express from "express";
 const router = express.Router();
 import {
   addPurchaseData,
+  getAllPurchaseData,
   getPartyPurchaseData,
   deletePartyPurchaseData,
   getPartyOrderPurchaseData,
@@ -20,6 +21,10 @@ router.post("/delete-purchase", deletePartyPurchaseData);
 // Get party purchase order data
 router.get("/party-order-details", getPartyOrderPurchaseData);
 
+// Get party-wise purchase order chart data
 router.get("/purchase-chart-data", getPartyCategoriesPurchaseChartData);
+
+// Get all purchase data
+router.get("/all", getAllPurchaseData);
 
 export default router;

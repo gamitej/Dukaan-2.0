@@ -13,6 +13,18 @@ export const commonCols = [
   { header: "Price", accessorkey: "price" },
 ];
 
+export const commonPurchaseCols = [
+  { header: "Date", accessorkey: "date" },
+  { header: "Party", accessorkey: "party" },
+  { header: "Product", accessorkey: "product" },
+  { header: "Category", accessorkey: "category" },
+  { header: "Company", accessorkey: "company" },
+  { header: "Quanity", accessorkey: "quantity" },
+  { header: "Weight", accessorkey: "weight" },
+  { header: "Avg Price", accessorkey: "avg_price" },
+  { header: "Price", accessorkey: "price" },
+];
+
 /**
  * ================= RETURN COLS ================
  */

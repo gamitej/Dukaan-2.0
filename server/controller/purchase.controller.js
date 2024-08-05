@@ -11,6 +11,7 @@ import {
 } from "./pendingPayment.controller.js";
 import { DateCondition } from "../utils/date.js";
 import { getAvgPrice } from "../utils/math.js";
+import Party from "../models/party.model.js";
 
 export const addPurchaseData = async (req, res) => {
   const transaction = await sequelize.transaction();
@@ -286,5 +287,73 @@ export const getPartyCategoriesPurchaseChartData = async (req, res) => {
     return res.status(200).json(formattedResults);
   } catch (error) {
     return res.status(500).json(error.message || error);
+  }
+};
+
+export const getAllPurchaseData = async (req, res) => {
+  try {
+    const { startDate, endDate } = req.query;
+
+    if (!startDate) return res.status(400).json("Missing start date parameter");
+    if (!endDate) return res.status(400).json("Missing end date parameter");
+
+    const dateCondition = DateCondition(req.query);
+
+    // Fetch purchase data and calculate the total price
+    const purchases = await Purchase.findAll({
+      where: {
+        ...dateCondition,
+      },
+      order: [
+        ["purchase_date", "DESC"],
+        ["order_id", "ASC"],
+      ],
+      include: [
+        {
+          model: Product,
+          attributes: ["product", "company", "category"],
+        },
+        {
+          model: Party,
+          attributes: ["shop_name"],
+        },
+      ],
+    });
+
+    if (purchases.length === 0) return res.status(200).json([]);
+
+    const formattedPurchase = purchases.map((item) => {
+      const {
+        purchase_id,
+        Product: { product, company, category },
+        Party: { shop_name },
+        purchase_date,
+        quantity,
+        weight,
+        order_id,
+        price,
+        product_id,
+      } = item;
+      return {
+        id: purchase_id,
+        date: purchase_date,
+        product,
+        company,
+        category,
+        quantity,
+        weight,
+        order_id,
+        price,
+        party: shop_name,
+        avg_price: Math.ceil(parseInt(price) / parseInt(quantity)),
+        product_id,
+      };
+    });
+
+    return res.status(200).json(formattedPurchase);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: error.message || "Internal Server Error" });
   }
 };

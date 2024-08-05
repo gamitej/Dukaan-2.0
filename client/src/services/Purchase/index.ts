@@ -50,3 +50,10 @@ export async function getPartyCategoriesPurchaseChartData(
   );
   return data;
 }
+
+export async function getAllPurchaseData(selectedDateRange: DateRangeType) {
+  const { data } = await http.get(
+    `/purchase/all?startDate=${selectedDateRange.startDate}&endDate=${selectedDateRange.endDate}`
+  );
+  return data;
+}
