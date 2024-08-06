@@ -36,6 +36,7 @@ export default function BasicDatePicker({
             format="DD-MMM-YY"
             value={dayjs(value)}
             label={label}
+            maxDate={dayjs()}
             onChange={(newValue) => handleDateChange(newValue)}
           />
         </div>
