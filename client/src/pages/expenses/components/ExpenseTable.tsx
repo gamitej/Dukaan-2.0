@@ -25,7 +25,7 @@ const ExpenseTable = () => {
 
   // Query to fetch all expense data
   const { data: expenseRowData = [], isLoading } = useQuery({
-    queryKey: ["expenses-data"],
+    queryKey: ["expenses-data",selectedDateRange],
     queryFn: () => getExpensenDataApi(selectedDateRange),
   });
 
