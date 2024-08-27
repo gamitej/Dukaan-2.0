@@ -111,7 +111,7 @@ export default function StockCard({
           </AccordionSummary>
           <div className="bg-gray-300 w-full h-[.05rem]"></div>
           <AccordionDetails>
-            <div className="grid grid-cols-12 gap-3 mt-2">
+            <div className="grid grid-cols-12 gap-3 mt-2 h-[15rem] overflow-auto">
               {value?.items?.map((item, idx) => (
                 <div
                   key={`deatils-${idx}`}
